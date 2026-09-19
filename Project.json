@@ -12,7 +12,7 @@
     "CODE_SIGN_IDENTITY": "-"
   },
   "targets": {
-    "New Project": {
+    "Stick": {
       "dependencies": [
         {
           "target": "New ProjectWidget"
@@ -20,7 +20,7 @@
       ],
       "deploymentTarget": "26.0",
       "info": {
-        "path": "App\/Info.plist",
+        "path": "App/Info.plist",
         "properties": {
           "CFBundleDisplayName": "New Project",
           "CFBundleShortVersionString": "1.0",
@@ -56,7 +56,7 @@
     "New ProjectWidget": {
       "deploymentTarget": "26.0",
       "info": {
-        "path": "Widget\/Info.plist",
+        "path": "Widget/Info.plist",
         "properties": {
           "CFBundleDisplayName": "New ProjectWidget",
           "CFBundleShortVersionString": "1.0",
