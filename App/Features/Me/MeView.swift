@@ -1,0 +1,202 @@
+import SwiftUI
+
+/// Profile, voice, stats, badges, referral, subscription, settings.
+struct MeView: View {
+  @Environment(StickStore.self) private var store
+  @State private var showingReferral = false
+  @State private var showingReset = false
+
+  var body: some View {
+    NavigationStack {
+      ZStack {
+        StickBackground(intensity: 0.85)
+        ScrollView {
+          VStack(alignment: .leading, spacing: 20) {
+            profileHeader
+              .appear(index: 0)
+
+            statsRow
+              .appear(index: 1)
+
+            NavigationLink {
+              VoiceSettingsView()
+            } label: {
+              MeRow(symbol: "waveform", title: "My voice", subtitle: store.profile.voiceModelID == nil ? "Not cloned yet" : "Cloned · used on every call")
+            }
+            .buttonStyle(PressableButtonStyle())
+            .appear(index: 2)
+
+            NavigationLink {
+              BadgesView()
+            } label: {
+              MeRow(symbol: "rosette", title: "Badges", subtitle: "\(store.state.badges.count) of \(Badge.allCases.count) earned")
+            }
+            .buttonStyle(PressableButtonStyle())
+            .appear(index: 3)
+
+            Button {
+              showingReferral = true
+            } label: {
+              VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                  Image(systemName: "gift.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                  Text("Give 5 free days")
+                    .font(StickFont.headline)
+                  Spacer()
+                  Image(systemName: "square.and.arrow.up")
+                    .font(.system(size: 16, weight: .semibold))
+                }
+                Text("Your friends start with 5 days of Stick on you. Share your link.")
+                  .font(StickFont.callout)
+                  .opacity(0.9)
+                  .fixedSize(horizontal: false, vertical: true)
+              }
+              .stickHeroCard()
+            }
+            .buttonStyle(PressableButtonStyle())
+            .appear(index: 4)
+
+            NavigationLink {
+              SubscriptionView()
+            } label: {
+              MeRow(symbol: "creditcard.fill", title: "Subscription", subtitle: entitlementText)
+            }
+            .buttonStyle(PressableButtonStyle())
+            .appear(index: 5)
+
+            NavigationLink {
+              VaultView()
+            } label: {
+              MeRow(symbol: "lock.fill", title: "The Vault", subtitle: store.isFinished ? "Open. Listen to day 1." : "Sealed until day 75")
+            }
+            .buttonStyle(PressableButtonStyle())
+            .appear(index: 6)
+
+            NavigationLink {
+              ProgramView()
+            } label: {
+              MeRow(symbol: "map.fill", title: "The program", subtitle: "Five acts, the rules, the jokers")
+            }
+            .buttonStyle(PressableButtonStyle())
+            .appear(index: 7)
+
+            Button(role: .destructive) {
+              showingReset = true
+            } label: {
+              Text("Reset everything")
+                .font(StickFont.footnoteMedium)
+                .foregroundStyle(Color.stickDanger)
+                .frame(maxWidth: .infinity)
+            }
+            .padding(.top, 8)
+            .appear(index: 8)
+          }
+          .padding(.horizontal, StickMetrics.screenMargin)
+          .padding(.bottom, 110)
+        }
+        .scrollIndicators(.hidden)
+      }
+      .toolbar(.hidden, for: .navigationBar)
+      .sheet(isPresented: $showingReferral) {
+        ReferralView()
+      }
+      .confirmationDialog("Reset everything?", isPresented: $showingReset, titleVisibility: .visible) {
+        Button("Reset", role: .destructive) { store.resetEverything() }
+      } message: {
+        Text("Deletes your progress, goals, calls and voice on this phone.")
+      }
+    }
+  }
+
+  private var profileHeader: some View {
+    HStack(spacing: 16) {
+      Circle()
+        .fill(Color.white.opacity(0.9))
+        .frame(width: 64, height: 64)
+        .glassEffect(.regular, in: .circle)
+        .overlay {
+          Text(store.profile.firstName.isEmpty ? "S" : String(store.profile.firstName.prefix(1)).uppercased())
+            .font(StickFont.title)
+            .foregroundStyle(Color.brandOrange)
+        }
+      VStack(alignment: .leading, spacing: 4) {
+        Text(store.profile.firstName.isEmpty ? String(localized: "You") : store.profile.firstName)
+          .font(StickFont.largeTitle)
+          .stickTitleTracking()
+          .foregroundStyle(Color.ink)
+        if !store.profile.identityStatement.isEmpty {
+          Text("“\(store.profile.identityStatement)”")
+            .font(StickFont.callout)
+            .foregroundStyle(Color.ink.opacity(0.7))
+            .lineLimit(2)
+        }
+      }
+      Spacer()
+    }
+    .padding(.top, 6)
+  }
+
+  private var statsRow: some View {
+    HStack(spacing: 10) {
+      StatTile(value: store.daysHeld, label: "days held")
+      StatTile(value: Int(store.hoursRecovered.rounded()), label: "hours back")
+      StatTile(value: store.jokersLeft, label: "jokers")
+    }
+  }
+
+  private var entitlementText: LocalizedStringKey {
+    switch store.state.entitlement {
+    case .pass75: "75-Day Pass"
+    case .weekly: "Weekly"
+    case .life: "Stick Life"
+    case .trialDays: "\(store.freeDaysLeft) free days left"
+    case .none: "Inactive"
+    }
+  }
+}
+
+struct StatTile: View {
+  var value: Int
+  var label: LocalizedStringKey
+
+  var body: some View {
+    VStack(spacing: 4) {
+      CountingText(value: value, font: StickFont.title, color: .ink)
+      Text(label)
+        .font(StickFont.caption)
+        .foregroundStyle(Color.inkSecondary)
+    }
+    .frame(maxWidth: .infinity)
+    .stickCard(padding: 14)
+  }
+}
+
+struct MeRow: View {
+  var symbol: String
+  var title: LocalizedStringKey
+  var subtitle: LocalizedStringKey
+
+  var body: some View {
+    HStack(spacing: 14) {
+      Image(systemName: symbol)
+        .font(.system(size: 16, weight: .semibold))
+        .foregroundStyle(Color.brandOrange)
+        .frame(width: 40, height: 40)
+        .background(Color.brandOrange.opacity(0.12), in: Circle())
+      VStack(alignment: .leading, spacing: 2) {
+        Text(title)
+          .font(StickFont.headline)
+          .foregroundStyle(Color.ink)
+        Text(subtitle)
+          .font(StickFont.footnote)
+          .foregroundStyle(Color.inkSecondary)
+      }
+      Spacer()
+      Image(systemName: "chevron.right")
+        .font(.system(size: 14, weight: .semibold))
+        .foregroundStyle(Color.ink.opacity(0.4))
+    }
+    .stickCard(padding: 14, interactive: true)
+  }
+}

@@ -3,10 +3,14 @@
     "Debug": "debug",
     "Release": "release"
   },
-  "name": "Project",
+  "name": "Stick",
   "options": {
     "groupSortPosition": "bottom",
-    "transitivelyLinkDependencies": false
+    "transitivelyLinkDependencies": false,
+    "developmentLanguage": "en",
+    "deploymentTarget": {
+      "iOS": "26.0"
+    }
   },
   "settings": {
     "CODE_SIGN_IDENTITY": "-"
@@ -15,23 +19,48 @@
     "Stick": {
       "dependencies": [
         {
-          "target": "New ProjectWidget"
+          "embed": true,
+          "target": "Stick Widget Extension"
         }
       ],
-      "deploymentTarget": "26.0",
+      "entitlements": {
+        "path": "App/Stick.entitlements",
+        "properties": {
+          "com.apple.security.application-groups": [
+            "group.app.bitrig.new.7a862d7d-9f78-4980-b2bb-e1507322242f"
+          ]
+        }
+      },
       "info": {
         "path": "App/Info.plist",
         "properties": {
-          "CFBundleDisplayName": "New Project",
+          "CFBundleDisplayName": "Stick",
           "CFBundleShortVersionString": "1.0",
           "CFBundleVersion": "1",
+          "CFBundleLocalizations": ["en", "fr"],
+          "CFBundleURLTypes": [
+            {
+              "CFBundleURLName": "app.stick",
+              "CFBundleURLSchemes": ["stick"]
+            }
+          ],
           "ITSAppUsesNonExemptEncryption": false,
+          "NSAlarmKitUsageDescription": "Stick schedules your morning wake-up call and evening debrief so your own voice can call you at the times you chose.",
+          "NSMicrophoneUsageDescription": "Stick records 60 seconds of your voice to create your voice clone, and listens to you during calls so you can talk with it.",
+          "NSSpeechRecognitionUsageDescription": "Stick transcribes what you say during calls so it can note your goals and answer you.",
+          "NSSupportsLiveActivities": true,
+          "NSSupportsLiveActivitiesFrequentUpdates": true,
+          "UIAppFonts": [
+            "Inter-Regular.ttf",
+            "Inter-Medium.ttf",
+            "Inter-SemiBold.ttf",
+            "Inter-Bold.ttf"
+          ],
+          "UIBackgroundModes": ["audio"],
           "UILaunchScreen": {},
+          "UIUserInterfaceStyle": "Light",
           "UISupportedInterfaceOrientations": [
-            "UIInterfaceOrientationPortrait",
-            "UIInterfaceOrientationPortraitUpsideDown",
-            "UIInterfaceOrientationLandscapeLeft",
-            "UIInterfaceOrientationLandscapeRight"
+            "UIInterfaceOrientationPortrait"
           ]
         }
       },
@@ -49,18 +78,29 @@
       "sources": [
         {
           "path": "App"
+        },
+        {
+          "path": "Shared"
         }
       ],
       "type": "application"
     },
-    "New ProjectWidget": {
-      "deploymentTarget": "26.0",
-      "info": {
-        "path": "Widget/Info.plist",
+    "Stick Widget Extension": {
+      "entitlements": {
+        "path": "Widget Extension/Stick Widget Extension.entitlements",
         "properties": {
-          "CFBundleDisplayName": "New ProjectWidget",
+          "com.apple.security.application-groups": [
+            "group.app.bitrig.new.7a862d7d-9f78-4980-b2bb-e1507322242f"
+          ]
+        }
+      },
+      "info": {
+        "path": "Widget Extension/Info.plist",
+        "properties": {
+          "CFBundleDisplayName": "Stick Widget Extension",
           "CFBundleShortVersionString": "1.0",
           "CFBundleVersion": "1",
+          "CFBundleLocalizations": ["en", "fr"],
           "ITSAppUsesNonExemptEncryption": false,
           "NSExtension": {
             "NSExtensionPointIdentifier": "com.apple.widgetkit-extension"
@@ -72,14 +112,17 @@
         "APPLICATION_EXTENSION_API_ONLY": "YES",
         "CURRENT_PROJECT_VERSION": "1",
         "MARKETING_VERSION": "1.0",
-        "PRODUCT_BUNDLE_IDENTIFIER": "app.bitrig.new.7a862d7d-9f78-4980-b2bb-e1507322242f.widget",
+        "PRODUCT_BUNDLE_IDENTIFIER": "app.bitrig.new.7a862d7d-9f78-4980-b2bb-e1507322242f.widget-extension",
         "PRODUCT_NAME": "$(TARGET_NAME)",
         "SKIP_INSTALL": "YES",
         "SWIFT_VERSION": "5.0"
       },
       "sources": [
         {
-          "path": "Widget"
+          "path": "Widget Extension"
+        },
+        {
+          "path": "Shared"
         }
       ],
       "type": "app-extension"

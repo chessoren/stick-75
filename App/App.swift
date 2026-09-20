@@ -1,10 +1,17 @@
 import SwiftUI
 
 @main
-struct AppDefinition: App {
+struct StickApp: App {
+  @State private var store = StickStore()
+  @State private var calls = CallCoordinator()
+
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      RootView()
+        .environment(store)
+        .environment(calls)
+        .preferredColorScheme(.light)
+        .tint(.brandOrange)
     }
   }
 }
