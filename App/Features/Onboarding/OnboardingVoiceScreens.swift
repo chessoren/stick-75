@@ -219,7 +219,7 @@ struct VoiceRecordScreen: View {
           Button {
             if embedded {
               Task {
-                await model.cloneVoice()
+                await model.cloneVoice(advance: false)
                 dismiss()
               }
             } else {

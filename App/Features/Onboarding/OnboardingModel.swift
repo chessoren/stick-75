@@ -45,7 +45,6 @@ final class OnboardingModel {
     draft = store.profile
     step = OnboardingStep(rawValue: store.state.onboardingStep) ?? .hook
     if step == .voiceProcessing { step = .voiceRecord }
-    if step == .aha, draft.voiceModelID == nil, store.state.calls.isEmpty { step = .voiceRecord }
   }
 
   var progress: Double {
@@ -97,7 +96,7 @@ final class OnboardingModel {
     StickPersona.recordingScript(name: draft.firstName, identity: draft.identityStatement, language: language)
   }
 
-  func cloneVoice() async {
+  func cloneVoice(advance: Bool = true) async {
     guard let url = recordedSampleURL else { return }
     isCloning = true
     cloneError = nil
@@ -113,7 +112,7 @@ final class OnboardingModel {
       persist()
       await VoiceClipCache.ensureRingtone(voiceID: id, language: language)
       isCloning = false
-      next()
+      if advance { next() }
     } catch {
       cloneError = error.localizedDescription
       isCloning = false

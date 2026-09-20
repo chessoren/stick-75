@@ -21,6 +21,14 @@
         {
           "embed": true,
           "target": "Stick Widget Extension"
+        },
+        {
+          "package": "RevenueCat",
+          "product": "RevenueCat"
+        },
+        {
+          "package": "Supabase",
+          "product": "Supabase"
         }
       ],
       "entitlements": {
@@ -37,11 +45,16 @@
           "CFBundleDisplayName": "Stick",
           "CFBundleShortVersionString": "1.0",
           "CFBundleVersion": "1",
-          "CFBundleLocalizations": ["en", "fr"],
+          "CFBundleLocalizations": [
+            "en",
+            "fr"
+          ],
           "CFBundleURLTypes": [
             {
               "CFBundleURLName": "app.stick",
-              "CFBundleURLSchemes": ["stick"]
+              "CFBundleURLSchemes": [
+                "stick"
+              ]
             }
           ],
           "ITSAppUsesNonExemptEncryption": false,
@@ -56,7 +69,9 @@
             "Inter-SemiBold.ttf",
             "Inter-Bold.ttf"
           ],
-          "UIBackgroundModes": ["audio"],
+          "UIBackgroundModes": [
+            "audio"
+          ],
           "UILaunchScreen": {},
           "UIUserInterfaceStyle": "Light",
           "UISupportedInterfaceOrientations": [
@@ -100,7 +115,10 @@
           "CFBundleDisplayName": "Stick Widget Extension",
           "CFBundleShortVersionString": "1.0",
           "CFBundleVersion": "1",
-          "CFBundleLocalizations": ["en", "fr"],
+          "CFBundleLocalizations": [
+            "en",
+            "fr"
+          ],
           "ITSAppUsesNonExemptEncryption": false,
           "NSExtension": {
             "NSExtensionPointIdentifier": "com.apple.widgetkit-extension"
@@ -126,6 +144,16 @@
         }
       ],
       "type": "app-extension"
+    }
+  },
+  "packages": {
+    "RevenueCat": {
+      "url": "https://github.com/RevenueCat/purchases-ios-spm",
+      "from": "5.0.0"
+    },
+    "Supabase": {
+      "url": "https://github.com/supabase/supabase-swift",
+      "from": "2.0.0"
     }
   }
 }

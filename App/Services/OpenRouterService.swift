@@ -29,7 +29,7 @@ struct OpenRouterService {
     return URLSession(configuration: config)
   }()
 
-  func complete(_ messages: [ChatMessage], maxTokens: Int = 200, temperature: Double = 0.85) async throws -> String {
+  func complete(_ messages: [ChatMessage], maxTokens: Int = 300, temperature: Double = 0.85) async throws -> String {
     guard Secrets.hasLLMKeys else { throw RouterError.missingKey }
     do {
       return try await complete(messages, model: Secrets.openRouterModel, maxTokens: maxTokens, temperature: temperature)
@@ -49,7 +49,8 @@ struct OpenRouterService {
       "model": model,
       "messages": messages.map { ["role": $0.role.rawValue, "content": $0.content] },
       "max_tokens": maxTokens,
-      "temperature": temperature
+      "temperature": temperature,
+      "reasoning": ["enabled": false]
     ]
     request.httpBody = try JSONSerialization.data(withJSONObject: payload)
     let (data, response) = try await session.data(for: request)

@@ -17,6 +17,14 @@ struct RootView: View {
       }
     }
     .animation(.smooth(duration: 0.5), value: store.state.onboardingComplete)
+    .fullScreenCover(isPresented: Binding(
+      get: { store.state.onboardingComplete && !store.isEntitled && !calls.isPresented },
+      set: { _ in }
+    )) {
+      PaywallView(onUnlocked: {}, onDismiss: nil)
+        .environment(store)
+        .interactiveDismissDisabled()
+    }
     .fullScreenCover(isPresented: $calls.isPresented) {
       CallScreen()
         .environment(calls)
@@ -40,9 +48,17 @@ struct RootView: View {
         store.applyReferral(code: code)
       }
     }
+    .task {
+      if let entitlement = await PurchaseService.shared.currentEntitlement(),
+         entitlement != .none || store.state.entitlement != .trialDays {
+        store.grant(entitlement)
+      }
+      await store.syncRemote()
+    }
     .onChange(of: scenePhase) { _, phase in
       guard phase == .active else { return }
       store.absorbWidgetChanges()
+      Task { await store.syncRemote() }
       if let kind = store.pendingCallKind, store.state.onboardingComplete, !calls.isPresented {
         store.pendingCallKind = nil
         calls.start(kind, store: store)

@@ -348,6 +348,24 @@ final class StickStore {
       $0.freeDaysUntil = Calendar.current.date(byAdding: .day, value: 5, to: .now)
       if $0.entitlement == .none { $0.entitlement = .trialDays }
     }
+    Task { await SupabaseService.shared.registerReferral(code: trimmed) }
+  }
+
+  /// Pushes the score to Supabase and pulls the live league when the backend is configured.
+  func syncRemote() async {
+    let service = SupabaseService.shared
+    guard await service.isConfigured else { return }
+    await service.pushScore(
+      name: profile.firstName,
+      hours: hoursRecovered,
+      daysHeld: daysHeld,
+      dayNumber: dayNumber,
+      referralCode: profile.referralCode
+    )
+    let league = await service.fetchLeague()
+    if !league.isEmpty {
+      update { $0.leaderboard = league }
+    }
   }
 
   var referralURL: URL {

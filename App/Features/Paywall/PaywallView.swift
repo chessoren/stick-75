@@ -7,7 +7,7 @@ struct PaywallView: View {
   var onDismiss: (() -> Void)?
 
   @State private var selected: SubscriptionPlan = .pass75
-  @State private var purchases = PurchaseService.shared
+  private var purchases: PurchaseService { .shared }
   @State private var error: String?
 
   var body: some View {

@@ -1,0 +1,3766 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "Today": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aujourd'hui"
+          }
+        }
+      }
+    },
+    "Calls": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appels"
+          }
+        }
+      }
+    },
+    "League": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ligue"
+          }
+        }
+      }
+    },
+    "Me": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moi"
+          }
+        }
+      }
+    },
+    "You": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toi"
+          }
+        }
+      }
+    },
+    "Continue": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fait"
+          }
+        }
+      }
+    },
+    "Dismiss": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignorer"
+          }
+        }
+      }
+    },
+    "Save": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer"
+          }
+        }
+      }
+    },
+    "Add": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter"
+          }
+        }
+      }
+    },
+    "Remove": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer"
+          }
+        }
+      }
+    },
+    "Back": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retour"
+          }
+        }
+      }
+    },
+    "Close": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fermer"
+          }
+        }
+      }
+    },
+    "Clear": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer"
+          }
+        }
+      }
+    },
+    "Allow": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser"
+          }
+        }
+      }
+    },
+    "Asking…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demande en cours…"
+          }
+        }
+      }
+    },
+    "Playing…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lecture…"
+          }
+        }
+      }
+    },
+    "Try again": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer"
+          }
+        }
+      }
+    },
+    "Reset": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser"
+          }
+        }
+      }
+    },
+    "Restore": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurer"
+          }
+        }
+      }
+    },
+    "Terms": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conditions"
+          }
+        }
+      }
+    },
+    "Privacy": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confidentialité"
+          }
+        }
+      }
+    },
+    "Go": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'est parti"
+          }
+        }
+      }
+    },
+    "Stop": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
+          }
+        }
+      }
+    },
+    "Record": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer"
+          }
+        }
+      }
+    },
+    "Record again": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réenregistrer"
+          }
+        }
+      }
+    },
+    "Skip for now": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer pour l'instant"
+          }
+        }
+      }
+    },
+    "On": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activé"
+          }
+        }
+      }
+    },
+    "Off": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactivé"
+          }
+        }
+      }
+    },
+    "Missed": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manqué"
+          }
+        }
+      }
+    },
+    "Progress": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progression"
+          }
+        }
+      }
+    },
+    "Held": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tenus"
+          }
+        }
+      }
+    },
+    "Inactive": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactif"
+          }
+        }
+      }
+    },
+    "Weekly": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hebdo"
+          }
+        }
+      }
+    },
+    "Answer": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Décrocher"
+          }
+        }
+      }
+    },
+    "Decline": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refuser"
+          }
+        }
+      }
+    },
+    "Hang up": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raccrocher"
+          }
+        }
+      }
+    },
+    "Goal": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectif"
+          }
+        }
+      }
+    },
+    "Goals": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectifs"
+          }
+        }
+      }
+    },
+    "Badges": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Badges"
+          }
+        }
+      }
+    },
+    "Subscription": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnement"
+          }
+        }
+      }
+    },
+    "Permissions": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permissions"
+          }
+        }
+      }
+    },
+    "Notifications": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications"
+          }
+        }
+      }
+    },
+    "Alarms": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarmes"
+          }
+        }
+      }
+    },
+    "Debrief": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilan"
+          }
+        }
+      }
+    },
+    "Recover": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reprendre"
+          }
+        }
+      }
+    },
+    "Call me": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appelle-moi"
+          }
+        }
+      }
+    },
+    "Ring me": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appelle-moi"
+          }
+        }
+      }
+    },
+    "I'm in": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je suis dedans"
+          }
+        }
+      }
+    },
+    "Good morning,": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonjour,"
+          }
+        }
+      }
+    },
+    "Good afternoon,": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bon après-midi,"
+          }
+        }
+      }
+    },
+    "Good evening,": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonsoir,"
+          }
+        }
+      }
+    },
+    "Good morning, %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonjour, %@"
+          }
+        }
+      }
+    },
+    "Good afternoon, %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bon après-midi, %@"
+          }
+        }
+      }
+    },
+    "Good evening, %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonsoir, %@"
+          }
+        }
+      }
+    },
+    "Day %lld of 75": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour %lld sur 75"
+          }
+        }
+      }
+    },
+    "Act %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte %@"
+          }
+        }
+      }
+    },
+    "Call schedule": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horaires d'appel"
+          }
+        }
+      }
+    },
+    "Weekly goal": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectif de la semaine"
+          }
+        }
+      }
+    },
+    "Complete today's goals to reach 100%": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termine tes objectifs du jour pour atteindre 100 %"
+          }
+        }
+      }
+    },
+    "Day held. See you tonight.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour tenu. À ce soir."
+          }
+        }
+      }
+    },
+    "Take the wake-up call to set today's goals": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prends l'appel du réveil pour fixer tes objectifs du jour"
+          }
+        }
+      }
+    },
+    "Goals done. Tonight's debrief closes the day.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectifs faits. Le bilan du soir ferme la journée."
+          }
+        }
+      }
+    },
+    "Call Stick now": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appeler Stick maintenant"
+          }
+        }
+      }
+    },
+    "Today's progress": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progression du jour"
+          }
+        }
+      }
+    },
+    "Stick hasn't called yet. Set 1 to 3 goals for today with your own voice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick n'a pas encore appelé. Fixe 1 à 3 objectifs pour aujourd'hui avec ta propre voix."
+          }
+        }
+      }
+    },
+    "Every goal is done. Take the evening debrief to lock the day.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous les objectifs sont faits. Prends le bilan du soir pour verrouiller la journée."
+          }
+        }
+      }
+    },
+    "Next up: %@. Finish it before you touch anything else.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suivant : %@. Termine-le avant de toucher à quoi que ce soit d'autre."
+          }
+        }
+      }
+    },
+    "You slipped today. One lapse is fine, two is not. Take the recovery call.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu as craqué aujourd'hui. Un écart, ça passe. Deux, non. Prends l'appel de reprise."
+          }
+        }
+      }
+    },
+    "Add a goal": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un objectif"
+          }
+        }
+      }
+    },
+    "Jokers left": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jokers restants"
+          }
+        }
+      }
+    },
+    "No goals yet.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore d'objectif."
+          }
+        }
+      }
+    },
+    "Stick sets them with you on the wake-up call. Or add one by hand.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick les fixe avec toi à l'appel du réveil. Ou ajoutes-en un à la main."
+          }
+        }
+      }
+    },
+    "Not done": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas fait"
+          }
+        }
+      }
+    },
+    "One concrete goal for today.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un objectif concret pour aujourd'hui."
+          }
+        }
+      }
+    },
+    "Finish the report, run 5 km…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finir le rapport, courir 5 km…"
+          }
+        }
+      }
+    },
+    "New goal": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvel objectif"
+          }
+        }
+      }
+    },
+    "Act %@ · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte %@ · %@"
+          }
+        }
+      }
+    },
+    "Day %lld of 15": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour %lld sur 15"
+          }
+        }
+      }
+    },
+    "75 days. Five acts.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "75 jours. Cinq actes."
+          }
+        }
+      }
+    },
+    "Days %lld–%lld": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jours %lld–%lld"
+          }
+        }
+      }
+    },
+    "The rules": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les règles"
+          }
+        }
+      }
+    },
+    "The program": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le programme"
+          }
+        }
+      }
+    },
+    "A day is held when goals are set, nothing slipped, and the debrief is done.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un jour est tenu quand les objectifs sont fixés, que rien n'a dérapé et que le bilan est fait."
+          }
+        }
+      }
+    },
+    "3 jokers for the whole program. A slip costs one and triggers a recovery call. Never miss twice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 jokers pour tout le programme. Un écart en coûte un et déclenche un appel de reprise. On ne rate jamais deux fois."
+          }
+        }
+      }
+    },
+    "Two missed days in a row restart the act. Never the program. You never go back to day 1.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deux jours manqués d'affilée relancent l'acte. Jamais le programme. Tu ne reviens jamais au jour 1."
+          }
+        }
+      }
+    },
+    "Jokers can't be bought. Not with money, not with words.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les jokers ne s'achètent pas. Ni avec de l'argent, ni avec des mots."
+          }
+        }
+      }
+    },
+    "Life recovered": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vie récupérée"
+          }
+        }
+      }
+    },
+    "hours": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "heures"
+          }
+        }
+      }
+    },
+    "books": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "livres"
+          }
+        }
+      }
+    },
+    "runs": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "runs"
+          }
+        }
+      }
+    },
+    "nights": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nuits"
+          }
+        }
+      }
+    },
+    "At %@ h a day, day 75 gives you back %lld hours.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À %@ h par jour, le jour 75 te rend %lld heures."
+          }
+        }
+      }
+    },
+    "League, rank %lld": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ligue, rang %lld"
+          }
+        }
+      }
+    },
+    "%lld days held": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld jours tenus"
+          }
+        }
+      }
+    },
+    "The Silence": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le Silence"
+          }
+        }
+      }
+    },
+    "The Comeback": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le Retour"
+          }
+        }
+      }
+    },
+    "The Identity": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'Identité"
+          }
+        }
+      }
+    },
+    "The Trial": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'Épreuve"
+          }
+        }
+      }
+    },
+    "The Flight": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'Envol"
+          }
+        }
+      }
+    },
+    "Total lockdown. Maximum friction. Three calls a day.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocage total. Friction maximale. Trois appels par jour."
+          }
+        }
+      }
+    },
+    "Replace, don't just block. One new habit chosen every morning.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remplacer, pas seulement bloquer. Une nouvelle habitude choisie chaque matin."
+          }
+        }
+      }
+    },
+    "\"I am someone who…\" Shorter calls, harder questions. League unlocked.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« Je suis quelqu'un qui… » Appels plus courts, questions plus dures. Ligue débloquée."
+          }
+        }
+      }
+    },
+    "A 15-minute daily window opens. Stick tests if you can hold it.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une fenêtre de 15 min par jour s'ouvre. Stick teste si tu la tiens."
+          }
+        }
+      }
+    },
+    "Scaffolding comes off. One call a day. You plan life after day 75.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'échafaudage tombe. Un appel par jour. Tu planifies l'après-75."
+          }
+        }
+      }
+    },
+    "Wake-up call": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appel du réveil"
+          }
+        }
+      }
+    },
+    "Interception": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interception"
+          }
+        }
+      }
+    },
+    "Evening debrief": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilan du soir"
+          }
+        }
+      }
+    },
+    "Recovery call": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appel de reprise"
+          }
+        }
+      }
+    },
+    "First call": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premier appel"
+          }
+        }
+      }
+    },
+    "Act I · The Silence": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte I · Le Silence"
+          }
+        }
+      }
+    },
+    "Act II · The Comeback": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte II · Le Retour"
+          }
+        }
+      }
+    },
+    "Act III · The Identity": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte III · L'Identité"
+          }
+        }
+      }
+    },
+    "Act IV · The Trial": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte IV · L'Épreuve"
+          }
+        }
+      }
+    },
+    "Act V · The Flight": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte V · L'Envol"
+          }
+        }
+      }
+    },
+    "Back on track": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De retour"
+          }
+        }
+      }
+    },
+    "7 days held": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 jours tenus"
+          }
+        }
+      }
+    },
+    "Halfway": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mi-parcours"
+          }
+        }
+      }
+    },
+    "75 days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "75 jours"
+          }
+        }
+      }
+    },
+    "75-Day Pass": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass 75 jours"
+          }
+        }
+      }
+    },
+    "Stick Life": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick Life"
+          }
+        }
+      }
+    },
+    "One payment. The whole program. About €1 a day.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un seul paiement. Tout le programme. Environ 1 € par jour."
+          }
+        }
+      }
+    },
+    "Cancel anytime. 75 days this way costs €110.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résiliable à tout moment. 75 jours comme ça coûtent 110 €."
+          }
+        }
+      }
+    },
+    "After the 75 days: maintenance mode, new seasons, leagues.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Après les 75 jours : mode maintenance, nouvelles saisons, ligues."
+          }
+        }
+      }
+    },
+    "Your voice. Your rules.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta voix. Tes règles."
+          }
+        }
+      }
+    },
+    "Next call": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prochain appel"
+          }
+        }
+      }
+    },
+    "Starts once the program begins.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commence avec le programme."
+          }
+        }
+      }
+    },
+    "Call now": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appeler maintenant"
+          }
+        }
+      }
+    },
+    "History": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historique"
+          }
+        }
+      }
+    },
+    "No calls yet.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore d'appel."
+          }
+        }
+      }
+    },
+    "Your first wake-up call rings tomorrow at %@.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton premier appel du réveil sonne demain à %@."
+          }
+        }
+      }
+    },
+    "Day %lld": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour %lld"
+          }
+        }
+      }
+    },
+    "Stick": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick"
+          }
+        }
+      }
+    },
+    "Daily calls": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appels quotidiens"
+          }
+        }
+      }
+    },
+    "Both calls ring on the Lock Screen and Apple Watch, and break through Silent mode.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les deux appels sonnent sur l'écran verrouillé et l'Apple Watch, et percent le mode Silencieux."
+          }
+        }
+      }
+    },
+    "Alarm permission": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permission alarmes"
+          }
+        }
+      }
+    },
+    "Allow alarms": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser les alarmes"
+          }
+        }
+      }
+    },
+    "Set up instant interception": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configurer l'interception instantanée"
+          }
+        }
+      }
+    },
+    "A Shortcuts automation opens Stick the second a blocked app launches, so your voice can call you immediately.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une automatisation Raccourcis ouvre Stick à la seconde où une app bloquée se lance, pour que ta voix t'appelle immédiatement."
+          }
+        }
+      }
+    },
+    "When TikTok opens, Stick calls.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand TikTok s'ouvre, Stick appelle."
+          }
+        }
+      }
+    },
+    "iOS lets an automation open Stick instantly when another app launches. Takes one minute.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS permet à une automatisation d'ouvrir Stick instantanément quand une autre app se lance. Une minute."
+          }
+        }
+      }
+    },
+    "Open the Shortcuts app, tap Automation, then +.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre l'app Raccourcis, touche Automatisation, puis +."
+          }
+        }
+      }
+    },
+    "Choose \"App\", pick TikTok (and the others you block), keep \"Is Opened\", choose \"Run Immediately\".": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisis « App », sélectionne TikTok (et les autres que tu bloques), garde « Est ouverte », choisis « Exécuter immédiatement »."
+          }
+        }
+      }
+    },
+    "Add the action \"Open URL\" and paste: stick://intercept": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoute l'action « Ouvrir l'URL » et colle : stick://intercept"
+          }
+        }
+      }
+    },
+    "Done. From now on, opening TikTok makes your phone ring with your voice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminé. Désormais, ouvrir TikTok fait sonner ton téléphone avec ta voix."
+          }
+        }
+      }
+    },
+    "Copy stick://intercept": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier stick://intercept"
+          }
+        }
+      }
+    },
+    "Open Shortcuts": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Raccourcis"
+          }
+        }
+      }
+    },
+    "Instant interception": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interception instantanée"
+          }
+        }
+      }
+    },
+    "Your own voice · Stick": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta propre voix · Stick"
+          }
+        }
+      }
+    },
+    "Connecting…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connexion…"
+          }
+        }
+      }
+    },
+    "Stick is talking": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick parle"
+          }
+        }
+      }
+    },
+    "Your turn. Speak.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À toi. Parle."
+          }
+        }
+      }
+    },
+    "Call ended": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appel terminé"
+          }
+        }
+      }
+    },
+    "Ranked on hours recovered, not perfection.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Classés sur les heures récupérées, pas la perfection."
+          }
+        }
+      }
+    },
+    "Invite a friend": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inviter un ami"
+          }
+        }
+      }
+    },
+    "Your rank this week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton rang cette semaine"
+          }
+        }
+      }
+    },
+    "%lld h recovered · %lld days held": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h récupérées · %lld jours tenus"
+          }
+        }
+      }
+    },
+    "%lld h": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h"
+          }
+        }
+      }
+    },
+    "My voice": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ma voix"
+          }
+        }
+      }
+    },
+    "Not cloned yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore clonée"
+          }
+        }
+      }
+    },
+    "Cloned · used on every call": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clonée · utilisée à chaque appel"
+          }
+        }
+      }
+    },
+    "%lld of %lld earned": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sur %lld obtenus"
+          }
+        }
+      }
+    },
+    "Give 5 free days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offrir 5 jours gratuits"
+          }
+        }
+      }
+    },
+    "Your friends start with 5 days of Stick on you. Share your link.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tes amis démarrent avec 5 jours de Stick offerts par toi. Partage ton lien."
+          }
+        }
+      }
+    },
+    "The Vault": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le Coffre"
+          }
+        }
+      }
+    },
+    "Open. Listen to day 1.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvert. Écoute le jour 1."
+          }
+        }
+      }
+    },
+    "Sealed until day 75": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scellé jusqu'au jour 75"
+          }
+        }
+      }
+    },
+    "Five acts, the rules, the jokers": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cinq actes, les règles, les jokers"
+          }
+        }
+      }
+    },
+    "Reset everything": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout réinitialiser"
+          }
+        }
+      }
+    },
+    "Reset everything?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout réinitialiser ?"
+          }
+        }
+      }
+    },
+    "Deletes your progress, goals, calls and voice on this phone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprime ta progression, tes objectifs, tes appels et ta voix sur ce téléphone."
+          }
+        }
+      }
+    },
+    "days held": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jours tenus"
+          }
+        }
+      }
+    },
+    "hours back": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "heures récupérées"
+          }
+        }
+      }
+    },
+    "jokers": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jokers"
+          }
+        }
+      }
+    },
+    "%lld free days left": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld jours gratuits restants"
+          }
+        }
+      }
+    },
+    "5 free days for a friend.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 jours gratuits pour un ami."
+          }
+        }
+      }
+    },
+    "They install Stick with your link and start with five days on you. The people who quit together, stay quit.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ils installent Stick avec ton lien et démarrent avec cinq jours offerts. Ceux qui arrêtent ensemble, restent arrêtés."
+          }
+        }
+      }
+    },
+    "Your referral code": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton code de parrainage"
+          }
+        }
+      }
+    },
+    "Share my link": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager mon lien"
+          }
+        }
+      }
+    },
+    "No clone yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore de clone"
+          }
+        }
+      }
+    },
+    "Voice cloned": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voix clonée"
+          }
+        }
+      }
+    },
+    "Stick only ever uses your own voice, cloned from your consent recording. It is a synthetic voice. You can delete it any time.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick n'utilise que ta propre voix, clonée à partir de ton enregistrement consenti. C'est une voix synthétique. Tu peux la supprimer à tout moment."
+          }
+        }
+      }
+    },
+    "Hear my voice": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écouter ma voix"
+          }
+        }
+      }
+    },
+    "Delete my voice clone": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer mon clone vocal"
+          }
+        }
+      }
+    },
+    "No active plan": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun plan actif"
+          }
+        }
+      }
+    },
+    "Free days from a friend": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jours offerts par un ami"
+          }
+        }
+      }
+    },
+    "The whole program is yours. Stick Life is offered at day 60 for what comes after.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout le programme est à toi. Stick Life te sera proposé au jour 60 pour la suite."
+          }
+        }
+      }
+    },
+    "Renews weekly. Switch to the 75-Day Pass to save about €30 over the program.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renouvelé chaque semaine. Passe au Pass 75 jours pour économiser environ 30 € sur le programme."
+          }
+        }
+      }
+    },
+    "Maintenance mode, new seasons and leagues, forever.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode maintenance, nouvelles saisons et ligues, pour toujours."
+          }
+        }
+      }
+    },
+    "%lld days left. Pick a plan to keep going.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld jours restants. Choisis un plan pour continuer."
+          }
+        }
+      }
+    },
+    "Stick calls only paying members. Pick a plan.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick n'appelle que les membres payants. Choisis un plan."
+          }
+        }
+      }
+    },
+    "See plans": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir les plans"
+          }
+        }
+      }
+    },
+    "Unlock Stick": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer Stick"
+          }
+        }
+      }
+    },
+    "Manage or cancel in Settings › Apple Account › Subscriptions.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gère ou résilie dans Réglages › Compte Apple › Abonnements."
+          }
+        }
+      }
+    },
+    "Day 75. It's open.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour 75. C'est ouvert."
+          }
+        }
+      }
+    },
+    "Sealed until day 75.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scellé jusqu'au jour 75."
+          }
+        }
+      }
+    },
+    "This is you on day 1. Listen to who you were.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'est toi au jour 1. Écoute qui tu étais."
+          }
+        }
+      }
+    },
+    "On day 1 you recorded 30 seconds for the person you'd be on day 75. Nobody hears it before. Not even you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Au jour 1 tu as enregistré 30 secondes pour la personne que tu serais au jour 75. Personne ne l'entend avant. Même pas toi."
+          }
+        }
+      }
+    },
+    "Play day 1": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écouter le jour 1"
+          }
+        }
+      }
+    },
+    "Day %lld held.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour %lld tenu."
+          }
+        }
+      }
+    },
+    "Act %@ done.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte %@ terminé."
+          }
+        }
+      }
+    },
+    "75 days.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "75 jours."
+          }
+        }
+      }
+    },
+    "Goals set. Debrief done. Nothing slipped. One more vote for who you're becoming.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectifs fixés. Bilan fait. Rien n'a dérapé. Un vote de plus pour qui tu deviens."
+          }
+        }
+      }
+    },
+    "The hardest 15 days are behind you. Tomorrow you start replacing, not just blocking.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les 15 jours les plus durs sont derrière toi. Demain tu commences à remplacer, pas seulement bloquer."
+          }
+        }
+      }
+    },
+    "You have new habits now. Next: who you are when nobody's watching.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu as de nouvelles habitudes. Ensuite : qui tu es quand personne ne regarde."
+          }
+        }
+      }
+    },
+    "You know who you are. Next act reopens the door, 15 minutes a day. Hold it.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu sais qui tu es. L'acte suivant rouvre la porte, 15 minutes par jour. Tiens-la."
+          }
+        }
+      }
+    },
+    "You held the window. Last act: the scaffolding comes off.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu as tenu la fenêtre. Dernier acte : l'échafaudage tombe."
+          }
+        }
+      }
+    },
+    "You're out.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu es sorti."
+          }
+        }
+      }
+    },
+    "You didn't quit TikTok. You became someone who doesn't need it. The vault is open.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu n'as pas arrêté TikTok. Tu es devenu quelqu'un qui n'en a pas besoin. Le coffre est ouvert."
+          }
+        }
+      }
+    },
+    "You spend": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu passes"
+          }
+        }
+      }
+    },
+    "a year on TikTok. That's 25 full days. Gone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "par an sur TikTok. 25 jours pleins. Envolés."
+          }
+        }
+      }
+    },
+    "I want them back": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je veux les récupérer"
+          }
+        }
+      }
+    },
+    "75 days. Your voice. Your life.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "75 jours. Ta voix. Ta vie."
+          }
+        }
+      }
+    },
+    "What if your own voice called you to stop?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Et si ta propre voix t'appelait pour t'arrêter ?"
+          }
+        }
+      }
+    },
+    "Stick clones your voice. It calls you in the morning for your goals, the second you open TikTok, and at night for the debrief. You can ignore anyone. Not yourself.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick clone ta voix. Elle t'appelle le matin pour tes objectifs, à la seconde où tu ouvres TikTok, et le soir pour le bilan. Tu peux ignorer n'importe qui. Pas toi-même."
+          }
+        }
+      }
+    },
+    "7:00 · Wake-up call": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7:00 · Appel du réveil"
+          }
+        }
+      }
+    },
+    "\"Up. Give me three goals. Real ones.\"": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« Debout. Donne-moi trois objectifs. Des vrais. »"
+          }
+        }
+      }
+    },
+    "14:12 · You open TikTok": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14:12 · Tu ouvres TikTok"
+          }
+        }
+      }
+    },
+    "\"You promised me this morning. Close it. Yes or no?\"": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« Tu m'as promis ce matin. Ferme. Oui ou non ? »"
+          }
+        }
+      }
+    },
+    "21:30 · Debrief": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "21:30 · Bilan"
+          }
+        }
+      }
+    },
+    "\"What did you actually do today?\"": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« Qu'est-ce que tu as vraiment fait aujourd'hui ? »"
+          }
+        }
+      }
+    },
+    "Hear an example": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écouter un exemple"
+          }
+        }
+      }
+    },
+    "Which apps steal your time?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quelles apps te volent ton temps ?"
+          }
+        }
+      }
+    },
+    "Pick everything that applies. Stick blocks and intercepts these.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coche tout ce qui s'applique. Stick bloque et intercepte celles-là."
+          }
+        }
+      }
+    },
+    "YouTube Shorts": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "YouTube Shorts"
+          }
+        }
+      }
+    },
+    "Other": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autre"
+          }
+        }
+      }
+    },
+    "How many hours a day?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Combien d'heures par jour ?"
+          }
+        }
+      }
+    },
+    "Be honest. Check Screen Time if you're not sure. Most people underestimate by half.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sois honnête. Regarde Temps d'écran si tu doutes. La plupart des gens sous-estiment de moitié."
+          }
+        }
+      }
+    },
+    "h / day": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "h / jour"
+          }
+        }
+      }
+    },
+    "Hours per day": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heures par jour"
+          }
+        }
+      }
+    },
+    "That's %lld full days a year.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça fait %lld jours pleins par an."
+          }
+        }
+      }
+    },
+    "Days you'll never get back. Unless you stop now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des jours que tu ne récupéreras jamais. Sauf si tu arrêtes maintenant."
+          }
+        }
+      }
+    },
+    "When do you crack?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand est-ce que tu craques ?"
+          }
+        }
+      }
+    },
+    "Stick learns your weak moments so the calls land when they should.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick apprend tes moments faibles pour que les appels tombent au bon moment."
+          }
+        }
+      }
+    },
+    "In bed, before sleep": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Au lit, avant de dormir"
+          }
+        }
+      }
+    },
+    "First thing in the morning": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Au réveil"
+          }
+        }
+      }
+    },
+    "On the toilet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aux toilettes"
+          }
+        }
+      }
+    },
+    "At work or in class": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Au travail ou en cours"
+          }
+        }
+      }
+    },
+    "Evenings on the couch": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le soir sur le canapé"
+          }
+        }
+      }
+    },
+    "Any time I'm waiting": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dès que j'attends"
+          }
+        }
+      }
+    },
+    "How do you feel after a long scroll?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment tu te sens après un long scroll ?"
+          }
+        }
+      }
+    },
+    "No wrong answer. Stick will remind you of this one.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas de mauvaise réponse. Stick te la rappellera."
+          }
+        }
+      }
+    },
+    "Ashamed": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Honteux"
+          }
+        }
+      }
+    },
+    "Empty": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vide"
+          }
+        }
+      }
+    },
+    "Exhausted": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épuisé"
+          }
+        }
+      }
+    },
+    "Anxious": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anxieux"
+          }
+        }
+      }
+    },
+    "Behind on everything": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En retard sur tout"
+          }
+        }
+      }
+    },
+    "Nothing at all": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien du tout"
+          }
+        }
+      }
+    },
+    "What would you do with %lld hours a day?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qu'est-ce que tu ferais de %lld heures par jour ?"
+          }
+        }
+      }
+    },
+    "This becomes your morning goals. Choose what actually matters.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça devient tes objectifs du matin. Choisis ce qui compte vraiment."
+          }
+        }
+      }
+    },
+    "Build my project or business": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Construire mon projet ou ma boîte"
+          }
+        }
+      }
+    },
+    "Train. Get in shape.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "M'entraîner. Être en forme."
+          }
+        }
+      }
+    },
+    "Study. Pass. Level up.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Étudier. Réussir. Monter."
+          }
+        }
+      }
+    },
+    "Read real books": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lire de vrais livres"
+          }
+        }
+      }
+    },
+    "Sleep properly": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dormir correctement"
+          }
+        }
+      }
+    },
+    "Be with people I love": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Être avec les gens que j'aime"
+          }
+        }
+      }
+    },
+    "Earn more money": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gagner plus d'argent"
+          }
+        }
+      }
+    },
+    "What have you tried?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qu'est-ce que tu as essayé ?"
+          }
+        }
+      }
+    },
+    "Screen Time limits get skipped with one tap. Stick doesn't have a skip button.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les limites Temps d'écran se sautent en un tap. Stick n'a pas de bouton pour sauter."
+          }
+        }
+      }
+    },
+    "Screen Time limits": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limites Temps d'écran"
+          }
+        }
+      }
+    },
+    "Deleting the app (and reinstalling)": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer l'app (et la réinstaller)"
+          }
+        }
+      }
+    },
+    "A blocker app": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une app de blocage"
+          }
+        }
+      }
+    },
+    "Pure willpower": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La volonté pure"
+          }
+        }
+      }
+    },
+    "Nothing yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien pour l'instant"
+          }
+        }
+      }
+    },
+    "In 75 days you get back": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En 75 jours tu récupères"
+          }
+        }
+      }
+    },
+    "That's what your %@ hours a day are worth. Here's what people do with them:": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'est ce que valent tes %@ heures par jour. Voilà ce que les gens en font :"
+          }
+        }
+      }
+    },
+    "books read cover to cover": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "livres lus en entier"
+          }
+        }
+      }
+    },
+    "45-minute runs": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "runs de 45 minutes"
+          }
+        }
+      }
+    },
+    "full work weeks on your project": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "semaines de travail pleines sur ton projet"
+          }
+        }
+      }
+    },
+    "full nights of sleep": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nuits complètes de sommeil"
+          }
+        }
+      }
+    },
+    "Let's get them": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allons les chercher"
+          }
+        }
+      }
+    },
+    "Who do you want to be on day 75?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qui veux-tu être au jour 75 ?"
+          }
+        }
+      }
+    },
+    "One sentence. Your own voice will say it back to you every time you drift.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une phrase. Ta propre voix te la répétera à chaque fois que tu dérives."
+          }
+        }
+      }
+    },
+    "Someone who finishes what he starts.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quelqu'un qui finit ce qu'il commence."
+          }
+        }
+      }
+    },
+    "What should Stick call you?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment Stick doit t'appeler ?"
+          }
+        }
+      }
+    },
+    "Your first name. It's the first word you'll hear every morning.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton prénom. C'est le premier mot que tu entendras chaque matin."
+          }
+        }
+      }
+    },
+    "First name": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prénom"
+          }
+        }
+      }
+    },
+    "Why your voice?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pourquoi ta voix ?"
+          }
+        }
+      }
+    },
+    "You can hang up on a coach. You can't hang up on yourself. Stick clones your voice so every call is you, talking to you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu peux raccrocher au nez d'un coach. Pas au tien. Stick clone ta voix pour que chaque appel soit toi, qui te parles."
+          }
+        }
+      }
+    },
+    "You read a 60-second script. That's the only recording we use.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu lis un script de 60 secondes. C'est le seul enregistrement qu'on utilise."
+          }
+        }
+      }
+    },
+    "The sample is sent to Fish Audio, our voice-cloning provider, to build a private synthetic voice. It is never shared or made public.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'échantillon est envoyé à Fish Audio, notre fournisseur de clonage vocal, pour créer une voix synthétique privée. Elle n'est jamais partagée ni rendue publique."
+          }
+        }
+      }
+    },
+    "Only your own voice. Never someone else's. Stick refuses any other recording.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uniquement ta propre voix. Jamais celle d'un autre. Stick refuse tout autre enregistrement."
+          }
+        }
+      }
+    },
+    "Delete the clone any time from Me › My voice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprime le clone à tout moment depuis Moi › Ma voix."
+          }
+        }
+      }
+    },
+    "I consent to cloning my own voice and to sending my recording to Fish Audio for that purpose.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je consens au clonage de ma propre voix et à l'envoi de mon enregistrement à Fish Audio dans ce but."
+          }
+        }
+      }
+    },
+    "Record my voice": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer ma voix"
+          }
+        }
+      }
+    },
+    "Read this. Naturally.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lis ça. Naturellement."
+          }
+        }
+      }
+    },
+    "Read this out loud.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lis ça à voix haute."
+          }
+        }
+      }
+    },
+    "About 60 seconds. Speak like you'd talk to a friend. Quiet room, phone at normal distance.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Environ 60 secondes. Parle comme à un ami. Pièce calme, téléphone à distance normale."
+          }
+        }
+      }
+    },
+    "Keep going · %lld s more": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue · encore %lld s"
+          }
+        }
+      }
+    },
+    "Microphone access is off. Enable it in Settings › Stick to record.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'accès au micro est désactivé. Active-le dans Réglages › Stick pour enregistrer."
+          }
+        }
+      }
+    },
+    "Use this recording": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utiliser cet enregistrement"
+          }
+        }
+      }
+    },
+    "Start recording": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commencer l'enregistrement"
+          }
+        }
+      }
+    },
+    "Building your voice…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Création de ta voix…"
+          }
+        }
+      }
+    },
+    "Ready.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prête."
+          }
+        }
+      }
+    },
+    "That didn't work.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça n'a pas marché."
+          }
+        }
+      }
+    },
+    "About 20 seconds. Don't close the app.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Environ 20 secondes. Ne ferme pas l'app."
+          }
+        }
+      }
+    },
+    "Continue with a system voice for now": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer avec une voix système pour l'instant"
+          }
+        }
+      }
+    },
+    "Your phone is about to ring.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton téléphone va sonner."
+          }
+        }
+      }
+    },
+    "That was you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'était toi."
+          }
+        }
+      }
+    },
+    "It's your voice. Pick up. Listen to what you're about to promise yourself.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'est ta voix. Décroche. Écoute ce que tu vas te promettre."
+          }
+        }
+      }
+    },
+    "From now on, that's who calls. Every morning, every night, and the second you open TikTok.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désormais, c'est cette voix qui appelle. Chaque matin, chaque soir, et à la seconde où tu ouvres TikTok."
+          }
+        }
+      }
+    },
+    "Sign it.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signe."
+          }
+        }
+      }
+    },
+    "The contract": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le contrat"
+          }
+        }
+      }
+    },
+    "I, %@, commit to 75 days.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moi, %@, je m'engage pour 75 jours."
+          }
+        }
+      }
+    },
+    "I pick up when my voice calls.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je décroche quand ma voix appelle."
+          }
+        }
+      }
+    },
+    "I set real goals every morning and report every night.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je fixe de vrais objectifs chaque matin et je rends des comptes chaque soir."
+          }
+        }
+      }
+    },
+    "I never miss twice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je ne rate jamais deux fois."
+          }
+        }
+      }
+    },
+    "I am becoming: %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je deviens : %@"
+          }
+        }
+      }
+    },
+    "Sign with your finger": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signe avec ton doigt"
+          }
+        }
+      }
+    },
+    "Signature area": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zone de signature"
+          }
+        }
+      }
+    },
+    "Draw your signature with one finger": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dessine ta signature avec un doigt"
+          }
+        }
+      }
+    },
+    "I commit to 75 days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je m'engage pour 75 jours"
+          }
+        }
+      }
+    },
+    "Block the apps for real.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloque les apps pour de vrai."
+          }
+        }
+      }
+    },
+    "Stick uses Apple's Screen Time to shield the apps you picked. When one opens, you get the shield and your voice calls.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick utilise Temps d'écran d'Apple pour protéger les apps choisies. Quand l'une s'ouvre, tu vois le bouclier et ta voix appelle."
+          }
+        }
+      }
+    },
+    "Apple asks for Screen Time access. Stick only uses it to block and to count time on your chosen apps.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple demande l'accès à Temps d'écran. Stick ne s'en sert que pour bloquer et compter le temps sur tes apps choisies."
+          }
+        }
+      }
+    },
+    "Stick never sees which apps you use or what you do in them. Apple keeps that on your phone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick ne voit jamais quelles apps tu utilises ni ce que tu y fais. Apple garde ça sur ton téléphone."
+          }
+        }
+      }
+    },
+    "Screen Time isn't available on this device yet.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temps d'écran n'est pas encore disponible sur cet appareil."
+          }
+        }
+      }
+    },
+    "No problem: the Shortcuts automation makes your voice call the instant TikTok opens. You'll set it up in one minute at the end.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas grave : l'automatisation Raccourcis fait appeler ta voix dès que TikTok s'ouvre. Tu la configures en une minute à la fin."
+          }
+        }
+      }
+    },
+    "Apps selected · change": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps sélectionnées · modifier"
+          }
+        }
+      }
+    },
+    "Choose the apps to block": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir les apps à bloquer"
+          }
+        }
+      }
+    },
+    "Allow Screen Time": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser Temps d'écran"
+          }
+        }
+      }
+    },
+    "Let your voice ring.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laisse ta voix sonner."
+          }
+        }
+      }
+    },
+    "The wake-up call and the debrief use iOS alarms: they ring on the Lock Screen, on your Watch, and through Silent mode.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'appel du réveil et le bilan utilisent les alarmes iOS : elles sonnent sur l'écran verrouillé, sur ta Watch, et percent le mode Silencieux."
+          }
+        }
+      }
+    },
+    "So your voice can wake you up and ring at debrief time.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour que ta voix te réveille et sonne à l'heure du bilan."
+          }
+        }
+      }
+    },
+    "Backup ringer and the intercept alert when a blocked app opens.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonnerie de secours et alerte d'interception quand une app bloquée s'ouvre."
+          }
+        }
+      }
+    },
+    "When do I call?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand est-ce que j'appelle ?"
+          }
+        }
+      }
+    },
+    "Two calls a day, every day. Pick times you'll actually be awake for.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deux appels par jour, tous les jours. Choisis des heures où tu seras vraiment réveillé."
+          }
+        }
+      }
+    },
+    "Goals for the day": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectifs du jour"
+          }
+        }
+      }
+    },
+    "What you actually did": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce que tu as vraiment fait"
+          }
+        }
+      }
+    },
+    "30 seconds for the person you'll be on day 75.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 secondes pour la personne que tu seras au jour 75."
+          }
+        }
+      }
+    },
+    "Say why you're doing this. What you're tired of. What you want them to remember. Nobody hears it before day 75. Not even you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dis pourquoi tu fais ça. Ce dont tu en as marre. Ce que tu veux qu'il retienne. Personne ne l'entend avant le jour 75. Même pas toi."
+          }
+        }
+      }
+    },
+    "Stick plays it back the night you finish. Nobody hears it before.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick le rejoue le soir où tu finis. Personne ne l'entend avant."
+          }
+        }
+      }
+    },
+    "Seal it": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sceller"
+          }
+        }
+      }
+    },
+    "Day 1": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour 1"
+          }
+        }
+      }
+    },
+    "starts now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "commence maintenant."
+          }
+        }
+      }
+    },
+    "Your first wake-up call rings at %@. Until then: one goal for today, right now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton premier appel du réveil sonne à %@. D'ici là : un objectif pour aujourd'hui, tout de suite."
+          }
+        }
+      }
+    },
+    "Your voice is ready. Now commit.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta voix est prête. Maintenant, engage-toi."
+          }
+        }
+      }
+    },
+    "Stick only calls paying members. No free trial: a trial is a way out, and you're done with those.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick n'appelle que les membres payants. Pas d'essai gratuit : un essai, c'est une porte de sortie, et tu en as fini avec ça."
+          }
+        }
+      }
+    },
+    "Tomorrow morning": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demain matin"
+          }
+        }
+      }
+    },
+    "Your voice wakes you and takes your first three goals.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta voix te réveille et prend tes trois premiers objectifs."
+          }
+        }
+      }
+    },
+    "The first time you open TikTok": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La première fois que tu ouvres TikTok"
+          }
+        }
+      }
+    },
+    "It rings. You answer to yourself.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça sonne. Tu réponds à toi-même."
+          }
+        }
+      }
+    },
+    "Day 15": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour 15"
+          }
+        }
+      }
+    },
+    "Act I done. The hardest part is behind you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte I terminé. Le plus dur est derrière toi."
+          }
+        }
+      }
+    },
+    "Day 75": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour 75"
+          }
+        }
+      }
+    },
+    "%lld hours back. The vault opens.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld heures récupérées. Le coffre s'ouvre."
+          }
+        }
+      }
+    },
+    "“I've deleted TikTok four times. Hearing my own voice tell me to close it is the only thing that has ever worked.”": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« J'ai supprimé TikTok quatre fois. Entendre ma propre voix me dire de fermer est la seule chose qui ait jamais marché. »"
+          }
+        }
+      }
+    },
+    "Léa, day 41": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Léa, jour 41"
+          }
+        }
+      }
+    },
+    "Best value": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meilleure offre"
+          }
+        }
+      }
+    },
+    "Start my 75 days · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lancer mes 75 jours · %@"
+          }
+        }
+      }
+    },
+    "Start weekly · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commencer en hebdo · %@"
+          }
+        }
+      }
+    },
+    "Join Stick Life · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejoindre Stick Life · %@"
+          }
+        }
+      }
+    },
+    "One-time payment. No renewal.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paiement unique. Sans renouvellement."
+          }
+        }
+      }
+    },
+    "Auto-renews. Cancel any time in Settings.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renouvelé automatiquement. Résiliable à tout moment dans Réglages."
+          }
+        }
+      }
+    },
+    "Purchase didn't go through. Try again.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'achat n'est pas passé. Réessaie."
+          }
+        }
+      }
+    },
+    "Nothing to restore on this Apple Account.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien à restaurer sur ce compte Apple."
+          }
+        }
+      }
+    },
+    "Today's goals": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectifs du jour"
+          }
+        }
+      }
+    },
+    "Your goals for the day, checkable from the Home Screen.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tes objectifs du jour, cochables depuis l'écran d'accueil."
+          }
+        }
+      }
+    },
+    "Day %lld/75": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour %lld/75"
+          }
+        }
+      }
+    },
+    "No goals yet. Take the wake-up call.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas d'objectif. Prends l'appel du réveil."
+          }
+        }
+      }
+    },
+    "Days held": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jours tenus"
+          }
+        }
+      }
+    },
+    "How many of the 75 days you've held, and the hours you got back.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Combien des 75 jours tu as tenus, et les heures récupérées."
+          }
+        }
+      }
+    },
+    "%lld h back": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h récupérées"
+          }
+        }
+      }
+    },
+    "%lld/75 held · %lld h back": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld/75 tenus · %lld h récupérées"
+          }
+        }
+      }
+    },
+    "Call Stick": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appeler Stick"
+          }
+        }
+      }
+    },
+    "Ring yourself with your own voice, right now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appelle-toi avec ta propre voix, maintenant."
+          }
+        }
+      }
+    },
+    "Your own voice is calling.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta propre voix t'appelle."
+          }
+        }
+      }
+    },
+    "On the line": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En ligne"
+          }
+        }
+      }
+    },
+    "Evening debrief. Pick up.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilan du soir. Décroche."
+          }
+        }
+      }
+    },
+    "Wake-up call. Pick up.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appel du réveil. Décroche."
+          }
+        }
+      }
+    },
+    "Toggle goal": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cocher un objectif"
+          }
+        }
+      }
+    },
+    "Marks one of today's goals as done or not done.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marque un objectif du jour comme fait ou non."
+          }
+        }
+      }
+    },
+    "Starts a call with your own voice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lance un appel avec ta propre voix."
+          }
+        }
+      }
+    },
+    "Stops the ringing call.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrête la sonnerie."
+          }
+        }
+      }
+    },
+    "Call kind": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type d'appel"
+          }
+        }
+      }
+    }
+  }
+}
