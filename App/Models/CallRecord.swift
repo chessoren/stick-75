@@ -1,7 +1,7 @@
 import Foundation
 
 enum CallKind: String, Codable, CaseIterable, Identifiable {
-  case wake, intercept, debrief, recovery, aha
+  case wake, intercept, debrief, recovery, aha, push
 
   var id: String { rawValue }
 
@@ -12,6 +12,7 @@ enum CallKind: String, Codable, CaseIterable, Identifiable {
     case .debrief: "Evening debrief"
     case .recovery: "Recovery call"
     case .aha: "First call"
+    case .push: "Push"
     }
   }
 
@@ -22,6 +23,7 @@ enum CallKind: String, Codable, CaseIterable, Identifiable {
     case .debrief: "moon.stars.fill"
     case .recovery: "heart.fill"
     case .aha: "waveform"
+    case .push: "bolt.fill"
     }
   }
 
@@ -32,6 +34,7 @@ enum CallKind: String, Codable, CaseIterable, Identifiable {
     case .debrief: 120
     case .recovery: 60
     case .aha: 20
+    case .push: 45
     }
   }
 }

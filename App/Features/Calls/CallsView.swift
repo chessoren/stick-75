@@ -37,7 +37,7 @@ struct CallsView: View {
               StickSectionHeader("Call now")
               HStack(spacing: 10) {
                 QuickCallButton(kind: .wake) { calls.start(.wake, store: store) }
-                QuickCallButton(kind: .intercept) { calls.start(.intercept, store: store) }
+                QuickCallButton(kind: .push) { calls.start(.push, store: store) }
                 QuickCallButton(kind: .debrief) { calls.start(.debrief, store: store) }
               }
             }

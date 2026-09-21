@@ -335,6 +335,10 @@ struct VoiceProcessingScreen: View {
     .task {
       guard !started else { return }
       started = true
+      if model.recordedSampleURL == nil {
+        if model.draft.voiceModelID != nil { model.next() } else { model.back() }
+        return
+      }
       await model.cloneVoice()
     }
   }

@@ -16,7 +16,13 @@ struct HeroGoalCard: View {
           .fixedSize(horizontal: false, vertical: true)
         Spacer(minLength: 12)
         GlassIconButton(systemImage: "bolt.fill", label: "Call Stick now", tint: .brandOrange, size: 44) {
-          calls.start(store.today.goalsSet ? .intercept : .wake, store: store)
+          if !store.today.goalsSet {
+            calls.start(.wake, store: store)
+          } else if store.todayGoals.allSatisfy(\.isDone), !store.today.debriefDone {
+            calls.start(.debrief, store: store)
+          } else {
+            calls.start(.push, store: store)
+          }
         }
       }
 

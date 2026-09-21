@@ -103,6 +103,7 @@ struct CelebrationView: View {
 struct ConfettiView: View {
   var active: Bool
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @State private var started = Date.now.timeIntervalSinceReferenceDate
 
   private let particles: [(x: Double, delay: Double, hue: Double, size: Double, drift: Double)] = (0..<60).map { i in
     var g = SeededGenerator(seed: UInt64(i + 11))
@@ -136,10 +137,8 @@ struct ConfettiView: View {
   }
 
   private var startTime: Double {
-    Self.started.truncatingRemainder(dividingBy: 1000)
+    started.truncatingRemainder(dividingBy: 1000)
   }
-
-  private static let started = Date.now.timeIntervalSinceReferenceDate
 }
 
 private extension Array where Element == Color {

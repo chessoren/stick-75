@@ -5,7 +5,7 @@ import SwiftUI
 enum OnboardingStep: Int, CaseIterable {
   case hook, pitch, quizApps, quizHours, quizMoments, quizFeelings, quizDreams, quizTried, result,
        identity, name, voiceConsent, voiceRecord, voiceProcessing, aha, contract, paywall,
-       screenTime, permissions, schedule, vault, done
+       screenTime, permissions, schedule, automation, vault, done
 
   var showsProgress: Bool {
     switch self {

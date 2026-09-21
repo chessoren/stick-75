@@ -181,6 +181,11 @@ final class StickStore {
     save()
   }
 
+  func setGoalDone(_ id: UUID, _ done: Bool) {
+    guard let index = state.goals.firstIndex(where: { $0.id == id }) else { return }
+    state.goals[index].isDone = done
+  }
+
   func toggleGoal(_ goal: Goal) {
     guard let index = state.goals.firstIndex(where: { $0.id == goal.id }) else { return }
     state.goals[index].isDone.toggle()
@@ -292,8 +297,16 @@ final class StickStore {
     if call.kind == .aha || call.kind == .wake, !state.badges.contains(.firstCall) {
       state.badges.append(.firstCall)
     }
-    if call.kind == .wake { var r = today; r.goalsSet = true; upsert(r) }
-    if call.kind == .debrief { var r = today; r.debriefDone = true; upsert(r) }
+    var record = today
+    switch call.kind {
+    case .wake: record.goalsSet = !todayGoals.isEmpty
+    case .debrief: record.debriefDone = true
+    case .recovery: record.recoveryDone = true
+    default: break
+    }
+    record.goalsTotal = todayGoals.count
+    record.goalsCompleted = todayGoals.filter(\.isDone).count
+    upsert(record)
     save()
     checkCelebrations()
   }
@@ -421,6 +434,11 @@ final class StickStore {
   // MARK: - Debug
 
   func resetEverything() {
+    CallScheduler.cancelAll()
+    ScreenTimeService.shared.applyShield(enabled: false)
+    try? FileManager.default.removeItem(at: VoiceRecorder.voiceDirectory)
+    try? FileManager.default.removeItem(at: VoiceClipCache.directory)
+    Task { await SupabaseService.shared.deleteAccount() }
     state = StickState()
     state.leaderboard = LeaderboardFactory.make()
     save()

@@ -7,23 +7,25 @@ struct RootView: View {
 
   var body: some View {
     @Bindable var calls = calls
-    Group {
-      if store.state.onboardingComplete {
-        MainTabView()
-          .transition(.opacity.combined(with: .scale(scale: 0.98)))
-      } else {
-        OnboardingFlow()
-          .transition(.opacity)
+    ZStack {
+      Group {
+        if store.state.onboardingComplete {
+          MainTabView()
+            .transition(.opacity.combined(with: .scale(scale: 0.98)))
+        } else {
+          OnboardingFlow()
+            .transition(.opacity)
+        }
       }
-    }
-    .animation(.smooth(duration: 0.5), value: store.state.onboardingComplete)
-    .fullScreenCover(isPresented: Binding(
-      get: { store.state.onboardingComplete && !store.isEntitled && !calls.isPresented },
-      set: { _ in }
-    )) {
-      PaywallView(onUnlocked: {}, onDismiss: nil)
-        .environment(store)
-        .interactiveDismissDisabled()
+      .animation(.smooth(duration: 0.5), value: store.state.onboardingComplete)
+      .fullScreenCover(isPresented: Binding(
+        get: { store.state.onboardingComplete && !store.isEntitled && !calls.isPresented },
+        set: { _ in }
+      )) {
+        PaywallView(onUnlocked: {}, onDismiss: nil)
+          .environment(store)
+          .interactiveDismissDisabled()
+      }
     }
     .fullScreenCover(isPresented: $calls.isPresented) {
       CallScreen()
@@ -46,9 +48,16 @@ struct RootView: View {
         calls.handle(link, store: store)
       } else if case .referral(let code) = link {
         store.applyReferral(code: code)
+      } else if case .intercept = link {
+        store.update { $0.profile.shortcutAutomationSet = true }
       }
     }
     .task {
+      store.absorbWidgetChanges()
+      if let kind = store.pendingCallKind, store.state.onboardingComplete, !calls.isPresented {
+        store.pendingCallKind = nil
+        calls.start(kind, store: store)
+      }
       if let entitlement = await PurchaseService.shared.currentEntitlement(),
          entitlement != .none || store.state.entitlement != .trialDays {
         store.grant(entitlement)

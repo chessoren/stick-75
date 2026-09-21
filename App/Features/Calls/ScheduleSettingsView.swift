@@ -77,6 +77,7 @@ struct ScheduleSettingsView: View {
 
 struct ShortcutAutomationGuide: View {
   @Environment(StickStore.self) private var store
+  @State private var copied = false
 
   var body: some View {
     ZStack {
@@ -94,19 +95,28 @@ struct ShortcutAutomationGuide: View {
           VStack(alignment: .leading, spacing: 14) {
             StepRow(number: 1, text: "Open the Shortcuts app, tap Automation, then +.")
             StepRow(number: 2, text: "Choose \"App\", pick TikTok (and the others you block), keep \"Is Opened\", choose \"Run Immediately\".")
-            StepRow(number: 3, text: "Add the action \"Open URL\" and paste: stick://intercept")
+            StepRow(number: 3, text: "Search the action \"Open URLs\", tap the URL field and paste: stick://intercept")
             StepRow(number: 4, text: "Done. From now on, opening TikTok makes your phone ring with your voice.")
           }
           .stickCard()
 
           Button {
             UIPasteboard.general.string = "stick://intercept"
-            store.update { $0.profile.shortcutAutomationSet = true }
+            copied = true
           } label: {
-            Label("Copy stick://intercept", systemImage: "doc.on.doc")
+            Label(copied ? "Copied" : "Copy stick://intercept", systemImage: copied ? "checkmark" : "doc.on.doc")
           }
           .buttonStyle(PrimaryPillButtonStyle())
-          .sensoryFeedback(.success, trigger: store.profile.shortcutAutomationSet)
+          .sensoryFeedback(.success, trigger: copied)
+
+          HStack(spacing: 10) {
+            Image(systemName: store.profile.shortcutAutomationSet ? "checkmark.circle.fill" : "circle.dashed")
+              .foregroundStyle(store.profile.shortcutAutomationSet ? Color.stickSuccess : Color.inkSecondary)
+            Text(store.profile.shortcutAutomationSet ? "Automation detected. Stick rang." : "Not tested yet. Open TikTok once to check.")
+              .font(StickFont.calloutMedium)
+              .foregroundStyle(Color.ink)
+          }
+          .stickCard(padding: 14)
 
           if let url = URL(string: "shortcuts://") {
             Link(destination: url) {

@@ -28,6 +28,7 @@ struct CallScreen: View {
       if phase == .ended {
         Task {
           try? await Task.sleep(for: .milliseconds(900))
+          guard engine.phase == .ended, calls.isPresented else { return }
           calls.complete(store: store)
         }
       }

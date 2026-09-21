@@ -37,14 +37,16 @@ final class CallCoordinator {
     }
     guard engine.startedAt != nil else { return }
     let record = engine.makeRecord(dayNumber: store.dayNumber)
-    if engine.kind == .wake, !engine.extractedGoals.isEmpty {
-      store.setGoals(engine.extractedGoals)
-    }
-    if engine.kind == .intercept {
-      let saidYes = engine.turns.contains { turn in
-        turn.speaker == .user && ["oui", "yes", "ok", "je ferme", "closing", "close"].contains { turn.text.lowercased().contains($0) }
-      }
-      store.recordInterception(closedApp: saidYes || engine.turns.count <= 2)
+    switch engine.kind {
+    case .wake:
+      if !engine.extractedGoals.isEmpty { store.setGoals(engine.extractedGoals) }
+    case .debrief:
+      for (id, done) in engine.goalResults { store.setGoalDone(id, done) }
+    case .intercept:
+      // Hanging up before answering the question counts as closing the app.
+      store.recordInterception(closedApp: engine.interceptClosed ?? true)
+    default:
+      break
     }
     store.addCall(record)
   }
@@ -52,8 +54,11 @@ final class CallCoordinator {
   func handle(_ link: DeepLink, store: StickStore) {
     switch link {
     case .call(let kind):
+      guard !isPresented else { return }
       start(kind, store: store)
     case .intercept:
+      store.update { $0.profile.shortcutAutomationSet = true }
+      guard !isPresented else { return }
       start(.intercept, store: store)
     case .referral(let code):
       store.applyReferral(code: code)

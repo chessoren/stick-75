@@ -1,6 +1,7 @@
 import Foundation
 
 /// Stick's voice: a drill-sergeant coach. Brutally frank about the behaviour, never about the person.
+/// The code decides what happens at each step; the model only phrases the line.
 enum StickPersona {
   struct Context {
     var name: String
@@ -13,92 +14,195 @@ enum StickPersona {
     var jokersLeft: Int
     var timeSinks: [TimeSink]
     var language: AppLanguage
+
+    var apps: String { timeSinks.isEmpty ? "TikTok" : timeSinks.map(\.title).joined(separator: ", ") }
+    var firstName: String { name.isEmpty ? (language == .french ? "soldat" : "soldier") : name }
+    var identityLine: String {
+      identity.isEmpty ? (language == .french ? "quelqu'un qui finit ce qu'il commence" : "someone who finishes what they start") : identity
+    }
   }
+
+  /// One step of a call script.
+  enum Step {
+    case askGoal(Int), notAGoal, askIfThen, recap([String]), noGoalsClose
+    case debriefGeneral, debriefGoal(String, Bool), whyNot(String), askTomorrow, debriefClose
+    case confront, closeYes, closeNo, closeFinal, didntHear
+    case pushOpen, pushOrder
+    case recoveryOpen, recoveryClose
+    case aha
+
+    /// Fixed lines are never rewritten by the model (exact goal wording matters).
+    var isFixed: Bool {
+      switch self {
+      case .recap, .aha, .didntHear: true
+      default: false
+      }
+    }
+  }
+
+  // MARK: - System prompt
 
   static func systemPrompt(kind: CallKind, context c: Context) -> String {
-    let apps = c.timeSinks.isEmpty ? "TikTok" : c.timeSinks.map(\.title).joined(separator: ", ")
     let goals = c.goals.isEmpty ? "-" : c.goals.map { "\($0.title) [\($0.isDone ? "done" : "not done")]" }.joined(separator: "; ")
-    let name = c.name.isEmpty ? (c.language == .french ? "soldat" : "soldier") : c.name
     let actName = String(localized: c.act.name)
-
     if c.language == .french {
-      let base = """
-      Tu es Stick. Tu parles avec la propre voix clonée de \(name), au téléphone. Tu es son coach, style sergent instructeur : très franc, direct, sans pitié pour les excuses, zéro blabla. Tu tutoies. Tu défonces les prétextes, jamais la personne : tu attaques le comportement, pas son identité. Pas d'insultes, pas de vulgarité gratuite, pas de menace. Tu es là parce que \(name) t'a demandé d'être dur.
-      Contexte : jour \(c.day)/75, acte \(c.act.numeral) (\(actName)). Apps qui lui volent du temps : \(apps). Qui il veut devenir : « \(c.identity) ». Heures récupérées jusqu'ici : \(Int(c.hoursRecovered)). Jokers restants : \(c.jokersLeft). Objectifs du jour : \(goals).
-      Règles de parole : c'est un appel vocal. Maximum 2 phrases courtes par réplique. Une seule question à la fois. Pas de listes, pas d'emoji, pas de markdown. Quand l'appel est terminé, termine ta dernière réplique par le mot [END].
+      return """
+      Tu es Stick. Tu parles avec la propre voix clonée de \(c.firstName), au téléphone. Tu es son coach, style sergent instructeur : très franc, direct, sans pitié pour les excuses, zéro blabla. Tu tutoies. Tu défonces les prétextes, jamais la personne : tu attaques le comportement, pas son identité. Pas d'insultes, pas de vulgarité gratuite, pas de menace. Tu es là parce que \(c.firstName) t'a demandé d'être dur.
+      Contexte : jour \(c.day)/75, acte \(c.act.numeral) (\(actName)). Apps qui lui volent du temps : \(c.apps). Qui il veut devenir : « \(c.identityLine) ». Heures récupérées jusqu'ici : \(Int(c.hoursRecovered)). Jokers restants : \(c.jokersLeft). Objectifs du jour : \(goals).
+      Règles absolues : c'est un appel vocal. Une réplique = 1 ou 2 phrases courtes, jamais plus. Jamais de liste, d'emoji, de markdown, de guillemets, de didascalies. Ne répète jamais une phrase déjà dite dans la conversation. Ne te présentes pas, ne dis pas bonjour deux fois. Tu fais exactement ce que la consigne système de l'étape te demande, rien d'autre.
       """
-      let specific: String
-      switch kind {
-      case .wake:
-        specific = "C'est l'appel du réveil. Réveille \(name) sec. Exige 1 à 3 objectifs concrets et mesurables pour aujourd'hui, un par un. Refuse le flou (« bosser un peu » = non). Pour chaque objectif, demande le « si… alors » : s'il ouvre \(apps) par réflexe, il fait quoi à la place ? Quand tu as les objectifs, répète-les mot pour mot, dis « Bouge. » et termine avec [END]. Ne dépasse pas 8 répliques."
-      case .intercept:
-        specific = "\(name) vient d'ouvrir une app bloquée. Tu l'appelles à l'instant. Rappelle-lui, avec ses propres mots, ce qu'il t'a promis ce matin (objectifs ci-dessus). Demande-lui de dire à voix haute s'il ferme l'app maintenant : oui ou non. Si oui : « Bien. Retourne bosser. » puis [END]. Si non : dis-lui ce que ça lui coûte (heures, identité), demande une dernière fois, puis [END]. Maximum 4 répliques."
-      case .debrief:
-        specific = "C'est le bilan du soir. Demande ce qu'il a réellement accompli aujourd'hui, objectif par objectif, sans accepter le vague. Si un objectif est raté, demande pourquoi en une phrase, pas d'excuse. Puis demande ce qu'il fera demain de plus dur. Termine par une phrase sèche qui le fixe sur qui il devient, puis [END]. Maximum 8 répliques."
-      case .recovery:
-        specific = "\(name) a craqué aujourd'hui et utilise un joker. Règle : on ne rate jamais deux fois. Pas de pitié, mais pas de honte non plus : un écart, ça arrive, l'abandon, non. Fais-lui dire à voix haute ce qu'il fait dans les 10 prochaines minutes pour reprendre. Termine par [END]. Maximum 4 répliques."
-      case .aha:
-        specific = "C'est le tout premier appel, une démo de 20 secondes. Dis à \(name) : « C'est toi. Ta propre voix. » Répète sa phrase d'identité : « \(c.identity) ». Puis : « Pendant 75 jours je t'appelle. Le matin, le soir, et à la seconde où tu ouvres \(apps). Prêt ? » Termine par [END]. Une seule réplique."
-      }
-      return base + "\n" + specific
     }
-
-    let base = """
-    You are Stick. You speak with \(name)'s own cloned voice, on a phone call. You are their coach, drill-sergeant style: brutally frank, direct, no mercy for excuses, zero fluff. You tear apart the excuses, never the person: attack the behaviour, not their identity. No slurs, no gratuitous profanity, no threats. You are here because \(name) asked you to be hard.
-    Context: day \(c.day)/75, act \(c.act.numeral) (\(actName)). Apps stealing their time: \(apps). Who they said they want to become: "\(c.identity)". Hours recovered so far: \(Int(c.hoursRecovered)). Jokers left: \(c.jokersLeft). Today's goals: \(goals).
-    Speaking rules: this is a voice call. At most 2 short sentences per turn. One question at a time. No lists, no emoji, no markdown. When the call is over, end your final line with the word [END].
+    return """
+    You are Stick. You speak with \(c.firstName)'s own cloned voice, on a phone call. You are their coach, drill-sergeant style: brutally frank, direct, no mercy for excuses, zero fluff. You tear apart the excuses, never the person: attack the behaviour, not their identity. No slurs, no gratuitous profanity, no threats. You are here because \(c.firstName) asked you to be hard.
+    Context: day \(c.day)/75, act \(c.act.numeral) (\(actName)). Apps stealing their time: \(c.apps). Who they said they want to become: "\(c.identityLine)". Hours recovered so far: \(Int(c.hoursRecovered)). Jokers left: \(c.jokersLeft). Today's goals: \(goals).
+    Absolute rules: this is a voice call. One line = 1 or 2 short sentences, never more. Never a list, emoji, markdown, quotation marks or stage directions. Never repeat a sentence already said in this conversation. Don't introduce yourself, don't greet twice. Do exactly what the step instruction asks, nothing else.
     """
-    let specific: String
-    switch kind {
-    case .wake:
-      specific = "This is the wake-up call. Wake \(name) up hard. Demand 1 to 3 concrete, measurable goals for today, one at a time. Refuse vagueness (\"work a bit\" is not a goal). For each goal ask the if-then: if they open \(apps) by reflex, what do they do instead? Once you have the goals, repeat them word for word, say \"Move.\" and end with [END]. Never exceed 8 turns."
-    case .intercept:
-      specific = "\(name) just opened a blocked app. You are calling this second. Remind them, in their own words, what they promised this morning (goals above). Make them say out loud whether they close the app now: yes or no. If yes: \"Good. Back to work.\" then [END]. If no: tell them what it costs (hours, identity), ask one last time, then [END]. At most 4 turns."
-    case .debrief:
-      specific = "This is the evening debrief. Ask what they actually got done today, goal by goal, and do not accept vagueness. If a goal failed, ask why in one sentence, no excuses accepted. Then ask what harder thing they do tomorrow. Close with one dry line that pins them to who they are becoming, then [END]. At most 8 turns."
-    case .recovery:
-      specific = "\(name) slipped today and is using a joker. Rule: never miss twice. No pity, but no shame either: a lapse happens, quitting does not. Make them say out loud what they do in the next 10 minutes to get back. End with [END]. At most 4 turns."
-    case .aha:
-      specific = "This is the very first call, a 20-second demo. Tell \(name): \"It's you. Your own voice.\" Repeat their identity line: \"\(c.identity)\". Then: \"For 75 days I call you. Morning, evening, and the second you open \(apps). Ready?\" End with [END]. One single turn."
-    }
-    return base + "\n" + specific
   }
 
-  /// Offline lines so the call still works without network.
-  static func fallbackOpening(kind: CallKind, context c: Context) -> String {
+  // MARK: - Step directives (what the model must do now)
+
+  static func directive(_ step: Step, _ c: Context) -> String {
+    let fr = c.language == .french
+    let goalsSoFar = c.goals.map(\.title).joined(separator: " ; ")
+    switch step {
+    case .askGoal(let n):
+      if n == 1 {
+        return fr ? "ÉTAPE : réveille \(c.firstName) en une phrase sèche (c'est le jour \(c.day)), puis demande son PREMIER objectif concret et mesurable pour aujourd'hui. Une seule question."
+                  : "STEP: wake \(c.firstName) up with one dry sentence (it's day \(c.day)), then ask for their FIRST concrete, measurable goal for today. One question only."
+      }
+      return fr ? "ÉTAPE : accuse réception du dernier objectif en 3 mots max (« Noté. »), puis demande l'objectif numéro \(n). Précise qu'il peut dire « c'est tout » s'il n'en a pas d'autre. Une seule question, pas de récap."
+                : "STEP: acknowledge the last goal in 3 words max (\"Noted.\"), then ask for goal number \(n). Mention they can say \"that's all\" if they have no more. One question, no recap."
+    case .notAGoal:
+      return fr ? "ÉTAPE : ce qu'il vient de dire n'est pas un objectif concret. Dis-le en une phrase sèche et redemande un vrai objectif mesurable (quoi, combien, quand). Une seule question."
+                : "STEP: what they just said is not a concrete goal. Say so in one dry sentence and ask again for a real measurable goal (what, how much, when). One question."
+    case .askIfThen:
+      return fr ? "ÉTAPE : les objectifs sont notés. Demande maintenant son plan « si… alors » : s'il ouvre \(c.apps) par réflexe aujourd'hui, qu'est-ce qu'il fait à la place, concrètement ? Une seule question."
+                : "STEP: goals are noted. Now ask for their if-then plan: if they open \(c.apps) by reflex today, what do they do instead, concretely? One question."
+    case .recap, .aha, .didntHear:
+      return ""
+    case .noGoalsClose:
+      return fr ? "ÉTAPE : il n'a donné aucun objectif valable. Dis-lui sèchement qu'il ajoutera ses objectifs à la main dans l'app avant 10 h et que tu vérifieras ce soir. Termine l'appel en une phrase."
+                : "STEP: they gave no valid goal. Tell them dryly to add their goals by hand in the app before 10 a.m. and that you'll check tonight. End the call in one sentence."
+    case .debriefGeneral:
+      return fr ? "ÉTAPE : c'est le bilan du soir et aucun objectif n'avait été fixé. Demande ce qu'il a réellement accompli aujourd'hui, en une question directe."
+                : "STEP: evening debrief and no goals were set. Ask what they actually got done today, one direct question."
+    case .debriefGoal(let title, let first):
+      return fr ? "ÉTAPE : \(first ? "c'est le bilan du soir. " : "")Demande s'il a fait cet objectif précis, oui ou non : « \(title) ». Une seule question, cite l'objectif mot pour mot."
+                : "STEP: \(first ? "evening debrief. " : "")Ask whether they did this exact goal, yes or no: \"\(title)\". One question, quote the goal word for word."
+    case .whyNot(let title):
+      return fr ? "ÉTAPE : l'objectif « \(title) » n'est pas fait. Demande pourquoi, en une phrase, sans accepter d'excuse à l'avance."
+                : "STEP: the goal \"\(title)\" is not done. Ask why in one sentence, making clear you won't accept an excuse."
+    case .askTomorrow:
+      return fr ? "ÉTAPE : demande quelle chose plus dure il fera demain. Une seule question."
+                : "STEP: ask what harder thing they will do tomorrow. One question."
+    case .debriefClose:
+      return fr ? "ÉTAPE : termine l'appel par une phrase sèche qui le fixe sur qui il devient (« \(c.identityLine) »). Pas de question. Objectifs du jour : \(goalsSoFar)."
+                : "STEP: close the call with one dry sentence pinning them to who they're becoming (\"\(c.identityLine)\"). No question. Today's goals: \(goalsSoFar)."
+    case .confront:
+      return fr ? "ÉTAPE : \(c.firstName) vient d'ouvrir \(c.apps). Rappelle-lui en une phrase ce qu'il t'a promis ce matin (\(goalsSoFar.isEmpty ? "devenir " + c.identityLine : goalsSoFar)), puis demande : tu fermes maintenant, oui ou non ?"
+                : "STEP: \(c.firstName) just opened \(c.apps). Remind them in one sentence what they promised this morning (\(goalsSoFar.isEmpty ? "becoming " + c.identityLine : goalsSoFar)), then ask: are you closing it now, yes or no?"
+    case .closeYes:
+      return fr ? "ÉTAPE : il a dit oui. Réponds en une phrase sèche du type « Bien. Retourne bosser. » et termine." : "STEP: they said yes. Answer with one dry line like \"Good. Back to work.\" and end."
+    case .closeNo:
+      return fr ? "ÉTAPE : il refuse de fermer. Dis-lui en une phrase ce que ça lui coûte (heures, identité « \(c.identityLine) »), puis redemande une dernière fois : oui ou non ?"
+                : "STEP: they refuse to close. Tell them in one sentence what it costs (hours, identity \"\(c.identityLine)\"), then ask one last time: yes or no?"
+    case .closeFinal:
+      return fr ? "ÉTAPE : il refuse encore. Dis-lui sèchement qu'un joker est brûlé et que tu rappelles ce soir. Termine en une phrase." : "STEP: they still refuse. Tell them dryly a joker is burned and you'll call tonight. End in one sentence."
+    case .pushOpen:
+      return fr ? "ÉTAPE : \(c.firstName) t'a demandé de l'appeler pour se recadrer. Demande-lui ce qu'il est en train de faire là, maintenant. Une question." : "STEP: \(c.firstName) asked you to call to refocus. Ask what they are doing right now. One question."
+    case .pushOrder:
+      return fr ? "ÉTAPE : donne-lui un ordre concret pour les 25 prochaines minutes lié à ses objectifs (\(goalsSoFar.isEmpty ? "aucun objectif fixé : ordonne-lui d'en fixer un" : goalsSoFar)). Termine en une phrase." : "STEP: give one concrete order for the next 25 minutes tied to their goals (\(goalsSoFar.isEmpty ? "no goal set: order them to set one" : goalsSoFar)). End in one sentence."
+    case .recoveryOpen:
+      return fr ? "ÉTAPE : \(c.firstName) a craqué aujourd'hui et brûle un joker. Règle : un écart, pas deux. Sans pitié ni honte, demande ce qu'il fait dans les 10 prochaines minutes pour reprendre. Une question." : "STEP: \(c.firstName) slipped today and burns a joker. Rule: one lapse, not two. No pity, no shame; ask what they do in the next 10 minutes to get back. One question."
+    case .recoveryClose:
+      return fr ? "ÉTAPE : valide son plan en une phrase sèche et rappelle-lui qu'il lui reste \(c.jokersLeft) joker(s). Termine." : "STEP: validate their plan in one dry sentence and remind them they have \(c.jokersLeft) joker(s) left. End."
+    }
+  }
+
+  // MARK: - Scripted lines (offline fallback, and fixed steps)
+
+  static func scripted(_ step: Step, _ c: Context) -> String {
+    let fr = c.language == .french
     let name = c.name.isEmpty ? "" : c.name + ", "
-    let identity = c.identity.isEmpty ? (c.language == .french ? "quelqu'un qui finit ce qu'il commence" : "someone who finishes what they start") : c.identity
-    if c.language == .french {
-      switch kind {
-      case .wake: return "\(name)debout. Jour \(c.day). Donne-moi ton premier objectif, un vrai."
-      case .intercept: return "\(name)tu viens d'ouvrir l'app. Tu m'as promis ce matin. Tu fermes, oui ou non ?"
-      case .debrief: return "\(name)bilan. Qu'est-ce que tu as vraiment fait aujourd'hui ?"
-      case .recovery: return "\(name)un écart, pas deux. Qu'est-ce que tu fais dans les dix prochaines minutes ?"
-      case .aha: return "C'est toi. Ta propre voix. \(identity). Pendant 75 jours je t'appelle. Le matin, le soir, et à la seconde où tu ouvres TikTok. Prêt ? [END]"
+    switch step {
+    case .askGoal(let n):
+      if n == 1 { return fr ? "\(name)debout. Jour \(c.day). Donne-moi ton premier objectif du jour. Un vrai." : "\(name)up. Day \(c.day). Give me your first goal for today. A real one." }
+      return fr ? "Noté. Objectif numéro \(n) ? Ou dis « c'est tout »." : "Noted. Goal number \(n)? Or say \"that's all\"."
+    case .notAGoal:
+      return fr ? "Ça, c'est pas un objectif. Quoi, combien, quand ?" : "That's not a goal. What, how much, when?"
+    case .askIfThen:
+      return fr ? "Noté. Si tu ouvres \(c.apps) par réflexe aujourd'hui, tu fais quoi à la place ?" : "Noted. If you open \(c.apps) by reflex today, what do you do instead?"
+    case .recap(let goals):
+      let list = goals.enumerated().map { fr ? "\($0.offset + 1). \($0.element)" : "\($0.offset + 1). \($0.element)" }.joined(separator: ". ")
+      return fr ? "Noté. Aujourd'hui : \(list). C'est écrit sur ton écran. Bouge." : "Noted. Today: \(list). It's on your screen. Move."
+    case .noGoalsClose:
+      return fr ? "Rien de valable. Tu écris tes objectifs à la main dans l'app avant dix heures. Je vérifie ce soir." : "Nothing usable. Write your goals by hand in the app before ten. I check tonight."
+    case .debriefGeneral:
+      return fr ? "\(name)bilan. Qu'est-ce que tu as vraiment fait aujourd'hui ?" : "\(name)debrief. What did you actually get done today?"
+    case .debriefGoal(let title, let first):
+      return fr ? "\(first ? "Bilan. " : "")« \(title) » : fait, oui ou non ?" : "\(first ? "Debrief. " : "")\"\(title)\": done, yes or no?"
+    case .whyNot(let title):
+      return fr ? "« \(title) », pas fait. Pourquoi ? Une phrase." : "\"\(title)\", not done. Why? One sentence."
+    case .askTomorrow:
+      return fr ? "Demain, tu fais quoi de plus dur ?" : "Tomorrow, what harder thing do you do?"
+    case .debriefClose:
+      return fr ? "Noté. Tu deviens \(c.identityLine). Dors. Je te réveille demain." : "Noted. You're becoming \(c.identityLine). Sleep. I wake you tomorrow."
+    case .confront:
+      let promise = c.goals.isEmpty ? c.identityLine : c.goals.map(\.title).joined(separator: ", ")
+      return fr ? "\(name)tu viens d'ouvrir \(c.apps). Ce matin tu m'as promis : \(promise). Tu fermes, oui ou non ?" : "\(name)you just opened \(c.apps). This morning you promised: \(promise). Close it, yes or no?"
+    case .closeYes:
+      return fr ? "Bien. Retourne bosser." : "Good. Back to work."
+    case .closeNo:
+      return fr ? "Chaque minute là-dedans, c'est une minute volée à \(c.identityLine). Dernière fois : oui ou non ?" : "Every minute in there is stolen from \(c.identityLine). Last time: yes or no?"
+    case .closeFinal:
+      return fr ? "Joker brûlé. Je te rappelle ce soir." : "Joker burned. I call you tonight."
+    case .didntHear:
+      return fr ? "Je t'ai pas entendu. Répète." : "I didn't hear you. Again."
+    case .pushOpen:
+      return fr ? "\(name)tu m'as appelé. Tu fais quoi, là, maintenant ?" : "\(name)you called me. What are you doing right now?"
+    case .pushOrder:
+      let goal = c.goals.first(where: { !$0.isDone })?.title
+      if let goal { return fr ? "Vingt-cinq minutes sur « \(goal) ». Téléphone retourné. Go." : "Twenty-five minutes on \"\(goal)\". Phone face down. Go." }
+      return fr ? "Pas d'objectif fixé. Tu en écris un dans l'app, maintenant, et tu bosses vingt-cinq minutes dessus." : "No goal set. Write one in the app, now, and work twenty-five minutes on it."
+    case .recoveryOpen:
+      return fr ? "\(name)un écart, pas deux. Qu'est-ce que tu fais dans les dix prochaines minutes ?" : "\(name)one lapse, not two. What do you do in the next ten minutes?"
+    case .recoveryClose:
+      return fr ? "Bien. Il te reste \(c.jokersLeft) joker\(c.jokersLeft > 1 ? "s" : ""). Ne me fais pas rappeler." : "Good. \(c.jokersLeft) joker\(c.jokersLeft > 1 ? "s" : "") left. Don't make me call again."
+    case .aha:
+      return fr ? "C'est toi. Ta propre voix. \(c.identityLine). Pendant 75 jours je t'appelle : le matin, le soir, et à la seconde où tu ouvres \(c.apps). Prêt ?"
+                : "It's you. Your own voice. \(c.identityLine). For 75 days I call you: morning, evening, and the second you open \(c.apps). Ready?"
+    }
+  }
+
+  /// Strips markdown, stage directions and the [END] marker; keeps at most three sentences.
+  static func clean(_ raw: String) -> String {
+    var text = raw
+    for token in ["[END]", "**", "*", "#", "\"", "«", "»", "“", "”"] {
+      text = text.replacingOccurrences(of: token, with: "")
+    }
+    text = text.replacingOccurrences(of: #"\([^)]*\)"#, with: "", options: .regularExpression)
+    text = text.replacingOccurrences(of: #"\[[^\]]*\]"#, with: "", options: .regularExpression)
+    if let colon = text.range(of: "Stick:") ?? text.range(of: "Stick :") { text.removeSubrange(text.startIndex..<colon.upperBound) }
+    text = text.replacingOccurrences(of: "\n", with: " ")
+    text = text.replacingOccurrences(of: "  ", with: " ").trimmingCharacters(in: .whitespacesAndNewlines)
+    var sentences: [String] = []
+    var current = ""
+    for ch in text {
+      current.append(ch)
+      if ".!?".contains(ch) {
+        sentences.append(current.trimmingCharacters(in: .whitespaces))
+        current = ""
+        if sentences.count == 3 { break }
       }
     }
-    switch kind {
-    case .wake: return "\(name)up. Day \(c.day). Give me your first goal, a real one."
-    case .intercept: return "\(name)you just opened the app. You promised me this morning. Close it, yes or no?"
-    case .debrief: return "\(name)debrief. What did you actually get done today?"
-    case .recovery: return "\(name)one lapse, not two. What do you do in the next ten minutes?"
-    case .aha: return "It's you. Your own voice. \(identity). For 75 days I call you. Morning, evening, and the second you open TikTok. Ready? [END]"
-    }
-  }
-
-  static func fallbackReply(kind: CallKind, turn: Int, language: AppLanguage) -> String {
-    if language == .french {
-      let lines = ["Noté. Le suivant ?", "Plus précis. Qu'est-ce que tu fais exactement ?", "Bien. Et si tu ouvres l'app par réflexe, tu fais quoi à la place ?", "C'est noté. Bouge. [END]"]
-      return lines[min(turn, lines.count - 1)]
-    }
-    let lines = ["Noted. Next one?", "Be precise. What exactly do you do?", "Good. And if you open the app by reflex, what do you do instead?", "Noted. Move. [END]"]
-    return lines[min(turn, lines.count - 1)]
+    if sentences.count < 3, !current.trimmingCharacters(in: .whitespaces).isEmpty { sentences.append(current.trimmingCharacters(in: .whitespaces)) }
+    return sentences.joined(separator: " ")
   }
 
   /// Text read aloud while recording the voice sample (about 60 s).
   static func recordingScript(name: String, identity: String, language: AppLanguage) -> String {
     let who = name.isEmpty ? "" : " \(name)"
-    if c_isFrench(language) {
+    if language == .french {
       return """
       Salut\(who). C'est moi. Enfin, c'est toi. Je t'enregistre parce que dans quelques minutes, c'est ma voix qui va t'appeler. \
       Le matin pour te demander tes objectifs. Le soir pour vérifier ce que tu as fait. Et à la seconde où tu ouvres TikTok, je serai là. \
@@ -119,8 +223,6 @@ enum StickPersona {
     Today is day one. Tomorrow you wake up to my voice. Let's go.
     """
   }
-
-  private static func c_isFrench(_ language: AppLanguage) -> Bool { language == .french }
 
   static func ringtoneLine(language: AppLanguage) -> String {
     language == .french ? "C'est toi. Décroche." : "It's you. Pick up."

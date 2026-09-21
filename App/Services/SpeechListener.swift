@@ -5,7 +5,7 @@ import Speech
 /// Listens with the microphone and returns what was said once the user goes quiet.
 @MainActor
 final class SpeechListener {
-  enum ListenError: Error { case unavailable, denied }
+  enum ListenError: Error { case unavailable, denied, noInput }
 
   private let engine = AVAudioEngine()
   private var recognizer: SFSpeechRecognizer?
@@ -21,8 +21,9 @@ final class SpeechListener {
     return mic && speech == .authorized
   }
 
-  /// Returns the transcript. Empty string if nothing was heard before `maxSilence` after speech, or `noSpeechTimeout` with no speech.
-  func listen(locale: Locale, maxSilence: TimeInterval = 1.6, noSpeechTimeout: TimeInterval = 9, maxDuration: TimeInterval = 30) async throws -> String {
+  /// Returns the transcript. Empty string if nothing was said before `noSpeechTimeout`.
+  /// Ends `maxSilence` seconds after the last change in the transcript (people pause mid-sentence).
+  func listen(locale: Locale, maxSilence: TimeInterval = 2.2, noSpeechTimeout: TimeInterval = 9, maxDuration: TimeInterval = 40) async throws -> String {
     stop()
     guard let recognizer = SFSpeechRecognizer(locale: locale), recognizer.isAvailable else { throw ListenError.unavailable }
     self.recognizer = recognizer
@@ -33,6 +34,7 @@ final class SpeechListener {
 
     let input = engine.inputNode
     let format = input.outputFormat(forBus: 0)
+    guard format.sampleRate > 0, format.channelCount > 0 else { throw ListenError.noInput }
     input.removeTap(onBus: 0)
     input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
       request.append(buffer)
@@ -45,36 +47,44 @@ final class SpeechListener {
       Task { @MainActor in self?.onLevel?(level) }
     }
     engine.prepare()
-    try engine.start()
+    do {
+      try engine.start()
+    } catch {
+      input.removeTap(onBus: 0)
+      throw ListenError.noInput
+    }
 
-    var latest = ""
-    var lastChange = Date.now
+    final class Box: @unchecked Sendable {
+      var latest = ""
+      var lastChange = Date.now
+      var finished = false
+    }
+    let box = Box()
     let start = Date.now
-    var finished = false
 
     task = recognizer.recognitionTask(with: request) { result, error in
       if let result {
         let text = result.bestTranscription.formattedString
-        if text != latest {
-          latest = text
-          lastChange = .now
+        if text != box.latest {
+          box.latest = text
+          box.lastChange = .now
         }
-        if result.isFinal { finished = true }
+        if result.isFinal { box.finished = true }
       }
-      if error != nil { finished = true }
+      if error != nil { box.finished = true }
     }
 
-    while !finished {
+    while !box.finished {
       try await Task.sleep(for: .milliseconds(120))
       let now = Date.now
       let elapsed = now.timeIntervalSince(start)
-      if !latest.isEmpty, now.timeIntervalSince(lastChange) > maxSilence { break }
-      if latest.isEmpty, elapsed > noSpeechTimeout { break }
+      if !box.latest.isEmpty, elapsed > 1.5, now.timeIntervalSince(box.lastChange) > maxSilence { break }
+      if box.latest.isEmpty, elapsed > noSpeechTimeout { break }
       if elapsed > maxDuration { break }
       if Task.isCancelled { break }
     }
     stop()
-    return latest.trimmingCharacters(in: .whitespacesAndNewlines)
+    return box.latest.trimmingCharacters(in: .whitespacesAndNewlines)
   }
 
   func stop() {

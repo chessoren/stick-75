@@ -9,7 +9,7 @@ struct SharedSnapshot: Codable, Equatable {
   }
 
   enum CallKind: String, Codable {
-    case wake, intercept, debrief, recovery
+    case wake, intercept, debrief, recovery, aha, push
   }
 
   var dayNumber: Int

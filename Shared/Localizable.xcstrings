@@ -3761,6 +3761,166 @@
           }
         }
       }
+    },
+    "Push": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coup de pression"
+          }
+        }
+      }
+    },
+    "Make it ring when %@ opens.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fais-le sonner quand %@ s'ouvre."
+          }
+        }
+      }
+    },
+    "One minute in the Shortcuts app. Without this step, nothing happens when you open %@. Do it now, not later.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une minute dans l'app Raccourcis. Sans cette étape, rien ne se passe quand tu ouvres %@. Fais-le maintenant, pas plus tard."
+          }
+        }
+      }
+    },
+    "Tap \"Open Shortcuts\" below, go to the Automation tab, tap +.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touche « Ouvrir Raccourcis » ci-dessous, va dans l'onglet Automatisation, touche +."
+          }
+        }
+      }
+    },
+    "Choose \"App\", pick %@ (and the other apps you block), keep \"Is Opened\", select \"Run Immediately\", then Next.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisis « App », sélectionne %@ (et les autres apps que tu bloques), garde « Est ouverte », sélectionne « Exécuter immédiatement », puis Suivant."
+          }
+        }
+      }
+    },
+    "Search the action \"Open URLs\", tap the URL field and paste the link below.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cherche l'action « Ouvrir les URL », touche le champ URL et colle le lien ci-dessous."
+          }
+        }
+      }
+    },
+    "Tap Done. Then open %@ once: Stick should ring.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touche OK. Puis ouvre %@ une fois : Stick doit sonner."
+          }
+        }
+      }
+    },
+    "Search the action \"Open URLs\", tap the URL field and paste: stick://intercept": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cherche l'action « Ouvrir les URL », touche le champ URL et colle : stick://intercept"
+          }
+        }
+      }
+    },
+    "Copied": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copié"
+          }
+        }
+      }
+    },
+    "Copy": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier"
+          }
+        }
+      }
+    },
+    "Automation detected. Stick rang.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisation détectée. Stick a sonné."
+          }
+        }
+      }
+    },
+    "Not tested yet. Open %@ once to check.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore testé. Ouvre %@ une fois pour vérifier."
+          }
+        }
+      }
+    },
+    "Not tested yet. Open TikTok once to check.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore testé. Ouvre TikTok une fois pour vérifier."
+          }
+        }
+      }
+    },
+    "I'll do it later": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je le ferai plus tard"
+          }
+        }
+      }
+    },
+    "Interception is off": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'interception est désactivée"
+          }
+        }
+      }
+    },
+    "Stick can't ring when you open TikTok until the Shortcuts automation is set. One minute.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick ne peut pas sonner quand tu ouvres TikTok tant que l'automatisation Raccourcis n'est pas créée. Une minute."
+          }
+        }
+      }
     }
   }
 }

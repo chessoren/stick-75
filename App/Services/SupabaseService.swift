@@ -71,5 +71,12 @@ actor SupabaseService {
     _ = try? await client.from("referrals").insert(["code": code, "invited_user_id": userID]).execute()
   }
 
+  /// App Review 5.1.1(v): anonymous accounts count as accounts. Deletes the auth user and its rows server-side.
+  func deleteAccount() async {
+    guard let client = makeClient(), (try? await session()) != nil else { return }
+    _ = try? await client.rpc("delete_own_account").execute()
+    try? await client.auth.signOut()
+  }
+
   enum ServiceError: Error { case notConfigured }
 }

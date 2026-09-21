@@ -55,7 +55,7 @@ struct OnboardingContainer: View {
 
   private var topBar: some View {
     HStack(spacing: 12) {
-      if model.step.rawValue > 0, model.step != .done, model.step != .paywall {
+      if model.step.rawValue > 0, model.step != .done, model.step != .paywall, model.step != .voiceProcessing {
         Button {
           model.back()
         } label: {
@@ -117,6 +117,7 @@ struct OnboardingContainer: View {
     case .screenTime: ScreenTimeScreen()
     case .permissions: PermissionsScreen()
     case .schedule: ScheduleScreen()
+    case .automation: AutomationScreen()
     case .vault: VaultRecordScreen()
     case .done: DoneScreen()
     }

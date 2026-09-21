@@ -9,6 +9,7 @@ struct DayRecord: Identifiable, Codable, Hashable {
   var debriefDone = false
   var lapsed = false
   var jokerUsed = false
+  var recoveryDone = false
   var minutesOnBlockedApps = 0
   var goalsCompleted = 0
   var goalsTotal = 0

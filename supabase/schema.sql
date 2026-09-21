@@ -29,3 +29,18 @@ create policy "league update own" on public.league for update to authenticated u
 create policy "referral insert own" on public.referrals for insert to authenticated with check (auth.uid() = invited_user_id);
 
 -- Enable anonymous sign-ins in Authentication › Providers.
+
+-- In-app account deletion (App Review 5.1.1(v)). Runs as the calling user only.
+create or replace function public.delete_own_account()
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  delete from public.league where user_id = auth.uid();
+  delete from public.referrals where invited_user_id = auth.uid();
+  delete from auth.users where id = auth.uid();
+end;
+$$;
+grant execute on function public.delete_own_account() to authenticated;

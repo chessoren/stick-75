@@ -67,22 +67,78 @@ struct OpenRouterService {
     return content.trimmingCharacters(in: .whitespacesAndNewlines)
   }
 
-  /// Pulls 1–3 goals out of a wake-up call transcript. Returns [] when nothing usable was said.
-  func extractGoals(from transcript: [CallTurn], language: AppLanguage) async -> [String] {
-    let text = transcript.map { "\($0.speaker == .stick ? "Stick" : "User"): \($0.text)" }.joined(separator: "\n")
+  struct ParsedGoal {
+    var goal: String?
+    var done: Bool
+  }
+
+  /// Turns what the user said into one clean goal (fixes speech-recognition slips, imperative, ≤ 8 words).
+  /// `done` is true when the user said they have no more goals.
+  func normalizeGoal(_ heard: String, existing: [String], language: AppLanguage) async -> ParsedGoal {
+    let text = heard.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !text.isEmpty else { return ParsedGoal(goal: nil, done: false) }
+    let lower = text.lowercased()
+    let stopWords = language == .french
+      ? ["c'est tout", "c'est bon", "pas d'autre", "rien d'autre", "non merci", "ça suffit", "juste ça", "c'est déjà bien"]
+      : ["that's all", "that's it", "nothing else", "no more", "that is all", "just that", "i'm good"]
+    let saysDone = stopWords.contains { lower.contains($0) }
     let instruction = language == .french
-      ? "Extrais les objectifs concrets que l'utilisateur s'est fixés pour AUJOURD'HUI dans cette conversation. Réponds UNIQUEMENT avec un JSON de la forme {\"goals\":[\"...\"]} (1 à 3 objectifs, phrases courtes à l'infinitif, en français). Si aucun objectif, {\"goals\":[]}."
-      : "Extract the concrete goals the user committed to for TODAY in this conversation. Reply ONLY with JSON shaped like {\"goals\":[\"...\"]} (1 to 3 goals, short imperative phrases, in English). If none, {\"goals\":[]}."
+      ? "Tu reçois la transcription vocale (parfois imparfaite) d'une personne qui donne UN objectif pour aujourd'hui. Réécris-le en français, à l'infinitif, concret, 8 mots maximum, en corrigeant les erreurs de reconnaissance vocale. Si la phrase ne contient aucun objectif (blabla, question, refus, « je sais pas »), goal = null. Si la personne dit qu'elle n'a pas d'autre objectif, done = true. Réponds UNIQUEMENT avec {\"goal\": string|null, \"done\": bool}. Objectifs déjà notés : \(existing.joined(separator: " | "))"
+      : "You get the (sometimes imperfect) voice transcript of a person giving ONE goal for today. Rewrite it in English as a concrete imperative phrase, 8 words max, fixing speech-recognition slips. If the sentence contains no goal (chit-chat, a question, a refusal, \"I don't know\"), goal = null. If the person says they have no more goals, done = true. Reply ONLY with {\"goal\": string|null, \"done\": bool}. Goals already noted: \(existing.joined(separator: " | "))"
     let messages = [
       ChatMessage(role: .system, content: instruction),
       ChatMessage(role: .user, content: text)
     ]
-    guard let reply = try? await complete(messages, maxTokens: 150, temperature: 0.1) else { return [] }
-    guard let start = reply.firstIndex(of: "{"), let end = reply.lastIndex(of: "}"), start < end else { return [] }
-    let jsonText = String(reply[start...end])
-    guard let data = jsonText.data(using: .utf8),
-          let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-          let goals = json["goals"] as? [String] else { return [] }
-    return Array(goals.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }.prefix(3))
+    if let reply = try? await complete(messages, maxTokens: 80, temperature: 0),
+       let json = Self.json(in: reply) {
+      let goal = (json["goal"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines.union(.punctuationCharacters))
+      let done = (json["done"] as? Bool) ?? saysDone
+      if let goal, !goal.isEmpty, goal.lowercased() != "null", goal.count <= 80 {
+        return ParsedGoal(goal: Self.capitalized(goal), done: done)
+      }
+      return ParsedGoal(goal: nil, done: done)
+    }
+    // Offline: keep the raw sentence, trimmed, unless it's a stop phrase.
+    if saysDone { return ParsedGoal(goal: nil, done: true) }
+    let words = text.split(separator: " ").prefix(10).joined(separator: " ")
+    return ParsedGoal(goal: Self.capitalized(words), done: false)
+  }
+
+  /// Yes / no classification of a spoken answer. nil when unclear.
+  func classifyYesNo(_ heard: String, question: String, language: AppLanguage) async -> Bool? {
+    let lower = heard.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !lower.isEmpty else { return nil }
+    let yesWords = language == .french ? ["oui", "ouais", "c'est fait", "je ferme", "ok", "d'accord", "yes", "terminé", "fini", "je l'ai fait"] : ["yes", "yeah", "yep", "done", "did it", "closing", "close it", "i'm closing", "finished", "sure", "ok"]
+    let noWords = language == .french ? ["non", "pas fait", "pas encore", "je ferme pas", "nan", "je continue", "pas eu le temps", "rien fait"] : ["no", "nope", "not done", "didn't", "did not", "not yet", "not closing", "no way", "keep"]
+    if lower.count <= 12 {
+      if yesWords.contains(where: { lower.hasPrefix($0) }) { return true }
+      if noWords.contains(where: { lower.hasPrefix($0) }) { return false }
+    }
+    let instruction = language == .french
+      ? "Question : \(question) Voici la réponse vocale de la personne. Réponds UNIQUEMENT avec {\"answer\": \"yes\"|\"no\"|\"unclear\"}."
+      : "Question: \(question) Here is the person's spoken answer. Reply ONLY with {\"answer\": \"yes\"|\"no\"|\"unclear\"}."
+    let messages = [ChatMessage(role: .system, content: instruction), ChatMessage(role: .user, content: heard)]
+    if let reply = try? await complete(messages, maxTokens: 20, temperature: 0),
+       let json = Self.json(in: reply), let answer = json["answer"] as? String {
+      switch answer.lowercased() {
+      case "yes": return true
+      case "no": return false
+      default: return nil
+      }
+    }
+    if yesWords.contains(where: { lower.contains($0) }) && !noWords.contains(where: { lower.contains($0) }) { return true }
+    if noWords.contains(where: { lower.contains($0) }) { return false }
+    return nil
+  }
+
+  private static func json(in reply: String) -> [String: Any]? {
+    guard let start = reply.firstIndex(of: "{"), let end = reply.lastIndex(of: "}"), start < end,
+          let data = String(reply[start...end]).data(using: .utf8) else { return nil }
+    return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+  }
+
+  private static func capitalized(_ text: String) -> String {
+    guard let first = text.first else { return text }
+    return first.uppercased() + text.dropFirst()
   }
 }

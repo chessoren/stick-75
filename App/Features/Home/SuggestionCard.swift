@@ -12,7 +12,7 @@ struct SuggestionCard: View {
 
   private var suggestion: Suggestion {
     if !store.today.goalsSet { return .setGoals }
-    if store.today.lapsed, !store.today.jokerUsed { return .lapse }
+    if store.today.lapsed, !store.today.recoveryDone { return .lapse }
     if let goal = store.todayGoals.first(where: { !$0.isDone }) { return .keepGoing(goal) }
     if !store.today.debriefDone { return .debrief }
     return .none

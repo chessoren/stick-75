@@ -2,7 +2,8 @@ import Foundation
 import Observation
 import SwiftUI
 
-/// Orchestrates one call: ring → answer → (Stick speaks ↔ user talks) → end → save.
+/// Orchestrates one call: ring → answer → scripted conversation (the code drives the steps,
+/// the model only writes Stick's lines) → end → save.
 @Observable
 @MainActor
 final class CallEngine {
@@ -17,8 +18,16 @@ final class CallEngine {
   private(set) var startedAt: Date?
   private(set) var elapsedSeconds = 0
   private(set) var lastError: String?
-  private(set) var extractedGoals: [String] = []
   private(set) var usedCloneVoice = false
+
+  /// Wake call: clean goals the user committed to.
+  private(set) var extractedGoals: [String] = []
+  /// Wake call: the "if… then…" plan.
+  private(set) var ifThenPlan = ""
+  /// Debrief: goal id → did the user say it's done.
+  private(set) var goalResults: [UUID: Bool] = [:]
+  /// Intercept: did the user agree to close the app.
+  private(set) var interceptClosed: Bool?
 
   private let fish = FishAudioService()
   private let router = OpenRouterService()
@@ -29,7 +38,7 @@ final class CallEngine {
   private var tickTask: Task<Void, Never>?
   private var context: StickPersona.Context?
   private var voiceID: String?
-  private var maxTurns = 8
+  private var history: [ChatMessage] = []
 
   init() {
     player.onLevel = { [weak self] in self?.level = $0 }
@@ -46,7 +55,6 @@ final class CallEngine {
     self.kind = kind
     self.context = context
     self.voiceID = voiceID
-    maxTurns = kind == .aha ? 1 : (kind == .intercept || kind == .recovery ? 4 : 8)
     phase = .ringing
     StickHaptics.shared.startRinging()
     LiveActivityManager.shared.start(kind: kind, userName: context.name)
@@ -67,13 +75,13 @@ final class CallEngine {
     LiveActivityManager.shared.update(phase: .talking, lastLine: "")
     AudioSessionManager.activateForCall()
     startTicking()
-    loopTask = Task { await runConversation() }
+    loopTask = Task { await runScript() }
   }
 
   func decline() {
     StickHaptics.shared.stopRinging()
     player.stop()
-    finish(answered: false)
+    finish()
   }
 
   func hangUp() {
@@ -81,16 +89,16 @@ final class CallEngine {
     player.stop()
     system.stop()
     listener.stop()
-    finish(answered: true)
+    finish()
   }
 
-  private func finish(answered: Bool) {
+  private func finish() {
+    guard phase != .ended else { return }
     tickTask?.cancel()
     phase = .ended
     LiveActivityManager.shared.end()
     StickHaptics.shared.callEnded()
     AudioSessionManager.deactivate()
-    _ = answered
   }
 
   func reset() {
@@ -101,11 +109,15 @@ final class CallEngine {
     listener.stop()
     StickHaptics.shared.stopRinging()
     turns = []
+    history = []
     level = 0
     elapsedSeconds = 0
     startedAt = nil
     lastError = nil
     extractedGoals = []
+    ifThenPlan = ""
+    goalResults = [:]
+    interceptClosed = nil
     usedCloneVoice = false
     phase = .idle
   }
@@ -121,80 +133,192 @@ final class CallEngine {
     }
   }
 
-  // MARK: - Conversation
+  // MARK: - Scripts
 
-  private func runConversation() async {
+  private func runScript() async {
     guard let context else { return }
-    var messages = [ChatMessage(role: .system, content: StickPersona.systemPrompt(kind: kind, context: context))]
-    let kickoff = context.language == .french ? "(L'appel vient de commencer. Parle en premier.)" : "(The call just started. Speak first.)"
-    messages.append(ChatMessage(role: .user, content: kickoff))
-
-    phase = .thinking
-    var reply = await generate(messages) ?? StickPersona.fallbackOpening(kind: kind, context: context)
-    var stickTurns = 0
-
-    while !Task.isCancelled {
-      let (clean, shouldEnd) = strip(reply)
-      messages.append(ChatMessage(role: .assistant, content: reply))
-      turns.append(CallTurn(speaker: .stick, text: clean))
-      LiveActivityManager.shared.update(phase: .talking, lastLine: clean)
-      stickTurns += 1
-      await speak(clean)
-      if Task.isCancelled { return }
-      if shouldEnd || stickTurns >= maxTurns { break }
-
-      phase = .listening
-      let heard = (try? await listener.listen(locale: context.language.speechLocale)) ?? ""
-      if Task.isCancelled { return }
-      let userText = heard.isEmpty ? (context.language == .french ? "(silence)" : "(silence)") : heard
-      turns.append(CallTurn(speaker: .user, text: userText))
-      messages.append(ChatMessage(role: .user, content: userText))
-
-      phase = .thinking
-      reply = await generate(messages) ?? StickPersona.fallbackReply(kind: kind, turn: stickTurns - 1, language: context.language)
+    history = [ChatMessage(role: .system, content: StickPersona.systemPrompt(kind: kind, context: context))]
+    switch kind {
+    case .wake: await wakeScript(context)
+    case .debrief: await debriefScript(context)
+    case .intercept: await interceptScript(context)
+    case .push: await pushScript(context)
+    case .recovery: await recoveryScript(context)
+    case .aha: await ahaScript(context)
     }
+    if !Task.isCancelled { hangUp() }
+  }
 
-    if kind == .wake {
-      extractedGoals = await router.extractGoals(from: turns, language: context.language)
-      if extractedGoals.isEmpty {
-        extractedGoals = turns.filter { $0.speaker == .user && !$0.text.hasPrefix("(") }.prefix(3).map { $0.text }
+  private func wakeScript(_ c: StickPersona.Context) async {
+    let language = c.language
+    var refusals = 0
+    var index = 0
+    await say(.askGoal(1), c)
+    while index < 3, !Task.isCancelled {
+      let heard = await hear(c)
+      if Task.isCancelled { return }
+      if heard.isEmpty {
+        if extractedGoals.isEmpty { await say(.notAGoal, c); refusals += 1; if refusals >= 2 { break } else { continue } }
+        break
+      }
+      let parsed = await router.normalizeGoal(heard, existing: extractedGoals, language: language)
+      if let goal = parsed.goal {
+        extractedGoals.append(goal)
+        index += 1
+        if parsed.done || index >= 3 { break }
+        await say(.askGoal(index + 1), c)
+      } else if parsed.done, !extractedGoals.isEmpty {
+        break
+      } else {
+        refusals += 1
+        if refusals >= 3 { break }
+        await say(.notAGoal, c)
       }
     }
-    hangUp()
+    guard !extractedGoals.isEmpty, !Task.isCancelled else {
+      await say(.noGoalsClose, c)
+      return
+    }
+    await say(.askIfThen, c)
+    let plan = await hear(c)
+    if Task.isCancelled { return }
+    ifThenPlan = plan
+    await say(.recap(extractedGoals), c)
   }
 
-  private func generate(_ messages: [ChatMessage]) async -> String? {
-    do {
-      return try await router.complete(messages)
-    } catch {
-      lastError = error.localizedDescription
-      return nil
+  private func debriefScript(_ c: StickPersona.Context) async {
+    if c.goals.isEmpty {
+      await say(.debriefGeneral, c)
+      _ = await hear(c)
+      if Task.isCancelled { return }
+    } else {
+      for (i, goal) in c.goals.enumerated() {
+        await say(.debriefGoal(goal.title, i == 0), c)
+        let heard = await hear(c)
+        if Task.isCancelled { return }
+        let done = await router.classifyYesNo(heard, question: "Did the user complete this goal: \(goal.title)?", language: c.language)
+        goalResults[goal.id] = done ?? goal.isDone
+        if done == false {
+          await say(.whyNot(goal.title), c)
+          _ = await hear(c)
+          if Task.isCancelled { return }
+        }
+      }
+    }
+    await say(.askTomorrow, c)
+    _ = await hear(c)
+    if Task.isCancelled { return }
+    await say(.debriefClose, c)
+  }
+
+  private func interceptScript(_ c: StickPersona.Context) async {
+    await say(.confront, c)
+    var heard = await hear(c)
+    if Task.isCancelled { return }
+    if heard.isEmpty { await say(.didntHear, c); heard = await hear(c); if Task.isCancelled { return } }
+    let yes = await router.classifyYesNo(heard, question: "Did the user agree to close the app now?", language: c.language)
+    if yes == false {
+      interceptClosed = false
+      await say(.closeNo, c)
+      let second = await hear(c)
+      if Task.isCancelled { return }
+      let again = await router.classifyYesNo(second, question: "Did the user agree to close the app now?", language: c.language)
+      interceptClosed = again == true
+      await say(again == true ? .closeYes : .closeFinal, c)
+    } else {
+      interceptClosed = true
+      await say(.closeYes, c)
     }
   }
 
-  private func strip(_ text: String) -> (String, Bool) {
-    let shouldEnd = text.contains("[END]")
-    var clean = text.replacingOccurrences(of: "[END]", with: "")
-    clean = clean.replacingOccurrences(of: "*", with: "")
-    clean = clean.trimmingCharacters(in: .whitespacesAndNewlines)
-    return (clean, shouldEnd)
+  private func pushScript(_ c: StickPersona.Context) async {
+    await say(.pushOpen, c)
+    _ = await hear(c)
+    if Task.isCancelled { return }
+    await say(.pushOrder, c)
+  }
+
+  private func recoveryScript(_ c: StickPersona.Context) async {
+    await say(.recoveryOpen, c)
+    var heard = await hear(c)
+    if Task.isCancelled { return }
+    if heard.isEmpty { await say(.didntHear, c); heard = await hear(c); if Task.isCancelled { return } }
+    await say(.recoveryClose, c)
+  }
+
+  private func ahaScript(_ c: StickPersona.Context) async {
+    let line = StickPersona.scripted(.aha, c)
+    turns.append(CallTurn(speaker: .stick, text: line))
+    LiveActivityManager.shared.update(phase: .talking, lastLine: line)
+    await speak(line)
+  }
+
+  // MARK: - Turn helpers
+
+  /// Generates Stick's line for a script step (model with a strict directive, scripted fallback), then speaks it.
+  private func say(_ step: StickPersona.Step, _ c: StickPersona.Context) async {
+    phase = .thinking
+    let fallback = StickPersona.scripted(step, c)
+    var line = fallback
+    if !step.isFixed, Secrets.hasLLMKeys {
+      // The provider rejects requests without a user message, so the step directive travels as one.
+      let directive = StickPersona.directive(step, c)
+      var messages = history
+      messages.append(ChatMessage(role: .user, content: directive))
+      if let generated = try? await router.complete(messages, maxTokens: 120, temperature: 0.7) {
+        let cleaned = StickPersona.clean(generated)
+        if cleaned.count >= 4, cleaned.count <= 320 { line = cleaned }
+      }
+    }
+    if Task.isCancelled { return }
+    history.append(ChatMessage(role: .assistant, content: line))
+    turns.append(CallTurn(speaker: .stick, text: line))
+    LiveActivityManager.shared.update(phase: .talking, lastLine: line)
+    await speak(line)
+  }
+
+  /// Listens once and records what the user said. Empty string when nothing was heard.
+  private func hear(_ c: StickPersona.Context) async -> String {
+    guard !Task.isCancelled else { return "" }
+    phase = .listening
+    let heard = (try? await listener.listen(locale: c.language.speechLocale)) ?? ""
+    let text = heard.isEmpty ? "…" : heard
+    turns.append(CallTurn(speaker: .user, text: text))
+    history.append(ChatMessage(role: .user, content: heard.isEmpty ? "(silence)" : heard))
+    return heard
   }
 
   private func speak(_ text: String) async {
     guard !text.isEmpty, let context else { return }
     phase = .speaking
+    let budget: Duration = .seconds(min(45, 4 + Double(text.count) / 10))
     if let voiceID, let data = try? await fish.synthesize(text, referenceID: voiceID) {
       usedCloneVoice = true
-      await player.play(data)
+      await withTimeout(budget) { await self.player.play(data) }
+      player.stop()
     } else {
-      await system.speak(text, language: context.language)
+      await withTimeout(budget) { await self.system.speak(text, language: context.language) }
+      system.stop()
+    }
+  }
+
+  private func withTimeout(_ limit: Duration, _ work: @escaping @MainActor () async -> Void) async {
+    await withTaskGroup(of: Void.self) { group in
+      group.addTask { @MainActor in await work() }
+      group.addTask { try? await Task.sleep(for: limit) }
+      await group.next()
+      group.cancelAll()
     }
   }
 
   // MARK: - Record
 
   func makeRecord(dayNumber: Int) -> CallRecord {
-    let summary = turns.first(where: { $0.speaker == .stick })?.text ?? ""
+    let summary: String
+    switch kind {
+    case .wake where !extractedGoals.isEmpty: summary = extractedGoals.joined(separator: " · ")
+    default: summary = turns.first(where: { $0.speaker == .stick })?.text ?? ""
+    }
     return CallRecord(
       kind: kind,
       dayNumber: dayNumber,

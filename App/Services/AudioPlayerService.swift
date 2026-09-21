@@ -17,7 +17,10 @@ final class AudioPlayerService: NSObject, AVAudioPlayerDelegate {
     player.numberOfLoops = loop ? -1 : 0
     player.prepareToPlay()
     self.player = player
-    player.play()
+    guard player.play() else {
+      self.player = nil
+      return
+    }
     startMetering()
     if loop { return }
     await withCheckedContinuation { (c: CheckedContinuation<Void, Never>) in
