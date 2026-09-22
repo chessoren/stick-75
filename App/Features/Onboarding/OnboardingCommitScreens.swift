@@ -177,7 +177,6 @@ struct ScreenTimeScreen: View {
           Text("Continue")
         }
         .buttonStyle(PrimaryPillButtonStyle())
-        .disabled(!screenTime.hasSelection)
       } else if failed {
         Button { model.next() } label: { Text("Continue") }
           .buttonStyle(PrimaryPillButtonStyle())

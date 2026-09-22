@@ -32,8 +32,22 @@ struct LeagueView: View {
             rankHero
               .appear(index: 1)
 
-            podium
+            if store.leagueIsLive {
+              podium
+                .appear(index: 2)
+            } else {
+              VStack(alignment: .leading, spacing: 8) {
+                Text("Your league is filling up.")
+                  .font(StickFont.headline)
+                  .foregroundStyle(Color.ink)
+                Text("Thirty people, ranked every week on hours recovered. Invite a friend: they get 5 free days, you get someone to beat.")
+                  .font(StickFont.callout)
+                  .foregroundStyle(Color.inkSecondary)
+                  .fixedSize(horizontal: false, vertical: true)
+              }
+              .stickCard()
               .appear(index: 2)
+            }
 
             VStack(spacing: 8) {
               ForEach(Array(store.leaderboard.enumerated()), id: \.element.id) { index, entry in

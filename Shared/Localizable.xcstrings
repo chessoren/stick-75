@@ -1692,26 +1692,6 @@
         }
       }
     },
-    "Reset everything": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tout réinitialiser"
-          }
-        }
-      }
-    },
-    "Reset everything?": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tout réinitialiser ?"
-          }
-        }
-      }
-    },
     "Deletes your progress, goals, calls and voice on this phone.": {
       "localizations": {
         "fr": {
@@ -3918,6 +3898,286 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stick ne peut pas sonner quand tu ouvres TikTok tant que l'automatisation Raccourcis n'est pas créée. Une minute."
+          }
+        }
+      }
+    },
+    "Why 75 days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pourquoi 75 jours"
+          }
+        }
+      }
+    },
+    "608 hours a year on TikTok on average. That's 25 full days.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "608 heures par an sur TikTok en moyenne. 25 jours pleins."
+          }
+        }
+      }
+    },
+    "A new habit takes a median of 66 days to become automatic (Lally et al., 2010). 75 gives you margin.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une nouvelle habitude met en médiane 66 jours à devenir automatique (Lally et al., 2010). 75 te laisse de la marge."
+          }
+        }
+      }
+    },
+    "You can ignore a coach. Nobody ignores their own voice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu peux ignorer un coach. Personne n'ignore sa propre voix."
+          }
+        }
+      }
+    },
+    "One-time payment of %@. Not a subscription, nothing renews.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paiement unique de %@. Pas un abonnement, rien ne se renouvelle."
+          }
+        }
+      }
+    },
+    "%@, billed weekly to your Apple Account until cancelled. Cancel any time in Settings at least 24 h before renewal.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, facturé chaque semaine sur ton compte Apple jusqu'à annulation. Annule à tout moment dans Réglages, au moins 24 h avant le renouvellement."
+          }
+        }
+      }
+    },
+    "%@, billed yearly to your Apple Account until cancelled. Cancel any time in Settings at least 24 h before renewal.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, facturé chaque année sur ton compte Apple jusqu'à annulation. Annule à tout moment dans Réglages, au moins 24 h avant le renouvellement."
+          }
+        }
+      }
+    },
+    "The store isn't available right now. Try again in a moment.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La boutique n'est pas disponible pour le moment. Réessaie dans un instant."
+          }
+        }
+      }
+    },
+    "Privacy policy": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Politique de confidentialité"
+          }
+        }
+      }
+    },
+    "Terms of use": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conditions d'utilisation"
+          }
+        }
+      }
+    },
+    "Blocked apps": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps bloquées"
+          }
+        }
+      }
+    },
+    "Interception armed": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interception armée"
+          }
+        }
+      }
+    },
+    "Interception off · set it up": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interception désactivée · à configurer"
+          }
+        }
+      }
+    },
+    "Shield is on for this act.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le bouclier est actif pour cet acte."
+          }
+        }
+      }
+    },
+    "Shield is off for this act (15 minutes a day, on your honor). Stick still calls when an app opens.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le bouclier est levé pour cet acte (15 minutes par jour, sur l'honneur). Stick appelle toujours quand une app s'ouvre."
+          }
+        }
+      }
+    },
+    "Screen Time is not connected.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temps d'écran n'est pas connecté."
+          }
+        }
+      }
+    },
+    "Allow Screen Time to shield your apps. Without it, the Shortcuts automation still makes Stick call when an app opens.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorise Temps d'écran pour protéger tes apps. Sans ça, l'automatisation Raccourcis fait quand même appeler Stick quand une app s'ouvre."
+          }
+        }
+      }
+    },
+    "Delete my account and data": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer mon compte et mes données"
+          }
+        }
+      }
+    },
+    "Delete my account and data?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer mon compte et mes données ?"
+          }
+        }
+      }
+    },
+    "Delete everything": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout supprimer"
+          }
+        }
+      }
+    },
+    "Deletes your account, league score, progress, goals, calls and voice clone. This cannot be undone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprime ton compte, ton score de ligue, ta progression, tes objectifs, tes appels et ton clone vocal. Irréversible."
+          }
+        }
+      }
+    },
+    "Your league is filling up.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta ligue se remplit."
+          }
+        }
+      }
+    },
+    "Thirty people, ranked every week on hours recovered. Invite a friend: they get 5 free days, you get someone to beat.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trente personnes, classées chaque semaine sur les heures récupérées. Invite un ami : il a 5 jours gratuits, tu as quelqu'un à battre."
+          }
+        }
+      }
+    },
+    "After day 75": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Après le jour 75"
+          }
+        }
+      }
+    },
+    "Stick Life keeps the calls, opens new seasons and the leagues. Have a look before the end.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick Life garde les appels, ouvre de nouvelles saisons et les ligues. Jette un œil avant la fin."
+          }
+        }
+      }
+    },
+    "The shield comes off: 15 minutes a day, on your honor. Stick still calls every time you open.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le bouclier se lève : 15 minutes par jour, sur l'honneur. Stick appelle toujours à chaque ouverture."
+          }
+        }
+      }
+    },
+    "Onboarding progress": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progression de l'onboarding"
+          }
+        }
+      }
+    },
+    "#%lld": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "n° %lld"
           }
         }
       }

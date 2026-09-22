@@ -6,6 +6,10 @@ struct MiniLeaderboardCard: View {
   @Environment(CallCoordinator.self) private var calls
 
   var body: some View {
+    if store.leagueIsLive { card }
+  }
+
+  private var card: some View {
     Button {
       calls.selectedTab = .league
     } label: {

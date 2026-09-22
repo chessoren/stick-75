@@ -40,6 +40,24 @@ struct HomeView: View {
             LifeCounterCard()
               .appear(index: 6)
 
+            if store.shouldPitchLife {
+              NavigationLink {
+                SubscriptionView()
+              } label: {
+                VStack(alignment: .leading, spacing: 6) {
+                  Text("After day 75")
+                    .font(StickFont.headline)
+                  Text("Stick Life keeps the calls, opens new seasons and the leagues. Have a look before the end.")
+                    .font(StickFont.callout)
+                    .opacity(0.9)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
+                .stickHeroCard()
+              }
+              .buttonStyle(PressableButtonStyle())
+              .appear(index: 6)
+            }
+
             MiniLeaderboardCard()
               .appear(index: 7)
           }

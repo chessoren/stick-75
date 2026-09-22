@@ -38,7 +38,7 @@ enum Act: Int, CaseIterable, Codable, Identifiable {
     case .silence: "Total lockdown. Maximum friction. Three calls a day."
     case .comeback: "Replace, don't just block. One new habit chosen every morning."
     case .identity: "\"I am someone who…\" Shorter calls, harder questions. League unlocked."
-    case .trial: "A 15-minute daily window opens. Stick tests if you can hold it."
+    case .trial: "The shield comes off: 15 minutes a day, on your honor. Stick still calls every time you open."
     case .flight: "Scaffolding comes off. One call a day. You plan life after day 75."
     }
   }

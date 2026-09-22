@@ -66,7 +66,9 @@ struct RootView: View {
     }
     .onChange(of: scenePhase) { _, phase in
       guard phase == .active else { return }
+      store.reconcile()
       store.absorbWidgetChanges()
+      ScreenTimeService.shared.applyShield(enabled: store.hasStarted && store.currentAct.allowedWindowMinutes == 0)
       Task { await store.syncRemote() }
       if let kind = store.pendingCallKind, store.state.onboardingComplete, !calls.isPresented {
         store.pendingCallKind = nil

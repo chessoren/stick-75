@@ -5,6 +5,7 @@ struct MeView: View {
   @Environment(StickStore.self) private var store
   @State private var showingReferral = false
   @State private var showingReset = false
+  @State private var legal: LegalDocument?
 
   var body: some View {
     NavigationStack {
@@ -22,6 +23,14 @@ struct MeView: View {
               VoiceSettingsView()
             } label: {
               MeRow(symbol: "waveform", title: "My voice", subtitle: store.profile.voiceModelID == nil ? "Not cloned yet" : "Cloned · used on every call")
+            }
+            .buttonStyle(PressableButtonStyle())
+            .appear(index: 2)
+
+            NavigationLink {
+              BlockedAppsView()
+            } label: {
+              MeRow(symbol: "shield.lefthalf.filled", title: "Blocked apps", subtitle: store.profile.shortcutAutomationSet || ScreenTimeService.shared.isAuthorized ? "Interception armed" : "Interception off · set it up")
             }
             .buttonStyle(PressableButtonStyle())
             .appear(index: 2)
@@ -81,16 +90,26 @@ struct MeView: View {
             .buttonStyle(PressableButtonStyle())
             .appear(index: 7)
 
+            HStack(spacing: 18) {
+              Button("Privacy policy") { legal = .privacy }
+              Button("Terms of use") { legal = .terms }
+            }
+            .font(StickFont.footnoteMedium)
+            .foregroundStyle(Color.inkSecondary)
+            .frame(maxWidth: .infinity)
+            .padding(.top, 4)
+            .appear(index: 8)
+
             Button(role: .destructive) {
               showingReset = true
             } label: {
-              Text("Reset everything")
+              Text("Delete my account and data")
                 .font(StickFont.footnoteMedium)
                 .foregroundStyle(Color.stickDanger)
                 .frame(maxWidth: .infinity)
             }
-            .padding(.top, 8)
-            .appear(index: 8)
+            .padding(.top, 4)
+            .appear(index: 9)
           }
           .padding(.horizontal, StickMetrics.screenMargin)
           .padding(.bottom, 110)
@@ -101,10 +120,13 @@ struct MeView: View {
       .sheet(isPresented: $showingReferral) {
         ReferralView()
       }
-      .confirmationDialog("Reset everything?", isPresented: $showingReset, titleVisibility: .visible) {
-        Button("Reset", role: .destructive) { store.resetEverything() }
+      .confirmationDialog("Delete my account and data?", isPresented: $showingReset, titleVisibility: .visible) {
+        Button("Delete everything", role: .destructive) { store.resetEverything() }
       } message: {
-        Text("Deletes your progress, goals, calls and voice on this phone.")
+        Text("Deletes your account, league score, progress, goals, calls and voice clone. This cannot be undone.")
+      }
+      .sheet(item: $legal) { document in
+        LegalView(document: document)
       }
     }
   }

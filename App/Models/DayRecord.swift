@@ -19,10 +19,16 @@ struct DayRecord: Identifiable, Codable, Hashable {
   }
 
   var completion: Double {
+    if isHeld { return 1 }
     var score = 0.0
-    if goalsSet { score += 0.3 }
-    if debriefDone { score += 0.3 }
-    if goalsTotal > 0 { score += 0.4 * Double(goalsCompleted) / Double(goalsTotal) }
-    return min(1, score)
+    if goalsTotal > 0 {
+      if goalsSet { score += 0.3 }
+      if debriefDone { score += 0.3 }
+      score += 0.4 * Double(goalsCompleted) / Double(goalsTotal)
+    } else {
+      if goalsSet { score += 0.5 }
+      if debriefDone { score += 0.5 }
+    }
+    return min(0.99, score)
   }
 }

@@ -22,6 +22,7 @@ struct StickState: Codable {
   var lastCelebratedAct = -1
   var focusModeOn = true
   var interceptionsToday = 0
+  var interceptionsDay = 0
   var totalInterceptions = 0
 }
 
@@ -53,10 +54,10 @@ final class StickStore {
     } else {
       state = StickState()
     }
-    if state.leaderboard.isEmpty {
-      state.leaderboard = LeaderboardFactory.make()
+    if state.profile.language != .device {
+      state.profile.language = .device
     }
-    reconcileMissedDays()
+    reconcile()
     syncWidgets()
   }
 
@@ -275,6 +276,15 @@ final class StickStore {
     save()
   }
 
+  /// Runs on launch and whenever the app comes back: day rollover and act restarts.
+  func reconcile() {
+    if state.interceptionsDay != dayNumber {
+      state.interceptionsDay = dayNumber
+      state.interceptionsToday = 0
+    }
+    reconcileMissedDays()
+  }
+
   /// Two consecutive missed days restart the act, never the program.
   private func reconcileMissedDays() {
     guard state.startDate != nil, dayNumber > 2 else { return }
@@ -404,6 +414,16 @@ final class StickStore {
     (leaderboard.firstIndex(where: \.isMe) ?? 0) + 1
   }
 
+  /// True once other real players are in the league (Supabase connected and populated).
+  var leagueIsLive: Bool {
+    state.leaderboard.contains { !$0.isMe }
+  }
+
+  /// Stick Life is pitched from day 60 to Pass holders.
+  var shouldPitchLife: Bool {
+    state.entitlement == .pass75 && dayNumber >= 60
+  }
+
   // MARK: - Widgets
 
   func syncWidgets() {
@@ -440,31 +460,7 @@ final class StickStore {
     try? FileManager.default.removeItem(at: VoiceClipCache.directory)
     Task { await SupabaseService.shared.deleteAccount() }
     state = StickState()
-    state.leaderboard = LeaderboardFactory.make()
     save()
-  }
-}
-
-/// Seeds a believable 30-person league until Supabase is connected.
-enum LeaderboardFactory {
-  static func make() -> [LeaderboardEntry] {
-    let names = [
-      "Léa", "Maxime", "Inès", "Noah", "Chloé", "Lucas", "Manon", "Hugo", "Emma", "Théo",
-      "Jade", "Nathan", "Camille", "Louis", "Sarah", "Ethan", "Zoé", "Adam", "Lina", "Gabriel",
-      "Anna", "Jules", "Mia", "Rayan", "Alice", "Tom", "Nora", "Sacha", "Eva", "Liam"
-    ]
-    var generator = SeededGenerator(seed: 75)
-    return names.enumerated().map { index, name in
-      let days = Int.random(in: 3...60, using: &generator)
-      let hours = Double(days) * Double.random(in: 1.4...3.6, using: &generator)
-      return LeaderboardEntry(
-        name: name,
-        initials: String(name.prefix(1)),
-        hoursRecovered: (hours * 10).rounded() / 10,
-        daysHeld: days,
-        hue: Double(index) / Double(names.count)
-      )
-    }
   }
 }
 

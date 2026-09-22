@@ -9,6 +9,7 @@ struct PaywallView: View {
   @State private var selected: SubscriptionPlan = .pass75
   private var purchases: PurchaseService { .shared }
   @State private var error: String?
+  @State private var legal: LegalDocument?
 
   var body: some View {
     ZStack {
@@ -88,20 +89,34 @@ struct PaywallView: View {
 
           HStack(spacing: 18) {
             Button("Restore") { restore() }
-            Link("Terms", destination: URL(string: "https://stick.app/terms")!)
-            Link("Privacy", destination: URL(string: "https://stick.app/privacy")!)
+            Button("Terms") { legal = .terms }
+            Button("Privacy") { legal = .privacy }
           }
           .font(StickFont.footnoteMedium)
           .foregroundStyle(.white.opacity(0.85))
-          Text(selected == .pass75 ? "One-time payment. No renewal." : "Auto-renews. Cancel any time in Settings.")
+          Text(disclosure)
             .font(StickFont.caption)
-            .foregroundStyle(.white.opacity(0.7))
+            .foregroundStyle(.white.opacity(0.75))
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.horizontal, StickMetrics.screenMargin)
         .padding(.bottom, 12)
       }
     }
     .task { await purchases.refreshPrices() }
+    .sheet(item: $legal) { document in
+      LegalView(document: document)
+    }
+  }
+
+  private var disclosure: LocalizedStringKey {
+    let price = purchases.prices[selected] ?? selected.fallbackPrice
+    switch selected {
+    case .pass75: return "One-time payment of \(price). Not a subscription, nothing renews."
+    case .weekly: return "\(price), billed weekly to your Apple Account until cancelled. Cancel any time in Settings at least 24 h before renewal."
+    case .life: return "\(price), billed yearly to your Apple Account until cancelled. Cancel any time in Settings at least 24 h before renewal."
+    }
   }
 
   private var timeline: some View {
@@ -115,21 +130,13 @@ struct PaywallView: View {
   }
 
   private var proof: some View {
-    VStack(alignment: .leading, spacing: 10) {
-      HStack(spacing: 4) {
-        ForEach(0..<5, id: \.self) { _ in
-          Image(systemName: "star.fill")
-            .font(.system(size: 12))
-            .foregroundStyle(Color.brandOrange)
-        }
-      }
-      Text("“I've deleted TikTok four times. Hearing my own voice tell me to close it is the only thing that has ever worked.”")
-        .font(StickFont.callout)
+    VStack(alignment: .leading, spacing: 12) {
+      Text("Why 75 days")
+        .font(StickFont.headline)
         .foregroundStyle(Color.ink)
-        .fixedSize(horizontal: false, vertical: true)
-      Text("Léa, day 41")
-        .font(StickFont.caption)
-        .foregroundStyle(Color.inkSecondary)
+      ProofRow(symbol: "clock.fill", text: "608 hours a year on TikTok on average. That's 25 full days.")
+      ProofRow(symbol: "brain.head.profile", text: "A new habit takes a median of 66 days to become automatic (Lally et al., 2010). 75 gives you margin.")
+      ProofRow(symbol: "waveform", text: "You can ignore a coach. Nobody ignores their own voice.")
     }
     .stickCard()
   }
@@ -215,6 +222,24 @@ struct PlanCard: View {
     .accessibilityAddTraits(isSelected ? .isSelected : [])
     .accessibilityLabel(Text(plan.title))
     .accessibilityValue(Text(price))
+  }
+}
+
+struct ProofRow: View {
+  var symbol: String
+  var text: LocalizedStringKey
+
+  var body: some View {
+    HStack(alignment: .top, spacing: 12) {
+      Image(systemName: symbol)
+        .font(.system(size: 14, weight: .semibold))
+        .foregroundStyle(Color.brandOrange)
+        .frame(width: 26)
+      Text(text)
+        .font(StickFont.callout)
+        .foregroundStyle(Color.inkSecondary)
+        .fixedSize(horizontal: false, vertical: true)
+    }
   }
 }
 

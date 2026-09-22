@@ -81,9 +81,14 @@ final class OnboardingModel {
     store.update { $0.onboardingStep = target.rawValue }
   }
 
+  /// Writes the draft into the store without clobbering flags set elsewhere (deep links, referrals).
   func persist() {
-    let draft = draft
-    store.update { $0.profile = draft }
+    var merged = draft
+    merged.shortcutAutomationSet = merged.shortcutAutomationSet || store.profile.shortcutAutomationSet
+    merged.referredBy = store.profile.referredBy ?? merged.referredBy
+    merged.referralCode = store.profile.referralCode
+    draft = merged
+    store.update { $0.profile = merged }
   }
 
   func toggle<T: Equatable>(_ value: T, in list: inout [T]) {

@@ -44,8 +44,13 @@ final class PurchaseService {
     defer { isBusy = false }
     lastError = nil
     guard isConfigured else {
+      #if DEBUG
       try? await Task.sleep(for: .milliseconds(900))
       return plan.entitlement
+      #else
+      lastError = String(localized: "The store isn't available right now. Try again in a moment.")
+      return nil
+      #endif
     }
     do {
       if packages.isEmpty { await refreshPrices() }
