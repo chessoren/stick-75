@@ -37,12 +37,12 @@ enum CallScheduler {
     (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false
   }
 
-  static func scheduleDailyCalls(profile: UserProfile) async {
-    await scheduleAlarms(profile: profile)
-    await scheduleNotifications(profile: profile)
+  static func scheduleDailyCalls(profile: UserProfile, act: Act = .silence) async {
+    await scheduleAlarms(profile: profile, act: act)
+    await scheduleNotifications(profile: profile, act: act)
   }
 
-  private static func scheduleAlarms(profile: UserProfile) async {
+  private static func scheduleAlarms(profile: UserProfile, act: Act) async {
     guard AlarmManager.shared.authorizationState == .authorized else { return }
     try? AlarmManager.shared.cancel(id: wakeAlarmID)
     try? AlarmManager.shared.cancel(id: debriefAlarmID)
@@ -52,7 +52,7 @@ enum CallScheduler {
       (wakeAlarmID, .wake, profile.wakeTime, french ? "Toi (Stick) t'appelle" : "You (Stick) is calling"),
       (debriefAlarmID, .debrief, profile.debriefTime, french ? "Toi (Stick) · bilan du soir" : "You (Stick) · evening debrief")
     ]
-    for (id, kind, time, title) in plans {
+    for (id, kind, time, title) in plans where kind != .debrief || act.hasDebriefCall {
       let answer = AlarmButton(
         text: french ? "Décrocher" : "Answer",
         textColor: .white,
@@ -89,7 +89,7 @@ enum CallScheduler {
     }
   }
 
-  private static func scheduleNotifications(profile: UserProfile) async {
+  private static func scheduleNotifications(profile: UserProfile, act: Act) async {
     let center = UNUserNotificationCenter.current()
     center.removePendingNotificationRequests(withIdentifiers: ["stick.wake", "stick.debrief"])
     let settings = await center.notificationSettings()
@@ -103,7 +103,7 @@ enum CallScheduler {
        french ? "Toi (Stick)" : "You (Stick)",
        french ? "Bilan du soir. Qu'est-ce que tu as vraiment fait ?" : "Evening debrief. What did you actually do?")
     ]
-    for (id, kind, time, title, body) in plans {
+    for (id, kind, time, title, body) in plans where kind != .debrief || act.hasDebriefCall {
       let content = UNMutableNotificationContent()
       content.title = title
       content.body = body

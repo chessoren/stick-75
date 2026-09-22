@@ -16,6 +16,9 @@ struct HomeView: View {
             header
               .appear(index: 0)
 
+            JourneyRail()
+              .appear(index: 1)
+
             VStack(alignment: .leading, spacing: 12) {
               StickSectionHeader("Weekly goal")
               WeekRingsView(days: store.weekCompletion())
@@ -34,11 +37,28 @@ struct HomeView: View {
             GoalsSection(showingAddGoal: $showingAddGoal)
               .appear(index: 4)
 
-            ActCard()
-              .appear(index: 5)
+            if store.isUnlocked(.habit) {
+              HabitCard()
+                .appear(index: 5)
+            }
 
-            LifeCounterCard()
-              .appear(index: 6)
+            if store.isUnlocked(.lifeCounter) {
+              LifeCounterCard()
+                .appear(index: 6)
+            } else {
+              LockedFeatureCard(feature: .lifeCounter)
+                .appear(index: 6)
+            }
+
+            if store.isUnlocked(.trials) {
+              TrialsSection()
+                .appear(index: 7)
+            }
+
+            if store.isUnlocked(.postPlan) {
+              PostPlanCard()
+                .appear(index: 7)
+            }
 
             if store.shouldPitchLife {
               NavigationLink {
@@ -58,8 +78,13 @@ struct HomeView: View {
               .appear(index: 6)
             }
 
-            MiniLeaderboardCard()
-              .appear(index: 7)
+            if store.isUnlocked(.league) {
+              MiniLeaderboardCard()
+                .appear(index: 8)
+            } else {
+              LockedFeatureCard(feature: .league)
+                .appear(index: 8)
+            }
           }
           .padding(.horizontal, StickMetrics.screenMargin)
           .padding(.top, 8)

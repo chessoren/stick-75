@@ -23,6 +23,10 @@ struct StickState: Codable {
   var focusModeOn = true
   var interceptionsToday = 0
   var interceptionsDay = 0
+  var lastSeenAct = -1
+  var postPlanNotes: [String] = []
+  var trialsDone: [Trial] = []
+  var trialsWeek = 0
   var totalInterceptions = 0
 }
 
@@ -34,6 +38,7 @@ final class StickStore {
   private(set) var state: StickState
   var pendingCallKind: CallKind?
   var celebration: Celebration?
+  var pendingReveal: Act?
 
   enum Celebration: Equatable {
     case dayHeld(Int)
@@ -165,6 +170,7 @@ final class StickStore {
     update {
       $0.startDate = Calendar.current.startOfDay(for: .now)
       $0.onboardingComplete = true
+      $0.lastSeenAct = 0
     }
   }
 
@@ -276,13 +282,81 @@ final class StickStore {
     save()
   }
 
-  /// Runs on launch and whenever the app comes back: day rollover and act restarts.
+  /// Runs on launch and whenever the app comes back: day rollover, act restarts, act reveals.
   func reconcile() {
     if state.interceptionsDay != dayNumber {
       state.interceptionsDay = dayNumber
       state.interceptionsToday = 0
     }
     reconcileMissedDays()
+    guard hasStarted else { return }
+    let week = dayNumber / 7
+    if state.trialsWeek != week {
+      state.trialsWeek = week
+      state.trialsDone = []
+    }
+    if currentAct.rawValue > state.lastSeenAct {
+      if currentAct == .silence {
+        state.lastSeenAct = 0
+      } else {
+        pendingReveal = currentAct
+      }
+    }
+  }
+
+  /// Called once the act reveal has been seen: reschedules calls and prepares the new ringtone and voice badge.
+  func acknowledgeReveal(_ act: Act) {
+    update { $0.lastSeenAct = act.rawValue }
+    pendingReveal = nil
+    let profile = self.profile
+    Task {
+      await CallScheduler.scheduleDailyCalls(profile: profile, act: act)
+      if let voice = profile.voiceModelID {
+        await VoiceClipCache.ensureRingtone(voiceID: voice, language: profile.language, act: act)
+        await VoiceClipCache.ensureVoiceBadge(voiceID: voice, act: act, identity: profile.identityStatement, language: profile.language)
+      }
+    }
+  }
+
+  func isUnlocked(_ feature: Feature) -> Bool {
+    hasStarted && currentAct.rawValue >= feature.unlockAct.rawValue
+  }
+
+  func daysUntil(_ feature: Feature) -> Int {
+    max(0, feature.unlockDay - dayNumber)
+  }
+
+  /// Days until something new is revealed.
+  var daysUntilNextReveal: Int? {
+    guard let next = currentAct.next else { return nil }
+    return max(0, next.dayRange.lowerBound - dayNumber)
+  }
+
+  func toggleTrial(_ trial: Trial) {
+    update {
+      if let index = $0.trialsDone.firstIndex(of: trial) { $0.trialsDone.remove(at: index) } else { $0.trialsDone.append(trial) }
+    }
+  }
+
+  func addPostPlanNote(_ note: String) {
+    let cleaned = note.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !cleaned.isEmpty else { return }
+    update { $0.postPlanNotes.append(cleaned) }
+  }
+
+  func setToday(habit: String?, windowHeld: Bool?, identityAnswer: String?) {
+    var record = today
+    if let habit, !habit.isEmpty { record.habit = habit }
+    if let windowHeld { record.windowHeld = windowHeld }
+    if let identityAnswer, !identityAnswer.isEmpty { record.identityAnswer = identityAnswer }
+    upsert(record)
+    save()
+  }
+
+  /// Real calendar date of a program day.
+  func date(forDay day: Int) -> Date {
+    let start = state.startDate ?? Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
+    return Calendar.current.date(byAdding: .day, value: day - 1, to: start) ?? start
   }
 
   /// Two consecutive missed days restart the act, never the program.

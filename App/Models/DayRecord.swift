@@ -10,6 +10,9 @@ struct DayRecord: Identifiable, Codable, Hashable {
   var lapsed = false
   var jokerUsed = false
   var recoveryDone = false
+  var habit: String?
+  var windowHeld: Bool?
+  var identityAnswer: String?
   var minutesOnBlockedApps = 0
   var goalsCompleted = 0
   var goalsTotal = 0

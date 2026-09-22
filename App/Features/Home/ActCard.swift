@@ -59,7 +59,7 @@ struct ActCard: View {
   }
 }
 
-/// The five acts, rules, and jokers.
+/// The five acts as a path with your live position, the rules, and the jokers.
 struct ProgramView: View {
   @Environment(StickStore.self) private var store
 
@@ -68,36 +68,27 @@ struct ProgramView: View {
       StickCreamBackground()
       ScrollView {
         VStack(alignment: .leading, spacing: 14) {
-          Text("75 days. Five acts.")
-            .font(StickFont.largeTitle)
-            .stickTitleTracking()
-            .foregroundStyle(Color.ink)
-            .padding(.bottom, 4)
-
-          ForEach(Array(Act.allCases.enumerated()), id: \.element.id) { index, act in
-            HStack(alignment: .top, spacing: 14) {
-              Image(systemName: act.symbol)
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(act == store.currentAct ? .white : Color.brandOrange)
-                .frame(width: 38, height: 38)
-                .background(act == store.currentAct ? Color.brandOrange : Color.brandOrange.opacity(0.12), in: Circle())
-              VStack(alignment: .leading, spacing: 4) {
-                Text("Act \(act.numeral) · \(Text(act.name))")
-                  .font(StickFont.headline)
-                  .foregroundStyle(Color.ink)
-                Text("Days \(act.dayRange.lowerBound)–\(act.dayRange.upperBound)")
-                  .font(StickFont.caption)
-                  .foregroundStyle(Color.inkSecondary)
-                Text(act.focus)
-                  .font(StickFont.callout)
-                  .foregroundStyle(Color.inkSecondary)
-                  .fixedSize(horizontal: false, vertical: true)
-              }
-              Spacer()
-            }
-            .stickCard()
-            .appear(index: index)
+          VStack(alignment: .leading, spacing: 6) {
+            Text("75 days. Five acts.")
+              .font(StickFont.largeTitle)
+              .stickTitleTracking()
+              .foregroundStyle(Color.ink)
+            Text("Day \(store.dayNumber) · Act \(store.currentAct.numeral) · \(store.daysHeld) held")
+              .font(StickFont.calloutMedium)
+              .foregroundStyle(Color.inkSecondary)
           }
+          .padding(.bottom, 4)
+
+          JourneyPath(
+            revealed: Act.allCases.count,
+            apps: store.profile.timeSinks,
+            dream: store.profile.dreams.first,
+            identity: store.profile.identityStatement,
+            currentAct: store.currentAct,
+            dayNumber: store.dayNumber,
+            startDate: store.state.startDate,
+            light: true
+          )
 
           VStack(alignment: .leading, spacing: 10) {
             Text("The rules")

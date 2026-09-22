@@ -39,9 +39,14 @@ struct RootView: View {
         }
         .transition(.opacity)
         .zIndex(10)
+      } else if let act = store.pendingReveal, store.state.onboardingComplete, act != .silence, !calls.isPresented {
+        ActRevealView(act: act) {}
+          .transition(.opacity.combined(with: .scale(scale: 1.02)))
+          .zIndex(9)
       }
     }
     .animation(.smooth(duration: 0.4), value: store.celebration)
+    .animation(.smooth(duration: 0.4), value: store.pendingReveal)
     .onOpenURL { url in
       guard let link = DeepLink(url: url) else { return }
       if store.state.onboardingComplete {
@@ -63,6 +68,9 @@ struct RootView: View {
         store.grant(entitlement)
       }
       await store.syncRemote()
+      if let voice = store.profile.voiceModelID, store.hasStarted {
+        await VoiceClipCache.ensureRingtone(voiceID: voice, language: store.profile.language, act: store.currentAct)
+      }
     }
     .onChange(of: scenePhase) { _, phase in
       guard phase == .active else { return }

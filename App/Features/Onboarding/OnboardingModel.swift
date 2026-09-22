@@ -3,7 +3,7 @@ import Observation
 import SwiftUI
 
 enum OnboardingStep: Int, CaseIterable {
-  case hook, pitch, quizApps, quizHours, quizMoments, quizFeelings, quizDreams, quizTried, result,
+  case hook, pitch, quizApps, quizHours, quizMoments, quizFeelings, quizDreams, quizTried, result, journey,
        identity, name, voiceConsent, voiceRecord, voiceProcessing, aha, contract, paywall,
        screenTime, permissions, schedule, automation, vault, done
 
@@ -16,7 +16,7 @@ enum OnboardingStep: Int, CaseIterable {
 
   var usesCreamBackground: Bool {
     switch self {
-    case .hook, .pitch, .result, .aha, .contract, .done, .vault: false
+    case .hook, .pitch, .result, .journey, .aha, .contract, .done, .vault: false
     default: true
     }
   }
@@ -141,7 +141,7 @@ final class OnboardingModel {
     persist()
     store.startProgram()
     let profile = store.profile
-    Task { await CallScheduler.scheduleDailyCalls(profile: profile) }
+    Task { await CallScheduler.scheduleDailyCalls(profile: profile, act: .silence) }
     ScreenTimeService.shared.applyShield(enabled: true)
   }
 }

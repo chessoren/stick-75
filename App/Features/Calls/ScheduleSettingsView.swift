@@ -70,7 +70,8 @@ struct ScheduleSettingsView: View {
       $0.profile.debriefTime = ClockTime(date: debrief)
     }
     let profile = store.profile
-    Task { await CallScheduler.scheduleDailyCalls(profile: profile) }
+    let act = store.currentAct
+    Task { await CallScheduler.scheduleDailyCalls(profile: profile, act: act) }
     dismiss()
   }
 }

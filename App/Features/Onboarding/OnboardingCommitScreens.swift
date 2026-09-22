@@ -30,6 +30,8 @@ struct ContractScreen: View {
             ContractLine(text: "I set real goals every morning and report every night.")
             ContractLine(text: "I never miss twice.")
             ContractLine(text: "I am becoming: \(model.draft.identityStatement)")
+            Divider().overlay(Color.ink.opacity(0.1)).padding(.vertical, 4)
+            ContractTimeline()
           }
           .stickCard()
           .appear(index: 1)
@@ -93,6 +95,48 @@ struct ContractScreen: View {
   }
 }
 
+/// The five real dates of the program, printed on the contract.
+struct ContractTimeline: View {
+  private var start: Date {
+    Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
+  }
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 6) {
+      ForEach(Act.allCases) { act in
+        let date = Calendar.current.date(byAdding: .day, value: act.dayRange.lowerBound - 1, to: start) ?? start
+        HStack(spacing: 10) {
+          Image(systemName: act.symbol)
+            .font(.system(size: 11, weight: .bold))
+            .foregroundStyle(Color.brandOrange)
+            .frame(width: 18)
+          Text("Act \(act.numeral) · \(Text(act.name))")
+            .font(StickFont.footnoteMedium)
+            .foregroundStyle(Color.ink)
+          Spacer()
+          Text(date, format: .dateTime.day().month(.abbreviated))
+            .font(StickFont.caption)
+            .foregroundStyle(Color.inkSecondary)
+        }
+      }
+      let end = Calendar.current.date(byAdding: .day, value: Act.totalDays - 1, to: start) ?? start
+      HStack(spacing: 10) {
+        Image(systemName: "crown.fill")
+          .font(.system(size: 11, weight: .bold))
+          .foregroundStyle(Color.brandOrange)
+          .frame(width: 18)
+        Text("Day 75")
+          .font(StickFont.footnoteMedium)
+          .foregroundStyle(Color.ink)
+        Spacer()
+        Text(end, format: .dateTime.day().month(.abbreviated))
+          .font(StickFont.caption)
+          .foregroundStyle(Color.inkSecondary)
+      }
+    }
+  }
+}
+
 struct ContractLine: View {
   var text: LocalizedStringKey
 
@@ -116,7 +160,7 @@ struct PaywallStep: View {
   @Environment(OnboardingModel.self) private var model
 
   var body: some View {
-    PaywallView(onUnlocked: { model.next() }, onDismiss: nil)
+    PaywallView(onUnlocked: { model.next() }, onDismiss: nil, ticketMode: true)
   }
 }
 
@@ -427,16 +471,16 @@ struct DoneScreen: View {
     VStack(spacing: 0) {
       Spacer()
       VStack(spacing: 16) {
-        Text("Day 1")
+        Text("Act I")
           .font(StickFont.font(96, .semibold, relativeTo: .largeTitle))
           .foregroundStyle(.white)
           .scaleEffect(shown ? 1 : 0.7)
           .opacity(shown ? 1 : 0)
-        Text("starts now.")
+        Text("The Silence starts now.")
           .font(StickFont.largeTitle)
           .stickTitleTracking()
           .foregroundStyle(.white)
-        Text("Your first wake-up call rings at \(model.draft.wakeTime.date, format: .dateTime.hour().minute()). Until then: one goal for today, right now.")
+        Text("Tomorrow at \(model.draft.wakeTime.date, format: .dateTime.hour().minute()), your voice rings for the first goals. Until then: one goal for today, right now.")
           .font(StickFont.body)
           .foregroundStyle(.white.opacity(0.9))
           .multilineTextAlignment(.center)

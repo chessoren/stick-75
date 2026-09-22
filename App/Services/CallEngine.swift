@@ -28,6 +28,14 @@ final class CallEngine {
   private(set) var goalResults: [UUID: Bool] = [:]
   /// Intercept: did the user agree to close the app.
   private(set) var interceptClosed: Bool?
+  /// Act II+: the replacement habit chosen this morning.
+  private(set) var habitOfDay: String?
+  /// Act III+: the answer to the identity question.
+  private(set) var identityAnswer: String?
+  /// Act IV+: did the user hold the 15-minute window today.
+  private(set) var windowHeld: Bool?
+  /// Act V: what stays after day 75.
+  private(set) var postPlanNote: String?
 
   private let fish = FishAudioService()
   private let router = OpenRouterService()
@@ -61,7 +69,7 @@ final class CallEngine {
     LiveActivityManager.shared.start(kind: kind, userName: context.name)
     AudioSessionManager.activateForPlayback()
     Task {
-      if let ringtone = VoiceClipCache.ringtone(language: context.language) {
+      if let ringtone = VoiceClipCache.ringtone(language: context.language, act: context.act) {
         await player.play(ringtone, loop: true)
       }
     }
@@ -119,6 +127,10 @@ final class CallEngine {
     ifThenPlan = ""
     goalResults = [:]
     interceptClosed = nil
+    habitOfDay = nil
+    identityAnswer = nil
+    windowHeld = nil
+    postPlanNote = nil
     usedCloneVoice = false
     phase = .idle
   }
@@ -187,10 +199,30 @@ final class CallEngine {
       await say(.noGoalsClose, c)
       return
     }
-    await say(.askIfThen, c)
-    let plan = await hear(c)
-    if Task.isCancelled { return }
-    ifThenPlan = plan
+    if c.act.rawValue >= Act.comeback.rawValue {
+      await say(.askHabit, c)
+      let heard = await hear(c)
+      if Task.isCancelled { return }
+      let parsed = await router.normalizeGoal(heard, existing: [], language: language)
+      habitOfDay = parsed.goal ?? (heard.isEmpty ? nil : heard)
+    }
+    switch c.act {
+    case .silence, .comeback:
+      await say(.askIfThen, c)
+      let plan = await hear(c)
+      if Task.isCancelled { return }
+      ifThenPlan = plan
+    case .identity, .trial:
+      await say(.askIdentity, c)
+      let answer = await hear(c)
+      if Task.isCancelled { return }
+      identityAnswer = answer.isEmpty ? nil : answer
+    case .flight:
+      await say(.askPostPlan, c)
+      let note = await hear(c)
+      if Task.isCancelled { return }
+      postPlanNote = note.isEmpty ? nil : note
+    }
     await say(.recap(extractedGoals), c)
   }
 
@@ -213,10 +245,23 @@ final class CallEngine {
         }
       }
     }
+    if c.act.rawValue >= Act.comeback.rawValue {
+      await say(.recoveredTime, c)
+    }
+    if c.act.rawValue >= Act.trial.rawValue {
+      await say(.askWindow, c)
+      let heard = await hear(c)
+      if Task.isCancelled { return }
+      windowHeld = await router.classifyYesNo(heard, question: "Did the user stay within the 15-minute window today?", language: c.language)
+    }
     await say(.askTomorrow, c)
     _ = await hear(c)
     if Task.isCancelled { return }
-    await say(.debriefClose, c)
+    if c.day >= Act.totalDays {
+      await say(.vaultOpen, c)
+    } else {
+      await say(.debriefClose, c)
+    }
   }
 
   private func interceptScript(_ c: StickPersona.Context) async {

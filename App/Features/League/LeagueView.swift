@@ -29,6 +29,14 @@ struct LeagueView: View {
             .padding(.top, 6)
             .appear(index: 0)
 
+            if !store.isUnlocked(.league) {
+              lockedHero
+                .appear(index: 1)
+              LockedFeatureCard(feature: .voiceBadges)
+                .appear(index: 2)
+              LockedFeatureCard(feature: .beforeAfter)
+                .appear(index: 3)
+            } else {
             rankHero
               .appear(index: 1)
 
@@ -59,6 +67,7 @@ struct LeagueView: View {
                   .appear(index: min(index, 12))
               }
             }
+            }
           }
           .padding(.horizontal, StickMetrics.screenMargin)
           .padding(.bottom, 110)
@@ -70,6 +79,28 @@ struct LeagueView: View {
         ReferralView()
       }
     }
+  }
+
+  private var lockedHero: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      HStack {
+        Image(systemName: "lock.fill")
+          .font(.system(size: 18, weight: .bold))
+        Text("Opens on day \(Feature.league.unlockDay)")
+          .font(StickFont.headline)
+      }
+      HStack(alignment: .firstTextBaseline, spacing: 6) {
+        CountingText(value: store.daysUntil(.league), font: StickFont.hero, color: .white)
+        Text("days")
+          .font(StickFont.title3)
+          .opacity(0.9)
+      }
+      Text("Act III. Thirty people ranked every week on hours recovered, not perfection. Until then, you only compete with yesterday.")
+        .font(StickFont.callout)
+        .opacity(0.9)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+    .stickHeroCard()
   }
 
   private var rankHero: some View {

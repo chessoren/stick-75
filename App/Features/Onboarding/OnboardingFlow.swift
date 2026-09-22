@@ -106,6 +106,7 @@ struct OnboardingContainer: View {
     case .quizDreams: QuizDreamsScreen()
     case .quizTried: QuizTriedScreen()
     case .result: ResultScreen()
+    case .journey: JourneyScreen()
     case .identity: IdentityScreen()
     case .name: NameScreen()
     case .voiceConsent: VoiceConsentScreen()

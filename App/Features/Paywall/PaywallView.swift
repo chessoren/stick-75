@@ -5,11 +5,14 @@ struct PaywallView: View {
   @Environment(StickStore.self) private var store
   var onUnlocked: () -> Void
   var onDismiss: (() -> Void)?
+  /// Onboarding shows only the 75 days; Weekly sits behind a small link and Stick Life is absent.
+  var ticketMode = false
 
   @State private var selected: SubscriptionPlan = .pass75
   private var purchases: PurchaseService { .shared }
   @State private var error: String?
   @State private var legal: LegalDocument?
+  @State private var showOtherPlans = false
 
   var body: some View {
     ZStack {
@@ -35,27 +38,57 @@ struct PaywallView: View {
             .frame(height: 34)
 
             VStack(alignment: .leading, spacing: 8) {
-              Text("Your voice is ready. Now commit.")
+              Text(ticketMode ? "Your ticket for the 75 days." : "Your voice is ready. Now commit.")
                 .font(StickFont.largeTitle)
                 .stickTitleTracking()
                 .foregroundStyle(.white)
                 .fixedSize(horizontal: false, vertical: true)
-              Text("Stick only calls paying members. No free trial: a trial is a way out, and you're done with those.")
+              Text(ticketMode
+                   ? "Act I starts tomorrow at \(store.profile.wakeTime.date, format: .dateTime.hour().minute()). Stick only calls members. No free trial: a trial is a way out, and you're done with those."
+                   : "Stick only calls paying members. No free trial: a trial is a way out, and you're done with those.")
                 .font(StickFont.body)
                 .foregroundStyle(.white.opacity(0.9))
                 .fixedSize(horizontal: false, vertical: true)
             }
             .appear(index: 0)
 
-            timeline
-              .appear(index: 1)
-
-            VStack(spacing: 10) {
-              ForEach(Array(SubscriptionPlan.allCases.enumerated()), id: \.element.id) { index, plan in
-                PlanCard(plan: plan, price: purchases.prices[plan] ?? plan.fallbackPrice, isSelected: selected == plan) {
-                  withAnimation(.snappy(duration: 0.3)) { selected = plan }
+            if ticketMode {
+              TicketCard(price: purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice, hoursPerDay: store.profile.hoursPerDay)
+                .appear(index: 1)
+              timeline
+                .appear(index: 2)
+              if showOtherPlans {
+                PlanCard(plan: .weekly, price: purchases.prices[.weekly] ?? SubscriptionPlan.weekly.fallbackPrice, isSelected: selected == .weekly) {
+                  withAnimation(.snappy(duration: 0.3)) { selected = .weekly }
                 }
-                .appear(index: index + 2)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                PlanCard(plan: .pass75, price: purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice, isSelected: selected == .pass75) {
+                  withAnimation(.snappy(duration: 0.3)) { selected = .pass75 }
+                }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+              } else {
+                Button {
+                  withAnimation(.smooth(duration: 0.35)) { showOtherPlans = true }
+                } label: {
+                  Text("I'd rather try one week first")
+                    .font(StickFont.footnoteMedium)
+                    .foregroundStyle(.white.opacity(0.85))
+                    .underline()
+                    .frame(maxWidth: .infinity)
+                }
+                .appear(index: 3)
+              }
+            } else {
+              timeline
+                .appear(index: 1)
+
+              VStack(spacing: 10) {
+                ForEach(Array(SubscriptionPlan.allCases.enumerated()), id: \.element.id) { index, plan in
+                  PlanCard(plan: plan, price: purchases.prices[plan] ?? plan.fallbackPrice, isSelected: selected == plan) {
+                    withAnimation(.snappy(duration: 0.3)) { selected = plan }
+                  }
+                  .appear(index: index + 2)
+                }
               }
             }
 
@@ -123,7 +156,9 @@ struct PaywallView: View {
     VStack(alignment: .leading, spacing: 12) {
       TimelineRow(symbol: "phone.fill", title: "Tomorrow morning", text: "Your voice wakes you and takes your first three goals.")
       TimelineRow(symbol: "hand.raised.fill", title: "The first time you open TikTok", text: "It rings. You answer to yourself.")
-      TimelineRow(symbol: "flag.fill", title: "Day 15", text: "Act I done. The hardest part is behind you.")
+      TimelineRow(symbol: "arrow.uturn.forward", title: "Day 16 · Act II", text: "The life counter opens. Stick starts building habits with you.")
+      TimelineRow(symbol: "trophy.fill", title: "Day 31 · Act III", text: "The league and your voice badges open. Stick stops ordering, starts asking.")
+      TimelineRow(symbol: "timer", title: "Day 46 · Act IV", text: "The shield comes off. Weekly trials. Stick tests you.")
       TimelineRow(symbol: "crown.fill", title: "Day 75", text: "\(Int(store.profile.hoursPerDay * 75)) hours back. The vault opens.")
     }
     .stickCard()
@@ -143,7 +178,7 @@ struct PaywallView: View {
 
   private var ctaTitle: LocalizedStringKey {
     switch selected {
-    case .pass75: "Start my 75 days · \(purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice)"
+    case .pass75: ticketMode ? "Take my ticket · \(purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice)" : "Start my 75 days · \(purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice)"
     case .weekly: "Start weekly · \(purchases.prices[.weekly] ?? SubscriptionPlan.weekly.fallbackPrice)"
     case .life: "Join Stick Life · \(purchases.prices[.life] ?? SubscriptionPlan.life.fallbackPrice)"
     }
@@ -171,6 +206,50 @@ struct PaywallView: View {
         error = String(localized: "Nothing to restore on this Apple Account.")
       }
     }
+  }
+}
+
+/// The single hero product in onboarding: the 75 days as a ticket, price per day next to the hours they lose.
+struct TicketCard: View {
+  var price: String
+  var hoursPerDay: Double
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 14) {
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 4) {
+          Text("The 75 days")
+            .font(StickFont.title2)
+            .stickTitleTracking()
+          Text("One payment. Five acts. Every call, every reveal, the Vault.")
+            .font(StickFont.footnote)
+            .opacity(0.9)
+        }
+        Spacer()
+        Image(systemName: "ticket.fill")
+          .font(.system(size: 22, weight: .semibold))
+          .opacity(0.9)
+      }
+      HStack(alignment: .firstTextBaseline, spacing: 8) {
+        Text(price)
+          .font(StickFont.hero)
+          .monospacedDigit()
+        Text("≈ €1.07 a day")
+          .font(StickFont.calloutMedium)
+          .opacity(0.9)
+      }
+      Text("Less than the \(hoursPerDay, format: .number.precision(.fractionLength(1))) hours a day you're paying now.")
+        .font(StickFont.footnote)
+        .opacity(0.9)
+      HStack(spacing: 6) {
+        ForEach(Act.allCases) { act in
+          Capsule()
+            .fill(Color.white.opacity(0.9))
+            .frame(height: 5)
+        }
+      }
+    }
+    .stickHeroCard()
   }
 }
 

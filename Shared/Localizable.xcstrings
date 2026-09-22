@@ -4291,6 +4291,926 @@
           }
         }
       }
+    },
+    "Drill sergeant": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sergent instructeur"
+          }
+        }
+      }
+    },
+    "Sergeant who builds": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sergent qui construit"
+          }
+        }
+      }
+    },
+    "Fewer orders, harder questions": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moins d'ordres, des questions plus dures"
+          }
+        }
+      }
+    },
+    "The tester": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le testeur"
+          }
+        }
+      }
+    },
+    "The mentor": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le mentor"
+          }
+        }
+      }
+    },
+    "Short orders. No open questions. No slack.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordres courts. Aucune question ouverte. Aucun relâchement."
+          }
+        }
+      }
+    },
+    "Still dry, but now Stick builds: a replacement habit every morning, recovered time counted every night.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toujours sec, mais Stick construit : une habitude de remplacement chaque matin, le temps récupéré compté chaque soir."
+          }
+        }
+      }
+    },
+    "Stick stops ordering and starts asking. \"Who are you when nobody's watching?\"": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick arrête d'ordonner et commence à questionner. « Qui tu es quand personne ne regarde ? »"
+          }
+        }
+      }
+    },
+    "Stick doubts out loud and checks. The shield is off; you hold the 15-minute window yourself.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick doute à voix haute et vérifie. Le bouclier est levé ; tu tiens la fenêtre de 15 minutes toi-même."
+          }
+        }
+      }
+    },
+    "Stick talks less and listens. One call a day. It prepares what comes after.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick parle moins et écoute. Un appel par jour. Il prépare l'après."
+          }
+        }
+      }
+    },
+    "Calls in your voice": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appels avec ta voix"
+          }
+        }
+      }
+    },
+    "Daily goals": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objectifs du jour"
+          }
+        }
+      }
+    },
+    "3 jokers": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 jokers"
+          }
+        }
+      }
+    },
+    "Life counter": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compteur de vie"
+          }
+        }
+      }
+    },
+    "Habit of the day": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Habitude du jour"
+          }
+        }
+      }
+    },
+    "Voice badges": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Badges vocaux"
+          }
+        }
+      }
+    },
+    "Before / after card": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carte avant / après"
+          }
+        }
+      }
+    },
+    "15-minute window": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fenêtre de 15 minutes"
+          }
+        }
+      }
+    },
+    "Weekly trials": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épreuves de la semaine"
+          }
+        }
+      }
+    },
+    "Plan after 75": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan après 75"
+          }
+        }
+      }
+    },
+    "Voice diploma": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diplôme vocal"
+          }
+        }
+      }
+    },
+    "The Vault opens": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le Coffre s'ouvre"
+          }
+        }
+      }
+    },
+    "Morning, evening, and the second you open a blocked app.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le matin, le soir, et à la seconde où tu ouvres une app bloquée."
+          }
+        }
+      }
+    },
+    "1 to 3 real goals, pushed to your widgets.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 à 3 vrais objectifs, poussés dans tes widgets."
+          }
+        }
+      }
+    },
+    "A slip costs one. Never miss twice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un écart en coûte un. Jamais deux fois."
+          }
+        }
+      }
+    },
+    "Your voice rings when TikTok opens.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta voix sonne quand TikTok s'ouvre."
+          }
+        }
+      }
+    },
+    "Hours won back, converted into books, runs, nights.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heures récupérées, converties en livres, runs, nuits."
+          }
+        }
+      }
+    },
+    "Every morning, Stick makes you pick what replaces the scroll.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque matin, Stick te fait choisir ce qui remplace le scroll."
+          }
+        }
+      }
+    },
+    "Thirty people, ranked weekly on hours recovered.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trente personnes, classées chaque semaine sur les heures récupérées."
+          }
+        }
+      }
+    },
+    "Stick records a sentence in your voice at each act.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick enregistre une phrase avec ta voix à chaque acte."
+          }
+        }
+      }
+    },
+    "Your Screen Time, day 0 versus now, ready to share.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton Temps d'écran, jour 0 contre aujourd'hui, prêt à partager."
+          }
+        }
+      }
+    },
+    "The shield comes off 15 minutes a day. You hold it.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le bouclier se lève 15 minutes par jour. Tu tiens."
+          }
+        }
+      }
+    },
+    "A phone-free evening, a disconnected Sunday. On your honor.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une soirée sans téléphone, un dimanche déconnecté. Sur l'honneur."
+          }
+        }
+      }
+    },
+    "Stick makes you write what stays after day 75.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick te fait écrire ce qui reste après le jour 75."
+          }
+        }
+      }
+    },
+    "Stick reads your 75 days back to you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick te relit tes 75 jours."
+          }
+        }
+      }
+    },
+    "Your message from day 1, played on day 75.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton message du jour 1, rejoué au jour 75."
+          }
+        }
+      }
+    },
+    "Phone-free evening": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soirée sans téléphone"
+          }
+        }
+      }
+    },
+    "Disconnected Sunday": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dimanche déconnecté"
+          }
+        }
+      }
+    },
+    "24 hours without the apps": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24 heures sans les apps"
+          }
+        }
+      }
+    },
+    "From dinner to sleep, the phone stays in another room.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du dîner au coucher, le téléphone reste dans une autre pièce."
+          }
+        }
+      }
+    },
+    "No blocked app from waking up to bed. Not even the window.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune app bloquée du réveil au coucher. Même pas la fenêtre."
+          }
+        }
+      }
+    },
+    "A full day, window included, without opening one of your apps.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une journée entière, fenêtre comprise, sans ouvrir une de tes apps."
+          }
+        }
+      }
+    },
+    "Your 75 days.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tes 75 jours."
+          }
+        }
+      }
+    },
+    "Five acts. Stick changes at every one. So do you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cinq actes. Stick change à chacun. Toi aussi."
+          }
+        }
+      }
+    },
+    "I want this": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je veux ça"
+          }
+        }
+      }
+    },
+    "Day %lld · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour %lld · %@"
+          }
+        }
+      }
+    },
+    "%@ blocked. Stick calls three times a day and takes your goals every morning.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bloqués. Stick appelle trois fois par jour et prend tes objectifs chaque matin."
+          }
+        }
+      }
+    },
+    "Every morning Stick makes you choose what replaces the scroll: %@. Every night it counts the hours you took back.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque matin Stick te fait choisir ce qui remplace le scroll : %@. Chaque soir il compte les heures reprises."
+          }
+        }
+      }
+    },
+    "Fewer orders, harder questions. Stick asks who you are when nobody's watching. The league opens.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moins d'ordres, des questions plus dures. Stick demande qui tu es quand personne ne regarde. La ligue s'ouvre."
+          }
+        }
+      }
+    },
+    "The shield comes off 15 minutes a day. Stick checks every night whether you held it. Weekly trials begin.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le bouclier se lève 15 minutes par jour. Stick vérifie chaque soir si tu as tenu. Les épreuves commencent."
+          }
+        }
+      }
+    },
+    "One call a day. Stick makes you write what stays after day 75. On the last night, it plays your day-1 message.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un appel par jour. Stick te fait écrire ce qui reste après le jour 75. Le dernier soir, il rejoue ton message du jour 1."
+          }
+        }
+      }
+    },
+    "Act I": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte I"
+          }
+        }
+      }
+    },
+    "The Silence starts now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le Silence commence maintenant."
+          }
+        }
+      }
+    },
+    "Tomorrow at %@, your voice rings for the first goals. Until then: one goal for today, right now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demain à %@, ta voix sonne pour les premiers objectifs. D'ici là : un objectif pour aujourd'hui, tout de suite."
+          }
+        }
+      }
+    },
+    "Your ticket for the 75 days.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton billet pour les 75 jours."
+          }
+        }
+      }
+    },
+    "Act I starts tomorrow at %@. Stick only calls members. No free trial: a trial is a way out, and you're done with those.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'acte I commence demain à %@. Stick n'appelle que les membres. Pas d'essai gratuit : un essai, c'est une porte de sortie, et tu en as fini avec ça."
+          }
+        }
+      }
+    },
+    "I'd rather try one week first": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je préfère tester une semaine d'abord"
+          }
+        }
+      }
+    },
+    "Take my ticket · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prendre mon billet · %@"
+          }
+        }
+      }
+    },
+    "The 75 days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les 75 jours"
+          }
+        }
+      }
+    },
+    "One payment. Five acts. Every call, every reveal, the Vault.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un paiement. Cinq actes. Chaque appel, chaque révélation, le Coffre."
+          }
+        }
+      }
+    },
+    "≈ €1.07 a day": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "≈ 1,07 € par jour"
+          }
+        }
+      }
+    },
+    "Less than the %@ hours a day you're paying now.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moins que les %@ heures par jour que tu paies aujourd'hui."
+          }
+        }
+      }
+    },
+    "Day 16 · Act II": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour 16 · Acte II"
+          }
+        }
+      }
+    },
+    "The life counter opens. Stick starts building habits with you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le compteur de vie s'ouvre. Stick commence à construire des habitudes avec toi."
+          }
+        }
+      }
+    },
+    "Day 31 · Act III": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour 31 · Acte III"
+          }
+        }
+      }
+    },
+    "The league and your voice badges open. Stick stops ordering, starts asking.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La ligue et tes badges vocaux s'ouvrent. Stick arrête d'ordonner, commence à questionner."
+          }
+        }
+      }
+    },
+    "Day 46 · Act IV": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour 46 · Acte IV"
+          }
+        }
+      }
+    },
+    "The shield comes off. Weekly trials. Stick tests you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le bouclier se lève. Épreuves hebdo. Stick te teste."
+          }
+        }
+      }
+    },
+    "New today": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau aujourd'hui"
+          }
+        }
+      }
+    },
+    "Next reveal in %lld d": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prochaine révélation dans %lld j"
+          }
+        }
+      }
+    },
+    "Last act": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernier acte"
+          }
+        }
+      }
+    },
+    "Act %@ opens in %lld days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'acte %@ s'ouvre dans %lld jours"
+          }
+        }
+      }
+    },
+    "days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jours"
+          }
+        }
+      }
+    },
+    "%@, unlocks in %lld days": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, se débloque dans %lld jours"
+          }
+        }
+      }
+    },
+    "Stick asks for it on the wake-up call.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick te la demande à l'appel du réveil."
+          }
+        }
+      }
+    },
+    "This week's trials": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les épreuves de la semaine"
+          }
+        }
+      }
+    },
+    "Every morning Stick asks for one rule you keep. They land here.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque matin Stick demande une règle que tu gardes. Elles arrivent ici."
+          }
+        }
+      }
+    },
+    "Day %lld · Act %@ · %lld held": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour %lld · Acte %@ · %lld tenus"
+          }
+        }
+      }
+    },
+    "Opens on day %lld": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S'ouvre au jour %lld"
+          }
+        }
+      }
+    },
+    "Act III. Thirty people ranked every week on hours recovered, not perfection. Until then, you only compete with yesterday.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acte III. Trente personnes classées chaque semaine sur les heures récupérées, pas la perfection. D'ici là, tu ne te bats que contre hier."
+          }
+        }
+      }
+    },
+    "In your voice. Tap to play.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avec ta voix. Touche pour écouter."
+          }
+        }
+      }
+    },
+    "Recording in your voice…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrement avec ta voix…"
+          }
+        }
+      }
+    },
+    "New in Act %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau dans l'acte %@"
+          }
+        }
+      }
+    },
+    "Stick becomes: %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick devient : %@"
+          }
+        }
+      }
+    },
+    "One call a day. The morning one.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un appel par jour. Celui du matin."
+          }
+        }
+      }
+    },
+    "%lld calls a day.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld appels par jour."
+          }
+        }
+      }
+    },
+    "New ringtone: “%@”": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle sonnerie : « %@ »"
+          }
+        }
+      }
+    },
+    "Unlocked": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloqué"
+          }
+        }
+      }
+    },
+    "Hear Stick announce it": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écouter Stick l'annoncer"
+          }
+        }
+      }
+    },
+    "Preparing your voice…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Préparation de ta voix…"
+          }
+        }
+      }
+    },
+    "Play again": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réécouter"
+          }
+        }
+      }
+    },
+    "Let's go": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'est parti"
+          }
+        }
+      }
     }
   }
 }

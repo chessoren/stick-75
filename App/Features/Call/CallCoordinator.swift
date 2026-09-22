@@ -40,8 +40,11 @@ final class CallCoordinator {
     switch engine.kind {
     case .wake:
       if !engine.extractedGoals.isEmpty { store.setGoals(engine.extractedGoals) }
+      store.setToday(habit: engine.habitOfDay, windowHeld: nil, identityAnswer: engine.identityAnswer)
+      if let note = engine.postPlanNote { store.addPostPlanNote(note) }
     case .debrief:
       for (id, done) in engine.goalResults { store.setGoalDone(id, done) }
+      store.setToday(habit: nil, windowHeld: engine.windowHeld, identityAnswer: nil)
     case .intercept:
       // Hanging up before answering the question counts as closing the app.
       store.recordInterception(closedApp: engine.interceptClosed ?? true)
