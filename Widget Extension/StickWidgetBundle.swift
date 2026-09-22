@@ -6,6 +6,7 @@ struct StickWidgetBundle: WidgetBundle {
   var body: some Widget {
     TodayGoalsWidget()
     DaysHeldWidget()
+    NextCallWidget()
     CallStickControl()
     CallLiveActivity()
     StickAlarmLiveActivity()

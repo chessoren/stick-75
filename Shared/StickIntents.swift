@@ -65,3 +65,17 @@ struct DismissAlarmIntent: LiveActivityIntent {
     return .result()
   }
 }
+
+/// Hangs up the current call from the Dynamic Island or Lock Screen.
+struct EndCallIntent: LiveActivityIntent {
+  static let title: LocalizedStringResource = "Hang up"
+  static let description = IntentDescription("Ends the current call with Stick.")
+  static let openAppWhenRun = false
+
+  init() {}
+
+  func perform() async throws -> some IntentResult {
+    AppGroup.defaults.set(Date.now.timeIntervalSince1970, forKey: "stick.call.endRequested")
+    return .result()
+  }
+}

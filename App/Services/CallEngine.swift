@@ -56,6 +56,7 @@ final class CallEngine {
     self.context = context
     self.voiceID = voiceID
     phase = .ringing
+    AppGroup.defaults.removeObject(forKey: "stick.call.endRequested")
     StickHaptics.shared.startRinging()
     LiveActivityManager.shared.start(kind: kind, userName: context.name)
     AudioSessionManager.activateForPlayback()
@@ -129,6 +130,13 @@ final class CallEngine {
         try? await Task.sleep(for: .seconds(1))
         guard let self, let start = self.startedAt else { break }
         self.elapsedSeconds = Int(Date.now.timeIntervalSince(start))
+        // "Hang up" tapped in the Dynamic Island or on the Lock Screen.
+        let requested = AppGroup.defaults.double(forKey: "stick.call.endRequested")
+        if requested > start.timeIntervalSince1970 {
+          AppGroup.defaults.removeObject(forKey: "stick.call.endRequested")
+          self.hangUp()
+          break
+        }
       }
     }
   }

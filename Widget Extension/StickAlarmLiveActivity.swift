@@ -4,84 +4,127 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
-/// Renders the AlarmKit alert for the wake-up call and evening debrief.
+/// The AlarmKit alert for the wake-up call and the evening debrief: looks like an incoming call from yourself.
 struct StickAlarmLiveActivity: Widget {
   var body: some WidgetConfiguration {
     ActivityConfiguration(for: AlarmAttributes<StickAlarmMetadata>.self) { context in
-      HStack(spacing: 14) {
-        Circle()
-          .fill(.white)
-          .frame(width: 48, height: 48)
-          .overlay {
-            Text(initial(context))
-              .font(.headline)
-              .foregroundStyle(WidgetTheme.orange)
-          }
-        VStack(alignment: .leading, spacing: 2) {
-          Text(context.attributes.presentation.alert.title)
-            .font(.headline)
-          Text(subtitle(context))
-            .font(.caption)
-            .opacity(0.9)
-        }
-        Spacer()
-        Button(intent: StartCallIntent(callKind: context.attributes.metadata?.callKind ?? "wake")) {
-          Image(systemName: "phone.fill")
-            .font(.title3)
-            .foregroundStyle(WidgetTheme.orange)
-            .frame(width: 44, height: 44)
-            .background(.white, in: Circle())
-        }
-        .buttonStyle(.plain)
-      }
-      .foregroundStyle(.white)
-      .padding(16)
-      .activityBackgroundTint(WidgetTheme.orange)
-      .activitySystemActionForegroundColor(.white)
+      AlarmLockScreenView(context: context)
+        .activityBackgroundTint(WidgetTheme.orangeDeep)
+        .activitySystemActionForegroundColor(.white)
     } dynamicIsland: { context in
       DynamicIsland {
         DynamicIslandExpandedRegion(.leading) {
-          Image(systemName: "phone.arrow.down.left.fill")
-            .font(.title2)
-            .foregroundStyle(WidgetTheme.orange)
+          InitialAvatar(name: context.attributes.metadata?.userName ?? "", size: 44, inverted: true)
+            .padding(.leading, 4)
+            .padding(.top, 2)
         }
         DynamicIslandExpandedRegion(.trailing) {
-          Button(intent: StartCallIntent(callKind: context.attributes.metadata?.callKind ?? "wake")) {
-            Image(systemName: "phone.fill")
-              .foregroundStyle(WidgetTheme.orange)
+          VStack(alignment: .trailing, spacing: 2) {
+            Text("Ringing")
+              .font(WidgetFont.caption)
+              .foregroundStyle(WidgetTheme.peach)
+            Text(kindTitle(context))
+              .font(WidgetFont.caption2)
+              .foregroundStyle(.white.opacity(0.7))
           }
-          .buttonStyle(.plain)
+          .padding(.trailing, 4)
+          .padding(.top, 4)
         }
         DynamicIslandExpandedRegion(.center) {
-          Text(context.attributes.presentation.alert.title)
-            .font(.headline)
-            .foregroundStyle(.white)
+          VStack(alignment: .leading, spacing: 1) {
+            Text(context.attributes.presentation.alert.title)
+              .font(WidgetFont.inter(16, "SemiBold"))
+              .foregroundStyle(.white)
+              .lineLimit(1)
+            Text("Your own voice · Stick")
+              .font(WidgetFont.caption2)
+              .foregroundStyle(.white.opacity(0.7))
+          }
+          .padding(.top, 4)
         }
         DynamicIslandExpandedRegion(.bottom) {
-          Text(subtitle(context))
-            .font(.caption)
-            .foregroundStyle(.white.opacity(0.85))
+          HStack(spacing: 10) {
+            StaticWaveform(color: WidgetTheme.orange, bars: 12, height: 18, energetic: true)
+            Spacer()
+            Button(intent: StartCallIntent(callKind: context.attributes.metadata?.callKind ?? "wake")) {
+              Label("Answer", systemImage: "phone.fill")
+                .font(WidgetFont.headline)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 10)
+                .background(WidgetTheme.success, in: Capsule())
+            }
+            .buttonStyle(.plain)
+          }
+          .padding(.top, 6)
         }
       } compactLeading: {
-        Image(systemName: "phone.fill")
-          .foregroundStyle(WidgetTheme.orange)
+        InitialAvatar(name: context.attributes.metadata?.userName ?? "", size: 22, inverted: true)
+          .padding(.leading, 2)
       } compactTrailing: {
-        Image(systemName: "waveform")
-          .foregroundStyle(.white)
+        Image(systemName: "phone.fill")
+          .font(.system(size: 13, weight: .bold))
+          .foregroundStyle(WidgetTheme.orange)
+          .symbolEffect(.pulse)
       } minimal: {
         Image(systemName: "phone.fill")
+          .font(.system(size: 12, weight: .bold))
           .foregroundStyle(WidgetTheme.orange)
       }
       .keylineTint(WidgetTheme.orange)
     }
   }
 
-  private func initial(_ context: ActivityViewContext<AlarmAttributes<StickAlarmMetadata>>) -> String {
-    let name = context.attributes.metadata?.userName ?? ""
-    return name.isEmpty ? "S" : String(name.prefix(1)).uppercased()
+  private func kindTitle(_ context: ActivityViewContext<AlarmAttributes<StickAlarmMetadata>>) -> LocalizedStringKey {
+    (context.attributes.metadata?.callKind ?? "wake") == "debrief" ? "Evening debrief" : "Wake-up call"
+  }
+}
+
+struct AlarmLockScreenView: View {
+  var context: ActivityViewContext<AlarmAttributes<StickAlarmMetadata>>
+
+  private var kind: String { context.attributes.metadata?.callKind ?? "wake" }
+  private var subtitle: LocalizedStringKey {
+    kind == "debrief" ? "Evening debrief. Pick up." : "Wake-up call. Pick up."
   }
 
-  private func subtitle(_ context: ActivityViewContext<AlarmAttributes<StickAlarmMetadata>>) -> LocalizedStringKey {
-    (context.attributes.metadata?.callKind ?? "wake") == "debrief" ? "Evening debrief. Pick up." : "Wake-up call. Pick up."
+  var body: some View {
+    ZStack {
+      WidgetTheme.heroBackground
+      VStack(spacing: 14) {
+        HStack(spacing: 12) {
+          InitialAvatar(name: context.attributes.metadata?.userName ?? "", size: 52)
+          VStack(alignment: .leading, spacing: 2) {
+            Text(context.attributes.presentation.alert.title)
+              .font(WidgetFont.inter(18, "SemiBold"))
+              .foregroundStyle(.white)
+              .lineLimit(1)
+            Text(subtitle)
+              .font(WidgetFont.body)
+              .foregroundStyle(.white.opacity(0.9))
+          }
+          Spacer()
+          Image(systemName: kind == "debrief" ? "moon.stars.fill" : "sunrise.fill")
+            .font(.system(size: 16, weight: .bold))
+            .foregroundStyle(WidgetTheme.orange)
+            .frame(width: 38, height: 38)
+            .background(Color.white, in: Circle())
+        }
+        HStack(spacing: 10) {
+          StaticWaveform(color: .white, bars: 20, height: 20, energetic: true)
+          Spacer()
+          Button(intent: StartCallIntent(callKind: kind)) {
+            Label("Answer", systemImage: "phone.fill")
+              .font(WidgetFont.caption)
+              .foregroundStyle(.white)
+              .padding(.horizontal, 16)
+              .padding(.vertical, 8)
+              .background(WidgetTheme.success, in: Capsule())
+          }
+          .buttonStyle(.plain)
+        }
+      }
+      .padding(16)
+    }
   }
 }

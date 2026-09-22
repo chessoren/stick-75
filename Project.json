@@ -122,7 +122,13 @@
           "ITSAppUsesNonExemptEncryption": false,
           "NSExtension": {
             "NSExtensionPointIdentifier": "com.apple.widgetkit-extension"
-          }
+          },
+          "UIAppFonts": [
+            "Inter-Regular.ttf",
+            "Inter-Medium.ttf",
+            "Inter-SemiBold.ttf",
+            "Inter-Bold.ttf"
+          ]
         }
       },
       "platform": "iOS",
@@ -141,6 +147,9 @@
         },
         {
           "path": "Shared"
+        },
+        {
+          "path": "App/Resources/Fonts"
         }
       ],
       "type": "app-extension"

@@ -4181,6 +4181,116 @@
           }
         }
       }
+    },
+    "When your own voice calls next.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand ta propre voix appelle la prochaine fois."
+          }
+        }
+      }
+    },
+    "Not scheduled": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non programmé"
+          }
+        }
+      }
+    },
+    "Your voice calls once the program starts.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta voix appelle dès que le programme démarre."
+          }
+        }
+      }
+    },
+    "Ringing": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ça sonne"
+          }
+        }
+      }
+    },
+    "Pick up. It's you.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Décroche. C'est toi."
+          }
+        }
+      }
+    },
+    "Calling…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appel…"
+          }
+        }
+      }
+    },
+    "back": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "récupérées"
+          }
+        }
+      }
+    },
+    "held": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tenus"
+          }
+        }
+      }
+    },
+    "of 75 · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sur 75 · %@"
+          }
+        }
+      }
+    },
+    "Take the wake-up call.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prends l'appel du réveil."
+          }
+        }
+      }
+    },
+    "Ends the current call with Stick.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termine l'appel en cours avec Stick."
+          }
+        }
+      }
     }
   }
 }
