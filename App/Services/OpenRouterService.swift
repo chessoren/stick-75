@@ -67,6 +67,19 @@ struct OpenRouterService {
     return content.trimmingCharacters(in: .whitespacesAndNewlines)
   }
 
+  /// Quick reachability check before a call (tiny completion, short timeout).
+  func ping() async -> Bool {
+    let messages = [ChatMessage(role: .user, content: "Reply with the single word OK.")]
+    let result = await withTaskGroup(of: Bool.self) { group -> Bool in
+      group.addTask { (try? await self.complete(messages, maxTokens: 5, temperature: 0)) != nil }
+      group.addTask { try? await Task.sleep(for: .seconds(12)); return false }
+      let first = await group.next() ?? false
+      group.cancelAll()
+      return first
+    }
+    return result
+  }
+
   struct ParsedGoal {
     var goal: String?
     var done: Bool

@@ -4,13 +4,15 @@ import SwiftUI
 struct SuggestionCard: View {
   @Environment(StickStore.self) private var store
   @Environment(CallCoordinator.self) private var calls
+  @Binding var showingAddGoal: Bool
   @State private var dismissedFor = 0
 
   private enum Suggestion {
-    case setGoals, debrief, keepGoing(Goal), lapse, none
+    case setGoals, addByHand, debrief, keepGoing(Goal), lapse, none
   }
 
   private var suggestion: Suggestion {
+    if store.todayGoals.isEmpty, store.lastWakeCallDegraded { return .addByHand }
     if !store.today.goalsSet { return .setGoals }
     if store.today.lapsed, !store.today.recoveryDone { return .lapse }
     if let goal = store.todayGoals.first(where: { !$0.isDone }) { return .keepGoing(goal) }
@@ -51,6 +53,7 @@ struct SuggestionCard: View {
   private var text: LocalizedStringKey {
     switch suggestion {
     case .setGoals: "Stick hasn't called yet. Set 1 to 3 goals for today with your own voice."
+    case .addByHand: "Stick couldn't take your goals on the call. Write 1 to 3 with the + button, then it checks tonight."
     case .debrief: "Every goal is done. Take the evening debrief to lock the day."
     case .keepGoing(let goal): "Next up: \(goal.title). Finish it before you touch anything else."
     case .lapse: "You slipped today. One lapse is fine, two is not. Take the recovery call."
@@ -61,6 +64,7 @@ struct SuggestionCard: View {
   private var primaryTitle: LocalizedStringKey {
     switch suggestion {
     case .setGoals: "Call me"
+    case .addByHand: "Add"
     case .debrief: "Debrief"
     case .keepGoing: "Done"
     case .lapse: "Recover"
@@ -71,6 +75,7 @@ struct SuggestionCard: View {
   private func primaryAction() {
     switch suggestion {
     case .setGoals: calls.start(.wake, store: store)
+    case .addByHand: showingAddGoal = true
     case .debrief: calls.start(.debrief, store: store)
     case .keepGoing(let goal): store.toggleGoal(goal)
     case .lapse: calls.start(.recovery, store: store)

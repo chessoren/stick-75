@@ -214,6 +214,28 @@ enum StickPersona {
     }
   }
 
+  enum DegradedReason { case brainOffline, cannotHear }
+
+  /// One line, then Stick hangs up: the call cannot run as a conversation right now.
+  static func degradedLine(_ reason: DegradedReason, kind: CallKind, _ c: Context) -> String {
+    let fr = c.language == .french
+    let name = c.name.isEmpty ? "" : c.name + ", "
+    switch (reason, kind) {
+    case (.brainOffline, .wake):
+      return fr ? "\(name)mon cerveau ne répond pas ce matin. Pas d'excuse pour toi : tu écris tes un à trois objectifs avec le bouton plus sur l'écran Aujourd'hui, maintenant. Je rappelle ce soir." : "\(name)my brain isn't answering this morning. No excuse for you: write your one to three goals with the plus button on the Today screen, now. I call tonight."
+    case (.cannotHear, .wake):
+      return fr ? "\(name)je ne peux pas t'entendre, le micro est coupé. Écris tes objectifs avec le bouton plus sur l'écran Aujourd'hui, et active le micro dans Réglages pour ce soir." : "\(name)I can't hear you, the microphone is off. Write your goals with the plus button on the Today screen, and turn the mic on in Settings for tonight."
+    case (.brainOffline, .debrief):
+      return fr ? "\(name)mon cerveau est hors ligne ce soir. Coche tes objectifs faits sur l'écran Aujourd'hui, à la main. Demain je te réveille." : "\(name)my brain is offline tonight. Tick the goals you did on the Today screen, by hand. Tomorrow I wake you."
+    case (.cannotHear, .debrief):
+      return fr ? "\(name)je ne t'entends pas. Coche tes objectifs faits à la main et active le micro dans Réglages." : "\(name)I can't hear you. Tick your done goals by hand and turn the mic on in Settings."
+    case (.brainOffline, _):
+      return fr ? "\(name)mon cerveau ne répond pas. Tu connais l'ordre : ferme l'app, retourne à ton objectif. Je rappelle." : "\(name)my brain isn't answering. You know the order: close the app, back to your goal. I'll call again."
+    case (.cannotHear, _):
+      return fr ? "\(name)je ne t'entends pas. Ferme l'app, retourne à ton objectif, et active le micro dans Réglages." : "\(name)I can't hear you. Close the app, back to your goal, and turn the mic on in Settings."
+    }
+  }
+
   /// Strips markdown, stage directions and the [END] marker; keeps at most three sentences.
   static func clean(_ raw: String) -> String {
     var text = raw

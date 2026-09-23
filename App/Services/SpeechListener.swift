@@ -21,6 +21,12 @@ final class SpeechListener {
     return mic && speech == .authorized
   }
 
+  static func hasPermissions() async -> Bool {
+    let mic = AVAudioApplication.shared.recordPermission == .granted
+    let speech = SFSpeechRecognizer.authorizationStatus() == .authorized
+    return mic && speech
+  }
+
   /// Returns the transcript. Empty string if nothing was said before `noSpeechTimeout`.
   /// Ends `maxSilence` seconds after the last change in the transcript (people pause mid-sentence).
   func listen(locale: Locale, maxSilence: TimeInterval = 2.2, noSpeechTimeout: TimeInterval = 9, maxDuration: TimeInterval = 40) async throws -> String {

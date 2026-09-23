@@ -10,6 +10,8 @@ final class PurchaseService {
   static let shared = PurchaseService()
 
   private(set) var prices: [SubscriptionPlan: String] = [:]
+  /// Localized price of the 75-day pass divided by 75, when the store is live.
+  private(set) var passPricePerDay: String = "€1.07"
   private(set) var isBusy = false
   private(set) var lastError: String?
   private var packages: [SubscriptionPlan: Package] = [:]
@@ -32,6 +34,13 @@ final class PurchaseService {
         if let plan = SubscriptionPlan.allCases.first(where: { $0.productID == package.storeProduct.productIdentifier }) {
           packages[plan] = package
           prices[plan] = package.storeProduct.localizedPriceString
+          if plan == .pass75 {
+            let perDay = package.storeProduct.price / 75
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .currency
+            formatter.locale = package.storeProduct.priceFormatter?.locale ?? .current
+            passPricePerDay = formatter.string(from: perDay as NSDecimalNumber) ?? passPricePerDay
+          }
         }
       }
     } catch {
@@ -81,6 +90,17 @@ final class PurchaseService {
       lastError = error.localizedDescription
       return nil
     }
+  }
+
+  /// Ties purchases to the signed-in account so entitlements follow the user across devices.
+  func identify(userID: String) async {
+    guard isConfigured else { return }
+    _ = try? await Purchases.shared.logIn(userID)
+  }
+
+  func logOut() async {
+    guard isConfigured, !Purchases.shared.isAnonymous else { return }
+    _ = try? await Purchases.shared.logOut()
   }
 
   /// Re-checks the current customer on launch so an expired weekly plan locks the app again.

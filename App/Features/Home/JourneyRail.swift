@@ -31,16 +31,13 @@ struct JourneyRail: View {
           }
         }
 
-        HStack(spacing: 6) {
+        // Five act bars that always fit the width: held days in green, today's position pulsing.
+        HStack(spacing: 5) {
           ForEach(Act.allCases) { act in
-            HStack(spacing: 2.5) {
-              ForEach(act.dayRange, id: \.self) { day in
-                dot(day)
-              }
-            }
+            actBar(act)
           }
         }
-        .frame(maxWidth: .infinity)
+        .frame(height: 10)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("Day \(store.dayNumber) of 75"))
 
@@ -75,21 +72,44 @@ struct JourneyRail: View {
   }
 
   @ViewBuilder
-  private func dot(_ day: Int) -> some View {
-    let record = store.record(forDay: day)
-    let isToday = day == store.dayNumber
-    Circle()
-      .fill(fill(day: day, record: record))
-      .frame(width: isToday ? 8 : 5, height: isToday ? 8 : 5)
-      .scaleEffect(isToday && pulse ? 1.25 : 1)
-      .animation(isToday ? .smooth(duration: 1.1).repeatForever(autoreverses: true) : .default, value: pulse)
-      .frame(maxWidth: .infinity)
-  }
-
-  private func fill(day: Int, record: DayRecord) -> Color {
-    if day < store.dayNumber { return record.isHeld ? .stickSuccess : (record.lapsed ? .stickDanger.opacity(0.7) : Color.ink.opacity(0.18)) }
-    if day == store.dayNumber { return .brandOrange }
-    return Act.act(forDay: day) == store.currentAct ? Color.brandOrange.opacity(0.25) : Color.ink.opacity(0.08)
+  private func actBar(_ act: Act) -> some View {
+    let state = actState(act)
+    GeometryReader { geo in
+      let width = geo.size.width
+      let daysInto = state == .done ? Act.length : (state == .current ? store.dayInAct : 0)
+      let heldInAct = act.dayRange.filter { store.record(forDay: $0).isHeld }.count
+      let lapsedInAct = act.dayRange.filter { $0 < store.dayNumber && store.record(forDay: $0).lapsed && !store.record(forDay: $0).isHeld }.count
+      ZStack(alignment: .leading) {
+        Capsule()
+          .fill(state == .locked ? Color.ink.opacity(0.08) : Color.brandOrange.opacity(0.18))
+        if daysInto > 0 {
+          Capsule()
+            .fill(Color.brandOrange.opacity(0.35))
+            .frame(width: width * CGFloat(daysInto) / CGFloat(Act.length))
+        }
+        if heldInAct > 0 {
+          Capsule()
+            .fill(Color.stickSuccess)
+            .frame(width: width * CGFloat(heldInAct) / CGFloat(Act.length))
+        }
+        if lapsedInAct > 0 {
+          Capsule()
+            .fill(Color.stickDanger.opacity(0.6))
+            .frame(width: width * CGFloat(lapsedInAct) / CGFloat(Act.length))
+            .offset(x: width * CGFloat(heldInAct) / CGFloat(Act.length))
+        }
+        if state == .current {
+          Circle()
+            .fill(Color.brandOrange)
+            .frame(width: 12, height: 12)
+            .overlay(Circle().strokeBorder(Color.white, lineWidth: 2))
+            .scaleEffect(pulse ? 1.2 : 1)
+            .animation(.smooth(duration: 1.1).repeatForever(autoreverses: true), value: pulse)
+            .offset(x: min(width - 12, max(0, width * CGFloat(store.dayInAct - 1) / CGFloat(Act.length))))
+        }
+      }
+    }
+    .frame(height: 10)
   }
 }
 

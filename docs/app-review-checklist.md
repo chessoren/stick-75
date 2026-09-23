@@ -8,6 +8,7 @@ Everything the app does is in the code. Everything below is what you do in App S
 - [ ] Request **Time Sensitive Notifications** capability in the app ID (backup ringer).
 - [ ] RevenueCat project → Apple App Store app → paste the public SDK key into `App/Resources/Secrets.local.plist` (`REVENUECAT_KEY`).
 - [ ] Supabase project → run `supabase/schema.sql`, enable **Anonymous sign-ins**, paste URL + anon key.
+- [ ] **Sign in with Apple**: in the Apple Developer portal, enable the capability on the App ID. In Supabase › Authentication › Providers › Apple, enable it and put the app's bundle ID in "Client IDs" (native sign-in only needs that; no Services ID or secret key unless you add web login). The app links an anonymous session to the Apple identity so league rows survive.
 - [ ] Move Fish Audio and OpenRouter calls behind a Supabase Edge Function before scale (keys shipped in the binary can be extracted). Not a review blocker.
 
 ## 2. In-app purchases (App Store Connect › Monetization)

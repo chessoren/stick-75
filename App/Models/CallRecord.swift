@@ -56,4 +56,5 @@ struct CallRecord: Identifiable, Codable, Hashable {
   var turns: [CallTurn]
   var summary: String
   var answered: Bool
+  var degraded = false
 }

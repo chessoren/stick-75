@@ -13,7 +13,7 @@ Tiers
 • OpenRouter (modèle de langage) : reçoit le texte de la conversation, ton prénom, tes objectifs et ta phrase d'identité pour que Stick puisse te répondre. Aucun audio n'est envoyé.
 • Reconnaissance vocale Apple : transcrit ce que tu dis pendant les appels.
 • RevenueCat et Apple : gèrent les achats. Stick ne voit jamais tes données de paiement.
-• Supabase : stocke ton score de ligue (prénom, heures récupérées, jours tenus) sous un compte anonyme.
+• Supabase : stocke ton compte et ton score de ligue (prénom, heures récupérées, jours tenus). Avec « Se connecter avec Apple », nous recevons l'email partagé par Apple (ou son relais privé) et ton prénom ; sans compte, un identifiant anonyme est utilisé.
 
 Stick ne vend jamais de données, n'affiche jamais de publicité, n'utilise jamais ta voix pour quelqu'un d'autre que toi.
 

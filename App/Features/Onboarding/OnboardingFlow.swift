@@ -115,6 +115,7 @@ struct OnboardingContainer: View {
     case .aha: AhaScreen()
     case .contract: ContractScreen()
     case .paywall: PaywallStep()
+    case .account: AccountScreen()
     case .screenTime: ScreenTimeScreen()
     case .permissions: PermissionsScreen()
     case .schedule: ScheduleScreen()

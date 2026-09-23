@@ -28,7 +28,7 @@ struct HomeView: View {
             HeroGoalCard()
               .appear(index: 2)
 
-            SuggestionCard()
+            SuggestionCard(showingAddGoal: $showingAddGoal)
               .appear(index: 3)
 
             InterceptionReminderCard()

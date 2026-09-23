@@ -98,7 +98,7 @@ struct ContractScreen: View {
 /// The five real dates of the program, printed on the contract.
 struct ContractTimeline: View {
   private var start: Date {
-    Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
+    Calendar.current.startOfDay(for: .now)
   }
 
   var body: some View {

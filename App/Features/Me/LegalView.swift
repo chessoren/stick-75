@@ -62,7 +62,7 @@ enum LegalTexts {
   • OpenRouter (language model): receives the text of the conversation, your first name, your goals and your identity sentence so Stick can answer you. No audio is sent.
   • Apple Speech Recognition: transcribes what you say during calls.
   • RevenueCat and Apple: handle purchases. Stick never sees your payment details.
-  • Supabase: stores your league score (first name, hours recovered, days held) under an anonymous account.
+  • Supabase: stores your account and league score (first name, hours recovered, days held). With Sign in with Apple, we receive the email Apple shares (or its private relay) and your first name; without an account, an anonymous id is used.
 
   Stick never sells data, never runs ads, never uses your voice for anyone but you.
 
@@ -91,7 +91,7 @@ enum LegalTexts {
   • OpenRouter (modèle de langage) : reçoit le texte de la conversation, ton prénom, tes objectifs et ta phrase d'identité pour que Stick puisse te répondre. Aucun audio n'est envoyé.
   • Reconnaissance vocale Apple : transcrit ce que tu dis pendant les appels.
   • RevenueCat et Apple : gèrent les achats. Stick ne voit jamais tes données de paiement.
-  • Supabase : stocke ton score de ligue (prénom, heures récupérées, jours tenus) sous un compte anonyme.
+  • Supabase : stocke ton compte et ton score de ligue (prénom, heures récupérées, jours tenus). Avec « Se connecter avec Apple », nous recevons l'email partagé par Apple (ou son relais privé) et ton prénom ; sans compte, un identifiant anonyme est utilisé.
 
   Stick ne vend jamais de données, n'affiche jamais de publicité, n'utilise jamais ta voix pour quelqu'un d'autre que toi.
 

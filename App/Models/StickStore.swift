@@ -117,6 +117,12 @@ final class StickStore {
     }
   }
 
+  /// The last wake-up call today could not take goals (model or microphone unavailable).
+  var lastWakeCallDegraded: Bool {
+    guard let call = state.calls.first(where: { $0.kind == .wake && $0.dayNumber == dayNumber }) else { return false }
+    return call.degraded
+  }
+
   var todayGoals: [Goal] {
     state.goals.filter { $0.dayNumber == dayNumber }
   }
@@ -355,7 +361,7 @@ final class StickStore {
 
   /// Real calendar date of a program day.
   func date(forDay day: Int) -> Date {
-    let start = state.startDate ?? Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
+    let start = state.startDate ?? Calendar.current.startOfDay(for: .now)
     return Calendar.current.date(byAdding: .day, value: day - 1, to: start) ?? start
   }
 
@@ -383,7 +389,7 @@ final class StickStore {
     }
     var record = today
     switch call.kind {
-    case .wake: record.goalsSet = !todayGoals.isEmpty
+    case .wake: record.goalsSet = !todayGoals.isEmpty || record.goalsSet
     case .debrief: record.debriefDone = true
     case .recovery: record.recoveryDone = true
     default: break
@@ -521,6 +527,7 @@ final class StickStore {
   func nextCall() -> (kind: CallKind, date: Date)? {
     guard hasStarted else { return nil }
     let wake = profile.wakeTime.next()
+    guard currentAct.hasDebriefCall else { return (.wake, wake) }
     let debrief = profile.debriefTime.next()
     return wake < debrief ? (.wake, wake) : (.debrief, debrief)
   }
@@ -532,7 +539,11 @@ final class StickStore {
     ScreenTimeService.shared.applyShield(enabled: false)
     try? FileManager.default.removeItem(at: VoiceRecorder.voiceDirectory)
     try? FileManager.default.removeItem(at: VoiceClipCache.directory)
-    Task { await SupabaseService.shared.deleteAccount() }
+    Task {
+      await SupabaseService.shared.deleteAccount()
+      await PurchaseService.shared.logOut()
+      await AuthService.shared.refresh()
+    }
     state = StickState()
     save()
   }

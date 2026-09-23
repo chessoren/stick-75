@@ -58,6 +58,10 @@ struct RootView: View {
       }
     }
     .task {
+      await AuthService.shared.refresh()
+      if let userID = AuthService.shared.userID, AuthService.shared.isSignedIn {
+        await PurchaseService.shared.identify(userID: userID)
+      }
       store.absorbWidgetChanges()
       if let kind = store.pendingCallKind, store.state.onboardingComplete, !calls.isPresented {
         store.pendingCallKind = nil

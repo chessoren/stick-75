@@ -20,6 +20,14 @@ struct MeView: View {
               .appear(index: 1)
 
             NavigationLink {
+              AccountView()
+            } label: {
+              MeRow(symbol: "person.crop.circle.badge.checkmark", title: "Account", subtitle: AuthService.shared.isSignedIn ? "Signed in with Apple" : "Not signed in · league and referral off")
+            }
+            .buttonStyle(PressableButtonStyle())
+            .appear(index: 2)
+
+            NavigationLink {
               VoiceSettingsView()
             } label: {
               MeRow(symbol: "waveform", title: "My voice", subtitle: store.profile.voiceModelID == nil ? "Not cloned yet" : "Cloned · used on every call")

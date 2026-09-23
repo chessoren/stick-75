@@ -19,6 +19,10 @@ final class CallEngine {
   private(set) var elapsedSeconds = 0
   private(set) var lastError: String?
   private(set) var usedCloneVoice = false
+  /// Set when the call could not run as a conversation: Stick says one line and hangs up.
+  private(set) var degraded: Degraded?
+
+  enum Degraded { case brainOffline, cannotHear }
 
   /// Wake call: clean goals the user committed to.
   private(set) var extractedGoals: [String] = []
@@ -131,6 +135,7 @@ final class CallEngine {
     identityAnswer = nil
     windowHeld = nil
     postPlanNote = nil
+    degraded = nil
     usedCloneVoice = false
     phase = .idle
   }
@@ -158,6 +163,15 @@ final class CallEngine {
   private func runScript() async {
     guard let context else { return }
     history = [ChatMessage(role: .system, content: StickPersona.systemPrompt(kind: kind, context: context))]
+    if kind != .aha, let reason = await checkReadiness() {
+      degraded = reason
+      let line = StickPersona.degradedLine(reason == .brainOffline ? .brainOffline : .cannotHear, kind: kind, context)
+      turns.append(CallTurn(speaker: .stick, text: line))
+      LiveActivityManager.shared.update(phase: .talking, lastLine: line)
+      await speak(line)
+      if !Task.isCancelled { hangUp() }
+      return
+    }
     switch kind {
     case .wake: await wakeScript(context)
     case .debrief: await debriefScript(context)
@@ -167,6 +181,14 @@ final class CallEngine {
     case .aha: await ahaScript(context)
     }
     if !Task.isCancelled { hangUp() }
+  }
+
+  /// Conversations need the model and the microphone. Otherwise Stick speaks once and hangs up.
+  private func checkReadiness() async -> Degraded? {
+    if !(await SpeechListener.hasPermissions()) { return .cannotHear }
+    if !Secrets.hasLLMKeys { return .brainOffline }
+    let ok = await router.ping()
+    return ok ? nil : .brainOffline
   }
 
   private func wakeScript(_ c: StickPersona.Context) async {
@@ -379,7 +401,8 @@ final class CallEngine {
       durationSeconds: elapsedSeconds,
       turns: turns,
       summary: summary,
-      answered: startedAt != nil
+      answered: startedAt != nil,
+      degraded: degraded != nil
     )
   }
 }

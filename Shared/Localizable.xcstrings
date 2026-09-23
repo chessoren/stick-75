@@ -4892,16 +4892,6 @@
         }
       }
     },
-    "≈ €1.07 a day": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "≈ 1,07 € par jour"
-          }
-        }
-      }
-    },
     "Less than the %@ hours a day you're paying now.": {
       "localizations": {
         "fr": {
@@ -5208,6 +5198,216 @@
           "stringUnit": {
             "state": "translated",
             "value": "C'est parti"
+          }
+        }
+      }
+    },
+    "One account. Yours.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un compte. Le tien."
+          }
+        }
+      }
+    },
+    "Sign in with Apple keeps your 75 days, your league rank and your purchases if you change phones. Apple hides your email if you want.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se connecter avec Apple garde tes 75 jours, ton rang de ligue et tes achats si tu changes de téléphone. Apple masque ton email si tu veux."
+          }
+        }
+      }
+    },
+    "Needed for the league and to give friends their 5 free days.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nécessaire pour la ligue et pour offrir 5 jours gratuits à tes amis."
+          }
+        }
+      }
+    },
+    "Your progress and purchases follow you to a new iPhone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta progression et tes achats te suivent sur un nouvel iPhone."
+          }
+        }
+      }
+    },
+    "Stick stores your first name, score and days held. Nothing else.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick stocke ton prénom, ton score et tes jours tenus. Rien d'autre."
+          }
+        }
+      }
+    },
+    "Signed in · Continue": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecté · Continuer"
+          }
+        }
+      }
+    },
+    "Later": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus tard"
+          }
+        }
+      }
+    },
+    "Continue with Apple": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer avec Apple"
+          }
+        }
+      }
+    },
+    "Apple didn't return a valid token.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple n'a pas renvoyé de jeton valide."
+          }
+        }
+      }
+    },
+    "Accounts aren't available yet.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les comptes ne sont pas encore disponibles."
+          }
+        }
+      }
+    },
+    "Account": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compte"
+          }
+        }
+      }
+    },
+    "Signed in with Apple": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecté avec Apple"
+          }
+        }
+      }
+    },
+    "Not signed in · league and referral off": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non connecté · ligue et parrainage désactivés"
+          }
+        }
+      }
+    },
+    "No account yet": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore de compte"
+          }
+        }
+      }
+    },
+    "Your progress, league rank and purchases follow you to a new iPhone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta progression, ton rang de ligue et tes achats te suivent sur un nouvel iPhone."
+          }
+        }
+      }
+    },
+    "Sign in to join the league, give friends 5 free days, and keep your 75 days if you change phones.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecte-toi pour rejoindre la ligue, offrir 5 jours gratuits à tes amis, et garder tes 75 jours si tu changes de téléphone."
+          }
+        }
+      }
+    },
+    "Accounts are not connected yet on this build.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les comptes ne sont pas encore connectés sur cette version."
+          }
+        }
+      }
+    },
+    "Sign out": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se déconnecter"
+          }
+        }
+      }
+    },
+    "Stick couldn't take your goals on the call. Write 1 to 3 with the + button, then it checks tonight.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick n'a pas pu prendre tes objectifs à l'appel. Écris-en 1 à 3 avec le bouton +, il vérifie ce soir."
+          }
+        }
+      }
+    },
+    "Act I starts today. First call tomorrow at %@. Stick only calls members. No free trial: a trial is a way out, and you're done with those.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'acte I commence aujourd'hui. Premier appel demain à %@. Stick n'appelle que les membres. Pas d'essai gratuit : un essai, c'est une porte de sortie, et tu en as fini avec ça."
+          }
+        }
+      }
+    },
+    "≈ %@ a day": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "≈ %@ par jour"
           }
         }
       }

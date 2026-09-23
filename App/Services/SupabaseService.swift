@@ -17,17 +17,20 @@ actor SupabaseService {
     var updated_at: Date?
   }
 
-  private var client: SupabaseClient?
+  private var cachedClient: SupabaseClient?
 
   var isConfigured: Bool {
     !Secrets.supabaseURL.isEmpty && !Secrets.supabaseAnonKey.isEmpty
   }
 
+  /// The shared client, nil until Supabase is configured.
+  func client() -> SupabaseClient? { makeClient() }
+
   private func makeClient() -> SupabaseClient? {
-    if let client { return client }
+    if let cachedClient { return cachedClient }
     guard isConfigured, let url = URL(string: Secrets.supabaseURL) else { return nil }
     let client = SupabaseClient(supabaseURL: url, supabaseKey: Secrets.supabaseAnonKey)
-    self.client = client
+    cachedClient = client
     return client
   }
 

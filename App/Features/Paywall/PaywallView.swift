@@ -44,7 +44,7 @@ struct PaywallView: View {
                 .foregroundStyle(.white)
                 .fixedSize(horizontal: false, vertical: true)
               Text(ticketMode
-                   ? "Act I starts tomorrow at \(store.profile.wakeTime.date, format: .dateTime.hour().minute()). Stick only calls members. No free trial: a trial is a way out, and you're done with those."
+                   ? "Act I starts today. First call tomorrow at \(store.profile.wakeTime.date, format: .dateTime.hour().minute()). Stick only calls members. No free trial: a trial is a way out, and you're done with those."
                    : "Stick only calls paying members. No free trial: a trial is a way out, and you're done with those.")
                 .font(StickFont.body)
                 .foregroundStyle(.white.opacity(0.9))
@@ -53,7 +53,7 @@ struct PaywallView: View {
             .appear(index: 0)
 
             if ticketMode {
-              TicketCard(price: purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice, hoursPerDay: store.profile.hoursPerDay)
+              TicketCard(price: purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice, perDay: purchases.passPricePerDay, hoursPerDay: store.profile.hoursPerDay)
                 .appear(index: 1)
               timeline
                 .appear(index: 2)
@@ -212,6 +212,7 @@ struct PaywallView: View {
 /// The single hero product in onboarding: the 75 days as a ticket, price per day next to the hours they lose.
 struct TicketCard: View {
   var price: String
+  var perDay: String
   var hoursPerDay: Double
 
   var body: some View {
@@ -234,7 +235,7 @@ struct TicketCard: View {
         Text(price)
           .font(StickFont.hero)
           .monospacedDigit()
-        Text("≈ €1.07 a day")
+        Text("≈ \(perDay) a day")
           .font(StickFont.calloutMedium)
           .opacity(0.9)
       }
