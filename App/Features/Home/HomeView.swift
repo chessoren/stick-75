@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// "Today": greeting, week rings, hero card, Stick's suggestion, goals, act, life counter, mini league.
+/// "Today": greeting, week rings, hero card, Stick's suggestion, goals, act, life counter.
 struct HomeView: View {
   @Environment(StickStore.self) private var store
   @Environment(CallCoordinator.self) private var calls
@@ -60,31 +60,6 @@ struct HomeView: View {
                 .appear(index: 7)
             }
 
-            if store.shouldPitchLife {
-              NavigationLink {
-                SubscriptionView()
-              } label: {
-                VStack(alignment: .leading, spacing: 6) {
-                  Text("After day 75")
-                    .font(StickFont.headline)
-                  Text("Stick Life keeps the calls, opens new seasons and the leagues. Have a look before the end.")
-                    .font(StickFont.callout)
-                    .opacity(0.9)
-                    .fixedSize(horizontal: false, vertical: true)
-                }
-                .stickHeroCard()
-              }
-              .buttonStyle(PressableButtonStyle())
-              .appear(index: 6)
-            }
-
-            if store.isUnlocked(.league) {
-              MiniLeaderboardCard()
-                .appear(index: 8)
-            } else {
-              LockedFeatureCard(feature: .league)
-                .appear(index: 8)
-            }
           }
           .padding(.horizontal, StickMetrics.screenMargin)
           .padding(.top, 8)

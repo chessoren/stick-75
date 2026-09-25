@@ -5,7 +5,7 @@ struct PaywallView: View {
   @Environment(StickStore.self) private var store
   var onUnlocked: () -> Void
   var onDismiss: (() -> Void)?
-  /// Onboarding shows only the 75 days; Weekly sits behind a small link and Stick Life is absent.
+  /// Onboarding shows only the 75 days; Weekly sits behind a small link.
   var ticketMode = false
 
   @State private var selected: SubscriptionPlan = .pass75
@@ -122,8 +122,8 @@ struct PaywallView: View {
 
           HStack(spacing: 18) {
             Button("Restore") { restore() }
-            Button("Terms") { legal = .terms }
-            Button("Privacy") { legal = .privacy }
+            Button("Terms of use") { legal = .terms }
+            Button("Privacy policy") { legal = .privacy }
           }
           .font(StickFont.footnoteMedium)
           .foregroundStyle(.white.opacity(0.85))
@@ -147,8 +147,7 @@ struct PaywallView: View {
     let price = purchases.prices[selected] ?? selected.fallbackPrice
     switch selected {
     case .pass75: return "One-time payment of \(price). Not a subscription, nothing renews."
-    case .weekly: return "\(price), billed weekly to your Apple Account until cancelled. Cancel any time in Settings at least 24 h before renewal."
-    case .life: return "\(price), billed yearly to your Apple Account until cancelled. Cancel any time in Settings at least 24 h before renewal."
+    case .weekly: return "Auto-renewing subscription, \(price). Charged to your Apple Account at confirmation, then every week until cancelled. Cancel in Settings › Apple Account › Subscriptions at least 24 h before renewal."
     }
   }
 
@@ -157,7 +156,7 @@ struct PaywallView: View {
       TimelineRow(symbol: "phone.fill", title: "Tomorrow morning", text: "Your voice wakes you and takes your first three goals.")
       TimelineRow(symbol: "hand.raised.fill", title: "The first time you open TikTok", text: "It rings. You answer to yourself.")
       TimelineRow(symbol: "arrow.uturn.forward", title: "Day 16 · Act II", text: "The life counter opens. Stick starts building habits with you.")
-      TimelineRow(symbol: "trophy.fill", title: "Day 31 · Act III", text: "The league and your voice badges open. Stick stops ordering, starts asking.")
+      TimelineRow(symbol: "person.fill.checkmark", title: "Day 31 · Act III", text: "Your voice badges open. Stick stops ordering, starts asking.")
       TimelineRow(symbol: "timer", title: "Day 46 · Act IV", text: "The shield comes off. Weekly trials. Stick tests you.")
       TimelineRow(symbol: "crown.fill", title: "Day 75", text: "\(Int(store.profile.hoursPerDay * 75)) hours back. The vault opens.")
     }
@@ -169,7 +168,7 @@ struct PaywallView: View {
       Text("Why 75 days")
         .font(StickFont.headline)
         .foregroundStyle(Color.ink)
-      ProofRow(symbol: "clock.fill", text: "608 hours a year on TikTok on average. That's 25 full days.")
+      ProofRow(symbol: "clock.fill", text: "\(Int(store.profile.hoursPerDay * 365)) hours a year at your pace. That's \(Int(store.profile.hoursPerDay * 365 / 24)) full days.")
       ProofRow(symbol: "brain.head.profile", text: "A new habit takes a median of 66 days to become automatic (Lally et al., 2010). 75 gives you margin.")
       ProofRow(symbol: "waveform", text: "You can ignore a coach. Nobody ignores their own voice.")
     }
@@ -179,8 +178,7 @@ struct PaywallView: View {
   private var ctaTitle: LocalizedStringKey {
     switch selected {
     case .pass75: ticketMode ? "Take my ticket · \(purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice)" : "Start my 75 days · \(purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice)"
-    case .weekly: "Start weekly · \(purchases.prices[.weekly] ?? SubscriptionPlan.weekly.fallbackPrice)"
-    case .life: "Join Stick Life · \(purchases.prices[.life] ?? SubscriptionPlan.life.fallbackPrice)"
+    case .weekly: "Subscribe · \(purchases.prices[.weekly] ?? SubscriptionPlan.weekly.fallbackPrice)"
     }
   }
 
@@ -203,7 +201,7 @@ struct PaywallView: View {
         store.grant(entitlement)
         onUnlocked()
       } else {
-        error = String(localized: "Nothing to restore on this Apple Account.")
+        error = purchases.lastError ?? String(localized: "Nothing to restore on this Apple Account.")
       }
     }
   }

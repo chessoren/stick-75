@@ -253,16 +253,19 @@ struct ScreenTimeScreen: View {
 struct PermissionsScreen: View {
   @Environment(OnboardingModel.self) private var model
   @State private var asking = false
+  @State private var speechAuthorized = false
+  @State private var asked = false
 
   var body: some View {
     OnboardingPage("Let your voice ring.", subtitle: "The wake-up call and the debrief use iOS alarms: they ring on the Lock Screen, on your Watch, and through Silent mode.") {
       VStack(alignment: .leading, spacing: 12) {
         PermissionRow(symbol: "alarm.fill", title: "Alarms", detail: "So your voice can wake you up and ring at debrief time.", granted: model.alarmsAuthorized)
-        PermissionRow(symbol: "bell.badge.fill", title: "Notifications", detail: "Backup ringer and the intercept alert when a blocked app opens.", granted: model.notificationsAuthorized)
+        PermissionRow(symbol: "bell.badge.fill", title: "Notifications", detail: "A backup ringer for your daily calls if an alarm can't ring.", granted: model.notificationsAuthorized)
+        PermissionRow(symbol: "waveform", title: "Microphone and speech recognition", detail: "So Stick hears your answers during calls. Speech is transcribed by Apple.", granted: speechAuthorized)
       }
       .padding(.top, 8)
     } footer: {
-      if model.alarmsAuthorized || model.notificationsAuthorized {
+      if asked {
         Button { model.next() } label: { Text("Continue") }
           .buttonStyle(PrimaryPillButtonStyle())
       } else {
@@ -271,8 +274,9 @@ struct PermissionsScreen: View {
           Task {
             model.alarmsAuthorized = await CallScheduler.requestAlarmAuthorization()
             model.notificationsAuthorized = await CallScheduler.requestNotificationAuthorization()
+            speechAuthorized = await SpeechListener.requestPermissions()
             asking = false
-            if !model.alarmsAuthorized, !model.notificationsAuthorized { model.next() }
+            asked = true
           }
         } label: {
           Text(asking ? "Asking…" : "Allow")
@@ -385,6 +389,7 @@ struct VaultRecordScreen: View {
   @Environment(OnboardingModel.self) private var model
   @State private var recorder = VoiceRecorder()
   @State private var done = false
+  @State private var micDenied = false
 
   var body: some View {
     VStack(spacing: 0) {
@@ -414,6 +419,12 @@ struct VaultRecordScreen: View {
       VStack(spacing: 12) {
         WaveformView(level: recorder.level, isActive: recorder.isRecording, color: .white)
           .frame(height: 50)
+        if micDenied {
+          Text("Microphone access is off. Enable it in Settings › Stick to record.")
+            .font(StickFont.footnote)
+            .foregroundStyle(.white)
+            .multilineTextAlignment(.center)
+        }
         if recorder.isRecording {
           Text(String(format: "0:%02d", Int(recorder.elapsed)))
             .font(StickFont.headline)
@@ -432,7 +443,8 @@ struct VaultRecordScreen: View {
         } else {
           Button {
             Task {
-              guard await SpeechListener.requestPermissions() else { return }
+              guard await VoiceRecorder.requestMicrophone() else { micDenied = true; return }
+              micDenied = false
               try? recorder.start(fileName: "vault-day1.wav")
             }
           } label: {

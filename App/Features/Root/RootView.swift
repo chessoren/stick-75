@@ -51,27 +51,21 @@ struct RootView: View {
       guard let link = DeepLink(url: url) else { return }
       if store.state.onboardingComplete {
         calls.handle(link, store: store)
-      } else if case .referral(let code) = link {
-        store.applyReferral(code: code)
       } else if case .intercept = link {
         store.update { $0.profile.shortcutAutomationSet = true }
       }
     }
     .task {
       await AuthService.shared.refresh()
-      if let userID = AuthService.shared.userID, AuthService.shared.isSignedIn {
-        await PurchaseService.shared.identify(userID: userID)
-      }
       store.absorbWidgetChanges()
-      if let kind = store.pendingCallKind, store.state.onboardingComplete, !calls.isPresented {
+      if let kind = store.pendingCallKind, store.state.onboardingComplete, store.isEntitled, !calls.isPresented {
         store.pendingCallKind = nil
         calls.start(kind, store: store)
       }
-      if let entitlement = await PurchaseService.shared.currentEntitlement(),
-         entitlement != .none || store.state.entitlement != .trialDays {
+      // The store is the source of truth: an expired weekly plan locks, a restored pass unlocks.
+      if let entitlement = await PurchaseService.shared.currentEntitlement(), entitlement != store.state.entitlement {
         store.grant(entitlement)
       }
-      await store.syncRemote()
       if let voice = store.profile.voiceModelID, store.hasStarted {
         await VoiceClipCache.ensureRingtone(voiceID: voice, language: store.profile.language, act: store.currentAct)
       }
@@ -81,8 +75,7 @@ struct RootView: View {
       store.reconcile()
       store.absorbWidgetChanges()
       ScreenTimeService.shared.applyShield(enabled: store.hasStarted && store.currentAct.allowedWindowMinutes == 0)
-      Task { await store.syncRemote() }
-      if let kind = store.pendingCallKind, store.state.onboardingComplete, !calls.isPresented {
+      if let kind = store.pendingCallKind, store.state.onboardingComplete, store.isEntitled, !calls.isPresented {
         store.pendingCallKind = nil
         calls.start(kind, store: store)
       }

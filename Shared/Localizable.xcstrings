@@ -1012,32 +1012,12 @@
         }
       }
     },
-    "Total lockdown. Maximum friction. Three calls a day.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Blocage total. Friction maximale. Trois appels par jour."
-          }
-        }
-      }
-    },
     "Replace, don't just block. One new habit chosen every morning.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Remplacer, pas seulement bloquer. Une nouvelle habitude choisie chaque matin."
-          }
-        }
-      }
-    },
-    "\"I am someone who…\" Shorter calls, harder questions. League unlocked.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "« Je suis quelqu'un qui… » Appels plus courts, questions plus dures. Ligue débloquée."
           }
         }
       }
@@ -1752,16 +1732,6 @@
         }
       }
     },
-    "They install Stick with your link and start with five days on you. The people who quit together, stay quit.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ils installent Stick avec ton lien et démarrent avec cinq jours offerts. Ceux qui arrêtent ensemble, restent arrêtés."
-          }
-        }
-      }
-    },
     "Your referral code": {
       "localizations": {
         "fr": {
@@ -2088,16 +2058,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tu passes"
-          }
-        }
-      }
-    },
-    "a year on TikTok. That's 25 full days. Gone.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "par an sur TikTok. 25 jours pleins. Envolés."
           }
         }
       }
@@ -3912,16 +3872,6 @@
         }
       }
     },
-    "608 hours a year on TikTok on average. That's 25 full days.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "608 heures par an sur TikTok en moyenne. 25 jours pleins."
-          }
-        }
-      }
-    },
     "A new habit takes a median of 66 days to become automatic (Lally et al., 2010). 75 gives you margin.": {
       "localizations": {
         "fr": {
@@ -4118,16 +4068,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ta ligue se remplit."
-          }
-        }
-      }
-    },
-    "Thirty people, ranked every week on hours recovered. Invite a friend: they get 5 free days, you get someone to beat.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trente personnes, classées chaque semaine sur les heures récupérées. Invite un ami : il a 5 jours gratuits, tu as quelqu'un à battre."
           }
         }
       }
@@ -4752,32 +4692,12 @@
         }
       }
     },
-    "%@ blocked. Stick calls three times a day and takes your goals every morning.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ bloqués. Stick appelle trois fois par jour et prend tes objectifs chaque matin."
-          }
-        }
-      }
-    },
     "Every morning Stick makes you choose what replaces the scroll: %@. Every night it counts the hours you took back.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Chaque matin Stick te fait choisir ce qui remplace le scroll : %@. Chaque soir il compte les heures reprises."
-          }
-        }
-      }
-    },
-    "Fewer orders, harder questions. Stick asks who you are when nobody's watching. The league opens.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Moins d'ordres, des questions plus dures. Stick demande qui tu es quand personne ne regarde. La ligue s'ouvre."
           }
         }
       }
@@ -5408,6 +5328,566 @@
           "stringUnit": {
             "state": "translated",
             "value": "≈ %@ par jour"
+          }
+        }
+      }
+    },
+    "Optional. Sign in with Apple ties your purchases to your Apple Account. You can skip it.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optionnel. « Se connecter avec Apple » lie tes achats à ton compte Apple. Tu peux passer cette étape."
+          }
+        }
+      }
+    },
+    "Stick asks Apple for no email and no name. Only an anonymous identifier stays on your phone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick ne demande à Apple ni email ni nom. Seul un identifiant anonyme reste sur ton téléphone."
+          }
+        }
+      }
+    },
+    "Your 75 days, goals and recordings stay on this iPhone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tes 75 jours, tes objectifs et tes enregistrements restent sur cet iPhone."
+          }
+        }
+      }
+    },
+    "Your pass or subscription follows your Apple Account to a new iPhone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton pass ou ton abonnement suit ton compte Apple sur un nouvel iPhone."
+          }
+        }
+      }
+    },
+    "Delete the rest anyway": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer le reste quand même"
+          }
+        }
+      }
+    },
+    "Deletes your voice clone at Fish Audio, your recordings, progress, goals and call history on this iPhone, and forgets your Apple sign-in. Purchases stay with your Apple Account.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprime ton clone vocal chez Fish Audio, tes enregistrements, ta progression, tes objectifs et l'historique des appels sur cet iPhone, et oublie ta connexion Apple. Tes achats restent liés à ton compte Apple."
+          }
+        }
+      }
+    },
+    "Deletes your voice clone, recordings, progress, goals and calls. This cannot be undone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprime ton clone vocal, tes enregistrements, ta progression, tes objectifs et tes appels. C'est irréversible."
+          }
+        }
+      }
+    },
+    "Optional. Sign in with Apple to tie your purchases to your Apple Account. Stick receives no email and no name.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optionnel. Connecte-toi avec Apple pour lier tes achats à ton compte Apple. Stick ne reçoit ni email ni nom."
+          }
+        }
+      }
+    },
+    "Stick couldn't reach the voice provider. Check your connection and try again.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick n'a pas pu joindre le service vocal. Vérifie ta connexion et réessaie."
+          }
+        }
+      }
+    },
+    "Your purchases are tied to your Apple Account. Your 75 days stay on this iPhone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tes achats sont liés à ton compte Apple. Tes 75 jours restent sur cet iPhone."
+          }
+        }
+      }
+    },
+    "Your voice clone couldn't be deleted": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton clone vocal n'a pas pu être supprimé"
+          }
+        }
+      }
+    },
+    "Zero tolerance. Maximum friction. Three calls a day.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tolérance zéro. Friction maximale. Trois appels par jour."
+          }
+        }
+      }
+    },
+    "\"I am someone who…\" Shorter calls, harder questions. Voice badges.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« Je suis quelqu'un qui… » Appels plus courts, questions plus dures. Badges vocaux."
+          }
+        }
+      }
+    },
+    "Don't do it alone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne le fais pas seul."
+          }
+        }
+      }
+    },
+    "Send Stick to a friend who scrolls too much. The people who quit together, stay quit.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envoie Stick à un ami qui scrolle trop. Ceux qui arrêtent ensemble, restent arrêtés."
+          }
+        }
+      }
+    },
+    "Fewer orders, harder questions. Stick asks who you are when nobody's watching. Your voice badges begin.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moins d'ordres, des questions plus dures. Stick demande qui tu es quand personne ne regarde. Tes badges vocaux commencent."
+          }
+        }
+      }
+    },
+    "%@ off limits. Stick calls three times a day and takes your goals every morning.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ interdits. Stick appelle trois fois par jour et prend tes objectifs chaque matin."
+          }
+        }
+      }
+    },
+    "Apple Standard EULA": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contrat de licence standard d'Apple (EULA)"
+          }
+        }
+      }
+    },
+    "Not signed in": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non connecté"
+          }
+        }
+      }
+    },
+    "Send Stick to someone who scrolls too much.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envoie Stick à quelqu'un qui scrolle trop."
+          }
+        }
+      }
+    },
+    "A backup ringer for your daily calls if an alarm can't ring.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une sonnerie de secours pour tes appels quotidiens si une alarme ne peut pas sonner."
+          }
+        }
+      }
+    },
+    "Microphone and speech recognition": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Micro et reconnaissance vocale"
+          }
+        }
+      }
+    },
+    "So Stick hears your answers during calls. Speech is transcribed by Apple.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour que Stick entende tes réponses pendant les appels. La parole est transcrite par Apple."
+          }
+        }
+      }
+    },
+    "Pick everything that applies. Stick calls you the moment you open one.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coche tout ce qui s'applique. Stick t'appelle dès que tu en ouvres une."
+          }
+        }
+      }
+    },
+    "a year on TikTok for an average user. That's 25 full days. Gone.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "par an sur TikTok pour un utilisateur moyen. 25 jours pleins. Envolés."
+          }
+        }
+      }
+    },
+    "Continue with a system voice": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer avec une voix système"
+          }
+        }
+      }
+    },
+    "Continue without cloning my voice": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer sans cloner ma voix"
+          }
+        }
+      }
+    },
+    "I agree to send the text of my calls to OpenRouter to generate Stick's replies.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "J'accepte d'envoyer le texte de mes appels à OpenRouter pour générer les réponses de Stick."
+          }
+        }
+      }
+    },
+    "I confirm this is my own voice and I agree to send my recording to Fish Audio to create my private synthetic voice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je confirme que c'est ma propre voix et j'accepte d'envoyer mon enregistrement à Fish Audio pour créer ma voix synthétique privée."
+          }
+        }
+      }
+    },
+    "Open Settings": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Réglages"
+          }
+        }
+      }
+    },
+    "Optional: during calls, the text of what you say, your first name, goals and identity sentence go to OpenRouter, an AI provider, so Stick can understand and answer you. No audio is sent. Without it, calls follow a fixed script.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optionnel : pendant les appels, le texte de ce que tu dis, ton prénom, tes objectifs et ta phrase d'identité sont envoyés à OpenRouter, un fournisseur d'IA, pour que Stick te comprenne et te réponde. Aucun audio n'est envoyé. Sans ça, les appels suivent un script fixe."
+          }
+        }
+      }
+    },
+    "Record only your own voice. Cloning someone else's voice is forbidden by the terms.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N'enregistre que ta propre voix. Cloner la voix de quelqu'un d'autre est interdit par les conditions."
+          }
+        }
+      }
+    },
+    "The sample and the sentences Stick speaks are sent to Fish Audio, our voice provider, to build and use a private synthetic voice. It is never shared or made public.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'échantillon et les phrases que Stick prononce sont envoyés à Fish Audio, notre fournisseur vocal, pour créer et utiliser une voix synthétique privée. Elle n'est jamais partagée ni rendue publique."
+          }
+        }
+      }
+    },
+    "You read a short script, about 60 seconds. It is used only to build your voice.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu lis un court texte, environ 60 secondes. Il sert uniquement à créer ta voix."
+          }
+        }
+      }
+    },
+    "Auto-renewing subscription, %@. Charged to your Apple Account at confirmation, then every week until cancelled. Cancel in Settings › Apple Account › Subscriptions at least 24 h before renewal.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnement renouvelé automatiquement, %@. Débité sur ton compte Apple à la confirmation, puis chaque semaine jusqu'à résiliation. Résilie dans Réglages › Compte Apple › Abonnements au moins 24 h avant le renouvellement."
+          }
+        }
+      }
+    },
+    "Subscribe · %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S'abonner · %@"
+          }
+        }
+      }
+    },
+    "Your voice badges open. Stick stops ordering, starts asking.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tes badges vocaux s'ouvrent. Stick arrête d'ordonner, commence à questionner."
+          }
+        }
+      }
+    },
+    "%lld hours a year at your pace. That's %lld full days.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld heures par an à ton rythme. %lld jours pleins."
+          }
+        }
+      }
+    },
+    "%@ / week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / semaine"
+          }
+        }
+      }
+    },
+    "Auto-renewing weekly subscription. Cancel anytime.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnement hebdomadaire renouvelé automatiquement. Résiliable à tout moment."
+          }
+        }
+      }
+    },
+    "One payment. The whole program. Nothing renews.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un seul paiement. Tout le programme. Rien ne se renouvelle."
+          }
+        }
+      }
+    },
+    "€9.99 / week": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "9,99 € / semaine"
+          }
+        }
+      }
+    },
+    "Manage subscription": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gérer l'abonnement"
+          }
+        }
+      }
+    },
+    "Purchases restored.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Achats restaurés."
+          }
+        }
+      }
+    },
+    "Renews every week until you cancel. The 75-Day Pass covers the whole program in one payment.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se renouvelle chaque semaine jusqu'à résiliation. Le Pass 75 jours couvre tout le programme en un seul paiement."
+          }
+        }
+      }
+    },
+    "Restore purchases": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurer les achats"
+          }
+        }
+      }
+    },
+    "The whole program is yours. One payment, nothing renews.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout le programme est à toi. Un seul paiement, rien ne se renouvelle."
+          }
+        }
+      }
+    },
+    "Before you record": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avant d'enregistrer"
+          }
+        }
+      }
+    },
+    "Delete my voice clone?": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer mon clone vocal ?"
+          }
+        }
+      }
+    },
+    "Recording again asks for your consent to send the sample to Fish Audio.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réenregistrer demande ton accord pour envoyer l'échantillon à Fish Audio."
+          }
+        }
+      }
+    },
+    "Sends the text of your calls (no audio) to OpenRouter, an AI provider, so Stick can understand and answer you. Off: calls follow a fixed script.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envoie le texte de tes appels (sans audio) à OpenRouter, un fournisseur d'IA, pour que Stick te comprenne et te réponde. Désactivé : les appels suivent un script fixe."
+          }
+        }
+      }
+    },
+    "Smart replies": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réponses intelligentes"
+          }
+        }
+      }
+    },
+    "Stick deletes it at Fish Audio and on this iPhone. Calls use a system voice until you record again.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick le supprime chez Fish Audio et sur cet iPhone. Les appels utilisent une voix système jusqu'à ton prochain enregistrement."
+          }
+        }
+      }
+    },
+    "Stick only uses your own voice, cloned from your consent recording at Fish Audio. It is a synthetic voice. You can delete it any time.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick utilise uniquement ta propre voix, clonée chez Fish Audio à partir de ton enregistrement consenti. C'est une voix synthétique. Tu peux la supprimer à tout moment."
+          }
+        }
+      }
+    },
+    "Apple didn't return a valid account.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple n'a pas renvoyé de compte valide."
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer"
           }
         }
       }

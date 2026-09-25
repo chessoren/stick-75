@@ -1,7 +1,7 @@
 import AuthenticationServices
 import SwiftUI
 
-/// Onboarding step after the paywall: create the account with Apple. Optional, but it powers league, referral and cross-device restore.
+/// Onboarding step after the paywall: optional Sign in with Apple, which ties purchases to the Apple identity.
 struct AccountScreen: View {
   @Environment(OnboardingModel.self) private var model
   @State private var busy = false
@@ -9,11 +9,11 @@ struct AccountScreen: View {
   private var auth: AuthService { .shared }
 
   var body: some View {
-    OnboardingPage("One account. Yours.", subtitle: "Sign in with Apple keeps your 75 days, your league rank and your purchases if you change phones. Apple hides your email if you want.") {
+    OnboardingPage("One account. Yours.", subtitle: "Optional. Sign in with Apple ties your purchases to your Apple Account. You can skip it.") {
       VStack(alignment: .leading, spacing: 12) {
-        ConsentRow(symbol: "trophy.fill", text: "Needed for the league and to give friends their 5 free days.")
-        ConsentRow(symbol: "iphone.and.arrow.forward", text: "Your progress and purchases follow you to a new iPhone.")
-        ConsentRow(symbol: "eye.slash.fill", text: "Stick stores your first name, score and days held. Nothing else.")
+        ConsentRow(symbol: "creditcard.fill", text: "Your pass or subscription follows your Apple Account to a new iPhone.")
+        ConsentRow(symbol: "eye.slash.fill", text: "Stick asks Apple for no email and no name. Only an anonymous identifier stays on your phone.")
+        ConsentRow(symbol: "iphone", text: "Your 75 days, goals and recordings stay on this iPhone.")
         if let error = auth.lastError {
           Text(error)
             .font(StickFont.footnote)
@@ -22,10 +22,7 @@ struct AccountScreen: View {
       }
       .padding(.top, 8)
     } footer: {
-      if !auth.isConfigured {
-        Button { model.next() } label: { Text("Continue") }
-          .buttonStyle(PrimaryPillButtonStyle())
-      } else if auth.isSignedIn {
+      if auth.isSignedIn {
         Button { model.next() } label: { Label("Signed in · Continue", systemImage: "checkmark") }
           .buttonStyle(PrimaryPillButtonStyle())
       } else {
@@ -38,7 +35,7 @@ struct AccountScreen: View {
   }
 }
 
-/// Styled Sign in with Apple button that completes the Supabase session.
+/// Styled Sign in with Apple button. No scopes: Stick only keeps the anonymous Apple user identifier.
 struct AppleSignInPill: View {
   @Binding var busy: Bool
   var onSuccess: () -> Void
@@ -47,8 +44,7 @@ struct AppleSignInPill: View {
 
   var body: some View {
     SignInWithAppleButton(.continue) { request in
-      request.requestedScopes = [.fullName, .email]
-      request.nonce = auth.prepareNonce()
+      request.requestedScopes = []
     } onCompletion: { result in
       busy = true
       Task {

@@ -64,6 +64,19 @@ struct FishAudioService {
     return id
   }
 
+  /// Deletes the voice model at Fish Audio (`DELETE /model/{id}`). A model that no longer exists counts as deleted.
+  func deleteVoice(id: String) async throws {
+    guard Secrets.hasVoiceKeys else { throw FishError.missingKey }
+    var request = URLRequest(url: base.appending(path: "model").appending(path: id))
+    request.httpMethod = "DELETE"
+    request.setValue("Bearer \(Secrets.fishAudioKey)", forHTTPHeaderField: "Authorization")
+    let (data, response) = try await session.data(for: request)
+    let code = (response as? HTTPURLResponse)?.statusCode ?? 0
+    guard (200..<300).contains(code) || code == 404 else {
+      throw FishError.badResponse(code, String(data: data, encoding: .utf8) ?? "")
+    }
+  }
+
   /// Synthesizes `text` with the cloned voice. Returns MP3 bytes.
   func synthesize(_ text: String, referenceID: String) async throws -> Data {
     guard Secrets.hasVoiceKeys else { throw FishError.missingKey }

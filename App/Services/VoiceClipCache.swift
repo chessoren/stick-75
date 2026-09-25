@@ -8,6 +8,11 @@ enum VoiceClipCache {
     return base
   }
 
+  /// Drops every clip rendered with the current voice (voice re-recorded or deleted).
+  static func clear() {
+    try? FileManager.default.removeItem(at: directory)
+  }
+
   static func url(_ name: String) -> URL {
     directory.appending(path: "\(name).mp3")
   }

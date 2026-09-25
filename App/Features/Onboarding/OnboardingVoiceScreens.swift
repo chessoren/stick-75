@@ -97,28 +97,46 @@ struct VoiceConsentScreen: View {
     @Bindable var model = model
     OnboardingPage("Why your voice?", subtitle: "You can hang up on a coach. You can't hang up on yourself. Stick clones your voice so every call is you, talking to you.") {
       VStack(alignment: .leading, spacing: 12) {
-        ConsentRow(symbol: "mic.fill", text: "You read a 60-second script. That's the only recording we use.")
-        ConsentRow(symbol: "cloud.fill", text: "The sample is sent to Fish Audio, our voice-cloning provider, to build a private synthetic voice. It is never shared or made public.")
-        ConsentRow(symbol: "person.fill.checkmark", text: "Only your own voice. Never someone else's. Stick refuses any other recording.")
+        ConsentRow(symbol: "mic.fill", text: "You read a short script, about 60 seconds. It is used only to build your voice.")
+        ConsentRow(symbol: "cloud.fill", text: "The sample and the sentences Stick speaks are sent to Fish Audio, our voice provider, to build and use a private synthetic voice. It is never shared or made public.")
+        ConsentRow(symbol: "person.fill.checkmark", text: "Record only your own voice. Cloning someone else's voice is forbidden by the terms.")
         ConsentRow(symbol: "trash.fill", text: "Delete the clone any time from Me › My voice.")
 
-        Toggle(isOn: $model.draft.voiceConsentGiven) {
-          Text("I consent to cloning my own voice and to sending my recording to Fish Audio for that purpose.")
-            .font(StickFont.calloutMedium)
-            .foregroundStyle(Color.ink)
-        }
-        .tint(.brandOrange)
-        .padding(16)
-        .background(Color.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .glassEffect(.regular, in: .rect(cornerRadius: 20))
-        .appear(index: 6)
+        ConsentToggle(isOn: $model.draft.voiceConsentGiven, text: "I confirm this is my own voice and I agree to send my recording to Fish Audio to create my private synthetic voice.")
+          .appear(index: 6)
+
+        ConsentRow(symbol: "sparkles", text: "Optional: during calls, the text of what you say, your first name, goals and identity sentence go to OpenRouter, an AI provider, so Stick can understand and answer you. No audio is sent. Without it, calls follow a fixed script.")
+          .padding(.top, 6)
+        ConsentToggle(isOn: $model.draft.aiConsentGiven, text: "I agree to send the text of my calls to OpenRouter to generate Stick's replies.")
+          .appear(index: 7)
       }
       .padding(.top, 8)
     } footer: {
       Button { model.next() } label: { Text("Record my voice") }
         .buttonStyle(PrimaryPillButtonStyle())
         .disabled(!model.draft.voiceConsentGiven)
+      Button { model.skipClone() } label: { Text("Continue without cloning my voice") }
+        .buttonStyle(SecondaryPillButtonStyle())
     }
+  }
+}
+
+/// An explicit, unchecked-by-default consent switch.
+struct ConsentToggle: View {
+  @Binding var isOn: Bool
+  var text: LocalizedStringKey
+
+  var body: some View {
+    Toggle(isOn: $isOn) {
+      Text(text)
+        .font(StickFont.calloutMedium)
+        .foregroundStyle(Color.ink)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+    .tint(.brandOrange)
+    .padding(16)
+    .background(Color.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+    .glassEffect(.regular, in: .rect(cornerRadius: 20))
   }
 }
 
@@ -202,9 +220,21 @@ struct VoiceRecordScreen: View {
         }
 
         if permissionDenied {
-          Text("Microphone access is off. Enable it in Settings › Stick to record.")
-            .font(StickFont.footnote)
-            .foregroundStyle(Color.stickDanger)
+          VStack(alignment: .leading, spacing: 8) {
+            Text("Microphone access is off. Enable it in Settings › Stick to record.")
+              .font(StickFont.footnote)
+              .foregroundStyle(Color.stickDanger)
+            HStack(spacing: 16) {
+              if let url = URL(string: UIApplication.openSettingsURLString) {
+                Link("Open Settings", destination: url)
+              }
+              if !embedded {
+                Button("Continue with a system voice") { model.skipClone() }
+              }
+            }
+            .font(StickFont.footnoteMedium)
+            .foregroundStyle(Color.brandOrange)
+          }
         }
 
         if recorder.isRecording {
@@ -216,19 +246,28 @@ struct VoiceRecordScreen: View {
           .buttonStyle(PrimaryPillButtonStyle(fill: .stickDanger))
           .disabled(recorder.elapsed < minSeconds)
         } else if finished {
+          if embedded, let error = model.cloneError {
+            Text(error)
+              .font(StickFont.footnote)
+              .foregroundStyle(Color.stickDanger)
+          }
           Button {
             if embedded {
               Task {
                 await model.cloneVoice(advance: false)
-                dismiss()
+                if model.cloneError == nil { dismiss() }
               }
             } else {
               model.next()
             }
           } label: {
-            Label("Use this recording", systemImage: "checkmark")
+            HStack {
+              Label("Use this recording", systemImage: "checkmark")
+              if model.isCloning { ProgressView().tint(.white) }
+            }
           }
           .buttonStyle(PrimaryPillButtonStyle())
+          .disabled(model.isCloning)
           Button {
             start()
           } label: {
@@ -271,8 +310,7 @@ struct VoiceRecordScreen: View {
   private func start() {
     finished = false
     Task {
-      let ok = await SpeechListener.requestPermissions()
-      guard ok else { permissionDenied = true; return }
+      guard await VoiceRecorder.requestMicrophone() else { permissionDenied = true; return }
       permissionDenied = false
       try? recorder.start(fileName: "voice-sample.wav")
     }

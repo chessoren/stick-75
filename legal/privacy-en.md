@@ -1,26 +1,28 @@
-Stick Privacy Policy
+# Stick Privacy Policy
 Last updated: September 2026
 
-What Stick collects
-• Your first name, your identity sentence, your quiz answers, your call times and your daily goals. Stored on your phone.
-• One voice recording of about 60 seconds, made only after your explicit consent, used solely to create a private synthetic copy of your own voice.
-• Call transcripts (what you and Stick said), stored on your phone so you can reread them.
-• Optional 30-second "vault" message, stored on your phone only.
-• Screen Time data stays on your device: Apple never lets Stick see which apps you use.
+Stick has no server and no account database. Your program lives on your iPhone.
 
-Third parties
-• Fish Audio (voice cloning and speech synthesis): receives your voice sample and the sentences Stick speaks. Your voice model is private and never published.
-• OpenRouter (language model): receives the text of the conversation, your first name, your goals and your identity sentence so Stick can answer you. No audio is sent.
-• Apple Speech Recognition: transcribes what you say during calls.
-• RevenueCat and Apple: handle purchases. Stick never sees your payment details.
-• Supabase: stores your account and league score (first name, hours recovered, days held). With Sign in with Apple, we receive the email Apple shares (or its private relay) and your first name; without an account, an anonymous id is used.
+## What stays on your iPhone
+- Your first name, identity sentence, quiz answers, call times, daily goals and progress.
+- Call transcripts (what you and Stick said), so you can reread them.
+- Your voice sample and the optional 30-second "vault" message.
 
-Stick never sells data, never runs ads, never uses your voice for anyone but you.
+## What leaves your iPhone, and to whom
+- Fish Audio (voice cloning and speech synthesis), only after your explicit consent: your voice sample, to build a private synthetic copy of your own voice, and the sentences Stick speaks. Your voice model is private and never published.
+- OpenRouter (AI language model), only if you turn on smart replies: the text of what you say during calls, your first name, goals and identity sentence, so Stick can understand and answer you. No audio is sent. You can turn it off in Me › My voice; calls then follow a fixed script.
+- Apple Speech Recognition: transcribes what you say during calls. Apple may process audio on its servers under Apple's privacy policy.
+- Apple and RevenueCat: handle purchases. Stick never sees your payment details. If you sign in with Apple, RevenueCat receives the anonymous Apple identifier so your purchases follow you.
 
-Your rights
-• Delete your voice clone at any time from Me › My voice.
-• Delete your account and all data from Me › Delete my account and data. This removes the anonymous account, the league row and every local file.
-• Contact: privacy@stick.app
+## Sign in with Apple
+Optional. Stick asks Apple for no name and no email. Only an anonymous identifier is kept, in your iPhone's keychain.
 
-Children
+Stick never sells data, never shows ads, never tracks you across apps, and never uses your voice for anyone but you.
+
+## Your rights and choices
+- Delete your voice clone at any time from Me › My voice (deleted at Fish Audio and on your iPhone).
+- Delete everything from Me › Delete my account and data.
+- Contact: CONTACT_EMAIL
+
+## Age
 Stick is for people aged 16 and over.

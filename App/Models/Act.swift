@@ -37,9 +37,9 @@ enum Act: Int, CaseIterable, Codable, Identifiable {
 
   var focus: LocalizedStringResource {
     switch self {
-    case .silence: "Total lockdown. Maximum friction. Three calls a day."
+    case .silence: "Zero tolerance. Maximum friction. Three calls a day."
     case .comeback: "Replace, don't just block. One new habit chosen every morning."
-    case .identity: "\"I am someone who…\" Shorter calls, harder questions. League unlocked."
+    case .identity: "\"I am someone who…\" Shorter calls, harder questions. Voice badges."
     case .trial: "The shield comes off: 15 minutes a day, on your honor. Stick still calls every time you open."
     case .flight: "Scaffolding comes off. One call a day. You plan life after day 75."
     }
@@ -113,7 +113,7 @@ enum Act: Int, CaseIterable, Codable, Identifiable {
     let who = name.isEmpty ? "" : "\(name). "
     let fr = language == .french
     switch self {
-    case .silence: return fr ? "\(who)Acte un. Le Silence. Trois appels par jour, tout est bloqué. On ne discute pas." : "\(who)Act one. The Silence. Three calls a day, everything blocked. No debate."
+    case .silence: return fr ? "\(who)Acte un. Le Silence. Trois appels par jour, tolérance zéro. On ne discute pas." : "\(who)Act one. The Silence. Three calls a day, zero tolerance. No debate."
     case .comeback: return fr ? "\(who)Acte deux. Le Silence est derrière toi. Maintenant on remplace : chaque matin, une habitude. Chaque soir, je compte le temps que tu as repris." : "\(who)Act two. The Silence is behind you. Now we replace: every morning, one habit. Every night, I count the time you took back."
     case .identity: return fr ? "\(who)Acte trois. Fini les ordres. Maintenant je pose des questions. Tu es quelqu'un qui \(identity). Prouve-le à toi-même." : "\(who)Act three. No more orders. Now I ask questions. You are someone who \(identity). Prove it to yourself."
     case .trial: return fr ? "\(who)Acte quatre. Le bouclier se lève. Quinze minutes par jour, sur l'honneur. Je vérifie chaque soir." : "\(who)Act four. The shield comes off. Fifteen minutes a day, on your honor. I check every night."
@@ -142,9 +142,9 @@ enum Act: Int, CaseIterable, Codable, Identifiable {
 enum Feature: String, CaseIterable, Identifiable {
   case calls, goals, jokers, interception
   case lifeCounter, habit
-  case league, voiceBadges, beforeAfter
+  case voiceBadges
   case window, trials
-  case postPlan, diploma, vault
+  case postPlan, vault
 
   var id: String { rawValue }
 
@@ -152,9 +152,9 @@ enum Feature: String, CaseIterable, Identifiable {
     switch self {
     case .calls, .goals, .jokers, .interception: .silence
     case .lifeCounter, .habit: .comeback
-    case .league, .voiceBadges, .beforeAfter: .identity
+    case .voiceBadges: .identity
     case .window, .trials: .trial
-    case .postPlan, .diploma, .vault: .flight
+    case .postPlan, .vault: .flight
     }
   }
 
@@ -168,13 +168,10 @@ enum Feature: String, CaseIterable, Identifiable {
     case .interception: "Interception"
     case .lifeCounter: "Life counter"
     case .habit: "Habit of the day"
-    case .league: "League"
     case .voiceBadges: "Voice badges"
-    case .beforeAfter: "Before / after card"
     case .window: "15-minute window"
     case .trials: "Weekly trials"
     case .postPlan: "Plan after 75"
-    case .diploma: "Voice diploma"
     case .vault: "The Vault opens"
     }
   }
@@ -187,13 +184,10 @@ enum Feature: String, CaseIterable, Identifiable {
     case .interception: "Your voice rings when TikTok opens."
     case .lifeCounter: "Hours won back, converted into books, runs, nights."
     case .habit: "Every morning, Stick makes you pick what replaces the scroll."
-    case .league: "Thirty people, ranked weekly on hours recovered."
     case .voiceBadges: "Stick records a sentence in your voice at each act."
-    case .beforeAfter: "Your Screen Time, day 0 versus now, ready to share."
     case .window: "The shield comes off 15 minutes a day. You hold it."
     case .trials: "A phone-free evening, a disconnected Sunday. On your honor."
     case .postPlan: "Stick makes you write what stays after day 75."
-    case .diploma: "Stick reads your 75 days back to you."
     case .vault: "Your message from day 1, played on day 75."
     }
   }
@@ -206,13 +200,10 @@ enum Feature: String, CaseIterable, Identifiable {
     case .interception: "hand.raised.fill"
     case .lifeCounter: "clock.arrow.circlepath"
     case .habit: "leaf.fill"
-    case .league: "trophy.fill"
     case .voiceBadges: "waveform.badge.mic"
-    case .beforeAfter: "rectangle.split.2x1.fill"
     case .window: "timer"
     case .trials: "flame.fill"
     case .postPlan: "map.fill"
-    case .diploma: "rosette"
     case .vault: "lock.open.fill"
     }
   }

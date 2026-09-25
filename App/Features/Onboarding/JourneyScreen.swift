@@ -169,9 +169,9 @@ struct ActJourneyCard: View {
 
   private var personalized: LocalizedStringKey {
     switch act {
-    case .silence: return "\(appNames) blocked. Stick calls three times a day and takes your goals every morning."
+    case .silence: return "\(appNames) off limits. Stick calls three times a day and takes your goals every morning."
     case .comeback: return "Every morning Stick makes you choose what replaces the scroll: \(dreamLabel). Every night it counts the hours you took back."
-    case .identity: return "Fewer orders, harder questions. Stick asks who you are when nobody's watching. The league opens."
+    case .identity: return "Fewer orders, harder questions. Stick asks who you are when nobody's watching. Your voice badges begin."
     case .trial: return "The shield comes off 15 minutes a day. Stick checks every night whether you held it. Weekly trials begin."
     case .flight: return "One call a day. Stick makes you write what stays after day 75. On the last night, it plays your day-1 message."
     }

@@ -7,7 +7,13 @@ struct ChatMessage: Codable, Hashable {
 }
 
 /// OpenRouter chat completions with the free models chosen by the user.
+/// Disabled unless the user explicitly allowed sending call text to the AI provider: every helper then
+/// falls back to its local, scripted behaviour.
 struct OpenRouterService {
+  var enabled = true
+
+  var isAvailable: Bool { enabled && Secrets.hasLLMKeys }
+
   enum RouterError: LocalizedError {
     case missingKey
     case badResponse(Int, String)
@@ -30,7 +36,7 @@ struct OpenRouterService {
   }()
 
   func complete(_ messages: [ChatMessage], maxTokens: Int = 300, temperature: Double = 0.85) async throws -> String {
-    guard Secrets.hasLLMKeys else { throw RouterError.missingKey }
+    guard isAvailable else { throw RouterError.missingKey }
     do {
       return try await complete(messages, model: Secrets.openRouterModel, maxTokens: maxTokens, temperature: temperature)
     } catch {
@@ -43,7 +49,7 @@ struct OpenRouterService {
     request.httpMethod = "POST"
     request.setValue("Bearer \(Secrets.openRouterKey)", forHTTPHeaderField: "Authorization")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.setValue("https://stick.app", forHTTPHeaderField: "HTTP-Referer")
+    request.setValue(AppLinks.website, forHTTPHeaderField: "HTTP-Referer")
     request.setValue("Stick", forHTTPHeaderField: "X-Title")
     let payload: [String: Any] = [
       "model": model,

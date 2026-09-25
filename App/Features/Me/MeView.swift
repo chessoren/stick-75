@@ -1,10 +1,9 @@
 import SwiftUI
 
-/// Profile, voice, stats, badges, referral, subscription, settings.
+/// Profile, voice, stats, badges, invite, subscription, settings.
 struct MeView: View {
   @Environment(StickStore.self) private var store
-  @State private var showingReferral = false
-  @State private var showingReset = false
+  @State private var showingInvite = false
   @State private var legal: LegalDocument?
 
   var body: some View {
@@ -22,7 +21,7 @@ struct MeView: View {
             NavigationLink {
               AccountView()
             } label: {
-              MeRow(symbol: "person.crop.circle.badge.checkmark", title: "Account", subtitle: AuthService.shared.isSignedIn ? "Signed in with Apple" : "Not signed in · league and referral off")
+              MeRow(symbol: "person.crop.circle.badge.checkmark", title: "Account", subtitle: AuthService.shared.isSignedIn ? "Signed in with Apple" : "Not signed in")
             }
             .buttonStyle(PressableButtonStyle())
             .appear(index: 2)
@@ -36,9 +35,13 @@ struct MeView: View {
             .appear(index: 2)
 
             NavigationLink {
-              BlockedAppsView()
+              if ScreenTimeService.isAvailable {
+                BlockedAppsView()
+              } else {
+                ShortcutAutomationGuide()
+              }
             } label: {
-              MeRow(symbol: "shield.lefthalf.filled", title: "Blocked apps", subtitle: store.profile.shortcutAutomationSet || ScreenTimeService.shared.isAuthorized ? "Interception armed" : "Interception off · set it up")
+              MeRow(symbol: "hand.raised.fill", title: "Interception", subtitle: store.profile.shortcutAutomationSet || ScreenTimeService.shared.isAuthorized ? "Interception armed" : "Interception off · set it up")
             }
             .buttonStyle(PressableButtonStyle())
             .appear(index: 2)
@@ -52,19 +55,19 @@ struct MeView: View {
             .appear(index: 3)
 
             Button {
-              showingReferral = true
+              showingInvite = true
             } label: {
               VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                  Image(systemName: "gift.fill")
+                  Image(systemName: "person.2.fill")
                     .font(.system(size: 18, weight: .semibold))
-                  Text("Give 5 free days")
+                  Text("Invite a friend")
                     .font(StickFont.headline)
                   Spacer()
                   Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 16, weight: .semibold))
                 }
-                Text("Your friends start with 5 days of Stick on you. Share your link.")
+                Text("Send Stick to someone who scrolls too much.")
                   .font(StickFont.callout)
                   .opacity(0.9)
                   .fixedSize(horizontal: false, vertical: true)
@@ -108,8 +111,8 @@ struct MeView: View {
             .padding(.top, 4)
             .appear(index: 8)
 
-            Button(role: .destructive) {
-              showingReset = true
+            NavigationLink {
+              AccountView()
             } label: {
               Text("Delete my account and data")
                 .font(StickFont.footnoteMedium)
@@ -125,13 +128,8 @@ struct MeView: View {
         .scrollIndicators(.hidden)
       }
       .toolbar(.hidden, for: .navigationBar)
-      .sheet(isPresented: $showingReferral) {
-        ReferralView()
-      }
-      .confirmationDialog("Delete my account and data?", isPresented: $showingReset, titleVisibility: .visible) {
-        Button("Delete everything", role: .destructive) { store.resetEverything() }
-      } message: {
-        Text("Deletes your account, league score, progress, goals, calls and voice clone. This cannot be undone.")
+      .sheet(isPresented: $showingInvite) {
+        InviteView()
       }
       .sheet(item: $legal) { document in
         LegalView(document: document)
@@ -179,8 +177,6 @@ struct MeView: View {
     switch store.state.entitlement {
     case .pass75: "75-Day Pass"
     case .weekly: "Weekly"
-    case .life: "Stick Life"
-    case .trialDays: "\(store.freeDaysLeft) free days left"
     case .none: "Inactive"
     }
   }

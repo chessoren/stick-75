@@ -17,6 +17,29 @@ struct DayRecord: Identifiable, Codable, Hashable {
   var goalsCompleted = 0
   var goalsTotal = 0
 
+  init(dayNumber: Int, date: Date) {
+    self.dayNumber = dayNumber
+    self.date = date
+  }
+
+  /// Tolerant decode: fields added in later versions default instead of wiping the history.
+  init(from decoder: Decoder) throws {
+    let c = try decoder.container(keyedBy: CodingKeys.self)
+    dayNumber = try c.decode(Int.self, forKey: .dayNumber)
+    date = try c.decodeIfPresent(Date.self, forKey: .date) ?? .now
+    goalsSet = try c.decodeIfPresent(Bool.self, forKey: .goalsSet) ?? false
+    debriefDone = try c.decodeIfPresent(Bool.self, forKey: .debriefDone) ?? false
+    lapsed = try c.decodeIfPresent(Bool.self, forKey: .lapsed) ?? false
+    jokerUsed = try c.decodeIfPresent(Bool.self, forKey: .jokerUsed) ?? false
+    recoveryDone = try c.decodeIfPresent(Bool.self, forKey: .recoveryDone) ?? false
+    habit = try c.decodeIfPresent(String.self, forKey: .habit)
+    windowHeld = try c.decodeIfPresent(Bool.self, forKey: .windowHeld)
+    identityAnswer = try c.decodeIfPresent(String.self, forKey: .identityAnswer)
+    minutesOnBlockedApps = try c.decodeIfPresent(Int.self, forKey: .minutesOnBlockedApps) ?? 0
+    goalsCompleted = try c.decodeIfPresent(Int.self, forKey: .goalsCompleted) ?? 0
+    goalsTotal = try c.decodeIfPresent(Int.self, forKey: .goalsTotal) ?? 0
+  }
+
   var isHeld: Bool {
     goalsSet && debriefDone && (!lapsed || jokerUsed)
   }

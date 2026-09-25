@@ -36,7 +36,7 @@ struct SharedSnapshot: Codable, Equatable {
     nextCallKind: .debrief,
     nextCallDate: Calendar.current.date(bySettingHour: 21, minute: 30, second: 0, of: .now),
     hoursRecovered: 38.5,
-    userName: "Oren",
+    userName: "Alex",
     focusModeOn: true
   )
 

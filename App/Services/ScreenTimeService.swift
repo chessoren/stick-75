@@ -11,17 +11,22 @@ import Observation
 final class ScreenTimeService {
   static let shared = ScreenTimeService()
 
+  /// Flip to true once Apple grants the Family Controls (distribution) entitlement and it is added to
+  /// Project.json. Until then every Screen Time surface is hidden and interception runs on Shortcuts.
+  nonisolated static let isAvailable = false
+
   private(set) var isAuthorized = false
   private(set) var lastError: String?
   var selection = FamilyActivitySelection() {
     didSet { persistSelection() }
   }
 
-  private let store = ManagedSettingsStore(named: .init("stick.shield"))
+  /// Created on use only, so nothing touches ManagedSettings while the entitlement is missing.
+  private var store: ManagedSettingsStore { ManagedSettingsStore(named: .init("stick.shield")) }
   private let selectionKey = "stick.familySelection"
 
   private init() {
-    isAuthorized = AuthorizationCenter.shared.authorizationStatus == .approved
+    isAuthorized = Self.isAvailable && AuthorizationCenter.shared.authorizationStatus == .approved
     if let data = AppGroup.defaults.data(forKey: selectionKey),
        let saved = try? JSONDecoder().decode(FamilyActivitySelection.self, from: data) {
       selection = saved
@@ -33,6 +38,7 @@ final class ScreenTimeService {
   }
 
   func requestAuthorization() async -> Bool {
+    guard Self.isAvailable else { return false }
     do {
       try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
       isAuthorized = AuthorizationCenter.shared.authorizationStatus == .approved
@@ -52,7 +58,7 @@ final class ScreenTimeService {
 
   /// Applies the shield to the selected apps (Act I–III: full block; IV–V: handled by the window logic).
   func applyShield(enabled: Bool) {
-    guard isAuthorized else { return }
+    guard Self.isAvailable, isAuthorized else { return }
     if enabled, hasSelection {
       store.shield.applications = selection.applicationTokens.isEmpty ? nil : selection.applicationTokens
       store.shield.applicationCategories = selection.categoryTokens.isEmpty ? nil : .specific(selection.categoryTokens)

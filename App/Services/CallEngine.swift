@@ -19,10 +19,8 @@ final class CallEngine {
   private(set) var elapsedSeconds = 0
   private(set) var lastError: String?
   private(set) var usedCloneVoice = false
-  /// Set when the call could not run as a conversation: Stick says one line and hangs up.
-  private(set) var degraded: Degraded?
-
-  enum Degraded { case brainOffline, cannotHear }
+  /// Set when the call could not run as a conversation (no microphone): Stick says one line and hangs up.
+  private(set) var degraded = false
 
   /// Wake call: clean goals the user committed to.
   private(set) var extractedGoals: [String] = []
@@ -42,7 +40,7 @@ final class CallEngine {
   private(set) var postPlanNote: String?
 
   private let fish = FishAudioService()
-  private let router = OpenRouterService()
+  private var router = OpenRouterService()
   private let player = AudioPlayerService()
   private let system = SystemSpeechService()
   private let listener = SpeechListener()
@@ -67,6 +65,7 @@ final class CallEngine {
     self.kind = kind
     self.context = context
     self.voiceID = voiceID
+    router.enabled = context.aiEnabled
     phase = .ringing
     AppGroup.defaults.removeObject(forKey: "stick.call.endRequested")
     StickHaptics.shared.startRinging()
@@ -135,7 +134,7 @@ final class CallEngine {
     identityAnswer = nil
     windowHeld = nil
     postPlanNote = nil
-    degraded = nil
+    degraded = false
     usedCloneVoice = false
     phase = .idle
   }
@@ -163,9 +162,9 @@ final class CallEngine {
   private func runScript() async {
     guard let context else { return }
     history = [ChatMessage(role: .system, content: StickPersona.systemPrompt(kind: kind, context: context))]
-    if kind != .aha, let reason = await checkReadiness() {
-      degraded = reason
-      let line = StickPersona.degradedLine(reason == .brainOffline ? .brainOffline : .cannotHear, kind: kind, context)
+    if kind != .aha, !(await prepareConversation()) {
+      degraded = true
+      let line = StickPersona.cannotHearLine(kind: kind, context)
       turns.append(CallTurn(speaker: .stick, text: line))
       LiveActivityManager.shared.update(phase: .talking, lastLine: line)
       await speak(line)
@@ -183,12 +182,15 @@ final class CallEngine {
     if !Task.isCancelled { hangUp() }
   }
 
-  /// Conversations need the model and the microphone. Otherwise Stick speaks once and hangs up.
-  private func checkReadiness() async -> Degraded? {
-    if !(await SpeechListener.hasPermissions()) { return .cannotHear }
-    if !Secrets.hasLLMKeys { return .brainOffline }
-    let ok = await router.ping()
-    return ok ? nil : .brainOffline
+  /// Conversations need the microphone; without it Stick speaks once and hangs up. The model is a bonus:
+  /// when the user didn't allow it, or it's unreachable (free-tier limits), the call runs on the script.
+  private func prepareConversation() async -> Bool {
+    if !(await SpeechListener.hasPermissions()), !(await SpeechListener.requestPermissions()) { return false }
+    if router.enabled {
+      let reachable = router.isAvailable ? await router.ping() : false
+      if !reachable { router.enabled = false }
+    }
+    return true
   }
 
   private func wakeScript(_ c: StickPersona.Context) async {
@@ -335,7 +337,7 @@ final class CallEngine {
     phase = .thinking
     let fallback = StickPersona.scripted(step, c)
     var line = fallback
-    if !step.isFixed, Secrets.hasLLMKeys {
+    if !step.isFixed, router.isAvailable {
       // The provider rejects requests without a user message, so the step directive travels as one.
       let directive = StickPersona.directive(step, c)
       var messages = history
@@ -402,7 +404,7 @@ final class CallEngine {
       turns: turns,
       summary: summary,
       answered: startedAt != nil,
-      degraded: degraded != nil
+      degraded: degraded
     )
   }
 }

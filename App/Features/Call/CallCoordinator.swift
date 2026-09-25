@@ -23,7 +23,8 @@ final class CallCoordinator {
       hoursRecovered: store.hoursRecovered,
       jokersLeft: store.jokersLeft,
       timeSinks: profile.timeSinks,
-      language: profile.language
+      language: profile.language,
+      aiEnabled: profile.aiConsentGiven
     )
     engine.ring(kind: kind, context: context, voiceID: profile.voiceModelID)
     isPresented = true
@@ -57,14 +58,12 @@ final class CallCoordinator {
   func handle(_ link: DeepLink, store: StickStore) {
     switch link {
     case .call(let kind):
-      guard !isPresented else { return }
+      guard !isPresented, store.isEntitled else { return }
       start(kind, store: store)
     case .intercept:
       store.update { $0.profile.shortcutAutomationSet = true }
-      guard !isPresented else { return }
+      guard !isPresented, store.isEntitled else { return }
       start(.intercept, store: store)
-    case .referral(let code):
-      store.applyReferral(code: code)
     case .tab(let name):
       if let tab = MainTab(rawValue: name) { selectedTab = tab }
     }
@@ -72,7 +71,7 @@ final class CallCoordinator {
 }
 
 enum MainTab: String, CaseIterable, Identifiable {
-  case today, calls, league, me
+  case today, calls, me
 
   var id: String { rawValue }
 
@@ -80,7 +79,6 @@ enum MainTab: String, CaseIterable, Identifiable {
     switch self {
     case .today: "Today"
     case .calls: "Calls"
-    case .league: "League"
     case .me: "Me"
     }
   }
@@ -89,7 +87,6 @@ enum MainTab: String, CaseIterable, Identifiable {
     switch self {
     case .today: "house.fill"
     case .calls: "phone.fill"
-    case .league: "trophy.fill"
     case .me: "person.fill"
     }
   }

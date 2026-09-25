@@ -25,10 +25,6 @@
         {
           "package": "RevenueCat",
           "product": "RevenueCat"
-        },
-        {
-          "package": "Supabase",
-          "product": "Supabase"
         }
       ],
       "entitlements": {
@@ -39,7 +35,8 @@
           ],
           "com.apple.developer.applesignin": [
             "Default"
-          ]
+          ],
+          "com.apple.developer.usernotifications.time-sensitive": true
         }
       },
       "info": {
@@ -62,7 +59,7 @@
           ],
           "ITSAppUsesNonExemptEncryption": false,
           "NSAlarmKitUsageDescription": "Stick schedules your morning wake-up call and evening debrief so your own voice can call you at the times you chose.",
-          "NSMicrophoneUsageDescription": "Stick records 60 seconds of your voice to create your voice clone, and listens to you during calls so you can talk with it.",
+          "NSMicrophoneUsageDescription": "Stick records your voice sample to create your voice clone and your optional day-1 message, and listens to you during calls so you can talk with it.",
           "NSSpeechRecognitionUsageDescription": "Stick transcribes what you say during calls so it can note your goals and answer you.",
           "NSSupportsLiveActivities": true,
           "NSSupportsLiveActivitiesFrequentUpdates": true,
@@ -162,10 +159,6 @@
     "RevenueCat": {
       "url": "https://github.com/RevenueCat/purchases-ios-spm",
       "from": "5.0.0"
-    },
-    "Supabase": {
-      "url": "https://github.com/supabase/supabase-swift",
-      "from": "2.0.0"
     }
   }
 }

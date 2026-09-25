@@ -16,11 +16,20 @@ struct LegalView: View {
       ZStack {
         StickCreamBackground()
         ScrollView {
-          Text(LegalTexts.text(for: document, language: store.profile.language))
-            .font(StickFont.callout)
-            .foregroundStyle(Color.ink)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(StickMetrics.screenMargin)
+          VStack(alignment: .leading, spacing: 20) {
+            Text(LegalTexts.text(for: document, language: store.profile.language))
+              .font(StickFont.callout)
+              .foregroundStyle(Color.ink)
+              .frame(maxWidth: .infinity, alignment: .leading)
+            if document == .terms {
+              Link(destination: AppLinks.appleEULA) {
+                Label("Apple Standard EULA", systemImage: "arrow.up.right.square")
+                  .font(StickFont.headline)
+                  .foregroundStyle(Color.brandOrange)
+              }
+            }
+          }
+          .padding(StickMetrics.screenMargin)
         }
       }
       .navigationTitle(document == .privacy ? Text("Privacy policy") : Text("Terms of use"))
@@ -34,9 +43,8 @@ struct LegalView: View {
   }
 }
 
+/// Same texts as `legal/*.md` and the website. Keep all three in sync.
 enum LegalTexts {
-  static let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
-
   static func text(for document: LegalDocument, language: AppLanguage) -> String {
     switch (document, language) {
     case (.privacy, .french): return privacyFR
@@ -50,28 +58,30 @@ enum LegalTexts {
   Stick Privacy Policy
   Last updated: September 2026
 
-  What Stick collects
-  • Your first name, your identity sentence, your quiz answers, your call times and your daily goals. Stored on your phone.
-  • One voice recording of about 60 seconds, made only after your explicit consent, used solely to create a private synthetic copy of your own voice.
-  • Call transcripts (what you and Stick said), stored on your phone so you can reread them.
-  • Optional 30-second "vault" message, stored on your phone only.
-  • Screen Time data stays on your device: Apple never lets Stick see which apps you use.
+  Stick has no server and no account database. Your program lives on your iPhone.
 
-  Third parties
-  • Fish Audio (voice cloning and speech synthesis): receives your voice sample and the sentences Stick speaks. Your voice model is private and never published.
-  • OpenRouter (language model): receives the text of the conversation, your first name, your goals and your identity sentence so Stick can answer you. No audio is sent.
-  • Apple Speech Recognition: transcribes what you say during calls.
-  • RevenueCat and Apple: handle purchases. Stick never sees your payment details.
-  • Supabase: stores your account and league score (first name, hours recovered, days held). With Sign in with Apple, we receive the email Apple shares (or its private relay) and your first name; without an account, an anonymous id is used.
+  What stays on your iPhone
+  • Your first name, identity sentence, quiz answers, call times, daily goals and progress.
+  • Call transcripts (what you and Stick said), so you can reread them.
+  • Your voice sample and the optional 30-second "vault" message.
 
-  Stick never sells data, never runs ads, never uses your voice for anyone but you.
+  What leaves your iPhone, and to whom
+  • Fish Audio (voice cloning and speech synthesis), only after your explicit consent: your voice sample, to build a private synthetic copy of your own voice, and the sentences Stick speaks. Your voice model is private and never published.
+  • OpenRouter (AI language model), only if you turn on smart replies: the text of what you say during calls, your first name, goals and identity sentence, so Stick can understand and answer you. No audio is sent. You can turn it off in Me › My voice; calls then follow a fixed script.
+  • Apple Speech Recognition: transcribes what you say during calls. Apple may process audio on its servers under Apple's privacy policy.
+  • Apple and RevenueCat: handle purchases. Stick never sees your payment details. If you sign in with Apple, RevenueCat receives the anonymous Apple identifier so your purchases follow you.
 
-  Your rights
-  • Delete your voice clone at any time from Me › My voice.
-  • Delete your account and all data from Me › Delete my account and data. This removes the anonymous account, the league row and every local file.
-  • Contact: privacy@stick.app
+  Sign in with Apple
+  Optional. Stick asks Apple for no name and no email. Only an anonymous identifier is kept, in your iPhone's keychain.
 
-  Children
+  Stick never sells data, never shows ads, never tracks you across apps, and never uses your voice for anyone but you.
+
+  Your rights and choices
+  • Delete your voice clone at any time from Me › My voice (deleted at Fish Audio and on your iPhone).
+  • Delete everything from Me › Delete my account and data.
+  • Contact: \(AppLinks.contactEmail)
+
+  Age
   Stick is for people aged 16 and over.
   """
 
@@ -79,28 +89,30 @@ enum LegalTexts {
   Politique de confidentialité de Stick
   Dernière mise à jour : septembre 2026
 
-  Ce que Stick collecte
-  • Ton prénom, ta phrase d'identité, tes réponses au questionnaire, tes horaires d'appel et tes objectifs du jour. Stockés sur ton téléphone.
-  • Un enregistrement vocal d'environ 60 secondes, réalisé uniquement après ton consentement explicite, utilisé seulement pour créer une copie synthétique privée de ta propre voix.
-  • Les transcriptions des appels (ce que Stick et toi avez dit), stockées sur ton téléphone pour que tu puisses les relire.
-  • Le message « coffre » de 30 secondes, optionnel, stocké sur ton téléphone uniquement.
-  • Les données Temps d'écran restent sur ton appareil : Apple ne laisse jamais Stick voir quelles apps tu utilises.
+  Stick n'a ni serveur ni base de comptes. Ton programme vit sur ton iPhone.
 
-  Tiers
-  • Fish Audio (clonage et synthèse vocale) : reçoit ton échantillon de voix et les phrases que Stick prononce. Ton modèle vocal est privé et jamais publié.
-  • OpenRouter (modèle de langage) : reçoit le texte de la conversation, ton prénom, tes objectifs et ta phrase d'identité pour que Stick puisse te répondre. Aucun audio n'est envoyé.
-  • Reconnaissance vocale Apple : transcrit ce que tu dis pendant les appels.
-  • RevenueCat et Apple : gèrent les achats. Stick ne voit jamais tes données de paiement.
-  • Supabase : stocke ton compte et ton score de ligue (prénom, heures récupérées, jours tenus). Avec « Se connecter avec Apple », nous recevons l'email partagé par Apple (ou son relais privé) et ton prénom ; sans compte, un identifiant anonyme est utilisé.
+  Ce qui reste sur ton iPhone
+  • Ton prénom, ta phrase d'identité, tes réponses au questionnaire, tes horaires d'appel, tes objectifs et ta progression.
+  • Les transcriptions des appels (ce que Stick et toi avez dit), pour que tu puisses les relire.
+  • Ton échantillon de voix et le message « coffre » de 30 secondes, optionnel.
 
-  Stick ne vend jamais de données, n'affiche jamais de publicité, n'utilise jamais ta voix pour quelqu'un d'autre que toi.
+  Ce qui quitte ton iPhone, et vers qui
+  • Fish Audio (clonage et synthèse vocale), uniquement après ton consentement explicite : ton échantillon de voix, pour créer une copie synthétique privée de ta propre voix, et les phrases que Stick prononce. Ton modèle vocal est privé et jamais publié.
+  • OpenRouter (modèle de langage IA), uniquement si tu actives les réponses intelligentes : le texte de ce que tu dis pendant les appels, ton prénom, tes objectifs et ta phrase d'identité, pour que Stick te comprenne et te réponde. Aucun audio n'est envoyé. Tu peux le désactiver dans Moi › Ma voix ; les appels suivent alors un script fixe.
+  • Reconnaissance vocale Apple : transcrit ce que tu dis pendant les appels. Apple peut traiter l'audio sur ses serveurs selon sa propre politique de confidentialité.
+  • Apple et RevenueCat : gèrent les achats. Stick ne voit jamais tes données de paiement. Si tu te connectes avec Apple, RevenueCat reçoit l'identifiant Apple anonyme pour que tes achats te suivent.
 
-  Tes droits
-  • Supprime ton clone vocal à tout moment depuis Moi › Ma voix.
-  • Supprime ton compte et toutes tes données depuis Moi › Supprimer mon compte et mes données. Cela efface le compte anonyme, la ligne de ligue et tous les fichiers locaux.
-  • Contact : privacy@stick.app
+  Se connecter avec Apple
+  Optionnel. Stick ne demande à Apple ni ton nom ni ton email. Seul un identifiant anonyme est conservé, dans le trousseau de ton iPhone.
 
-  Mineurs
+  Stick ne vend jamais de données, n'affiche aucune publicité, ne te suit pas d'une app à l'autre et n'utilise jamais ta voix pour quelqu'un d'autre que toi.
+
+  Tes droits et tes choix
+  • Supprime ton clone vocal à tout moment depuis Moi › Ma voix (supprimé chez Fish Audio et sur ton iPhone).
+  • Supprime tout depuis Moi › Supprimer mon compte et mes données.
+  • Contact : \(AppLinks.contactEmail)
+
+  Âge
   Stick s'adresse aux personnes de 16 ans et plus.
   """
 
@@ -109,13 +121,12 @@ enum LegalTexts {
   Last updated: September 2026
 
   1. Stick is a digital-wellbeing coaching app. It is not a medical device and does not diagnose or treat any condition.
-  2. Stick clones your own voice only. You confirm the voice you record is yours and you consent to its synthetic use inside Stick. Recording someone else's voice is forbidden.
-  3. Purchases: the 75-Day Pass is a one-time purchase. Weekly and Stick Life are auto-renewable subscriptions billed to your Apple Account; they renew unless cancelled at least 24 hours before the end of the period. Manage them in Settings › Apple Account › Subscriptions. Refunds are handled by Apple.
-  4. Free days offered through a referral link are a courtesy and can be withdrawn in case of abuse.
-  5. The league displays your first name and score to other members. Choose a first name you are comfortable sharing.
-  6. Stick's calls use a firm coaching tone by design. If it ever becomes distressing, stop using the app and delete your data from Me.
-  7. Apple's standard licensed application end-user license agreement applies: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-  8. Contact: support@stick.app
+  2. Stick clones your own voice only. You confirm the voice you record is yours and you consent to its synthetic use inside Stick. Recording or cloning someone else's voice is forbidden.
+  3. Purchases: the 75-Day Pass is a one-time purchase that unlocks the full 75-day program; it does not renew. Weekly is an auto-renewable subscription billed to your Apple Account at confirmation and every week; it renews unless cancelled at least 24 hours before the end of the period. Manage it in Settings › Apple Account › Subscriptions. Refunds are handled by Apple.
+  4. Stick's calls use a firm coaching tone by design. If it ever becomes distressing, stop using the app and delete your data from Me.
+  5. Replies generated by the AI language model may be inaccurate. Stick is not professional advice.
+  6. Apple's Standard Licensed Application End User License Agreement (EULA) applies to your use of Stick: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+  7. Contact: \(AppLinks.contactEmail)
   """
 
   static let termsFR = """
@@ -123,12 +134,11 @@ enum LegalTexts {
   Dernière mise à jour : septembre 2026
 
   1. Stick est une app de coaching et de bien-être numérique. Ce n'est pas un dispositif médical et elle ne diagnostique ni ne traite aucune condition.
-  2. Stick clone uniquement ta propre voix. Tu confirmes que la voix enregistrée est la tienne et tu consens à son usage synthétique dans Stick. Enregistrer la voix d'une autre personne est interdit.
-  3. Achats : le Pass 75 jours est un achat unique. Hebdo et Stick Life sont des abonnements renouvelés automatiquement, facturés sur ton compte Apple ; ils se renouvellent sauf annulation au moins 24 heures avant la fin de la période. Gère-les dans Réglages › Compte Apple › Abonnements. Les remboursements sont gérés par Apple.
-  4. Les jours gratuits offerts via un lien de parrainage sont un geste commercial et peuvent être retirés en cas d'abus.
-  5. La ligue affiche ton prénom et ton score aux autres membres. Choisis un prénom que tu acceptes de partager.
-  6. Les appels de Stick adoptent volontairement un ton de coach ferme. Si cela devenait pénible, arrête d'utiliser l'app et supprime tes données depuis Moi.
-  7. Le contrat de licence standard d'Apple s'applique : https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-  8. Contact : support@stick.app
+  2. Stick clone uniquement ta propre voix. Tu confirmes que la voix enregistrée est la tienne et tu consens à son usage synthétique dans Stick. Enregistrer ou cloner la voix d'une autre personne est interdit.
+  3. Achats : le Pass 75 jours est un achat unique qui débloque tout le programme de 75 jours ; il ne se renouvelle pas. Hebdo est un abonnement renouvelé automatiquement, facturé sur ton compte Apple à la confirmation puis chaque semaine ; il se renouvelle sauf annulation au moins 24 heures avant la fin de la période. Gère-le dans Réglages › Compte Apple › Abonnements. Les remboursements sont gérés par Apple.
+  4. Les appels de Stick adoptent volontairement un ton de coach ferme. Si cela devenait pénible, arrête d'utiliser l'app et supprime tes données depuis Moi.
+  5. Les réponses générées par le modèle de langage IA peuvent être inexactes. Stick n'est pas un conseil professionnel.
+  6. Le contrat de licence standard d'Apple (EULA) s'applique à ton utilisation de Stick : https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+  7. Contact : \(AppLinks.contactEmail)
   """
 }

@@ -1,0 +1,78 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "CFBundleDisplayName": {
+      "comment": "Info.plist",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick"
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription": {
+      "comment": "Info.plist",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick records your voice sample to create your voice clone and your optional day-1 message, and listens to you during calls so you can talk with it."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick enregistre ton échantillon de voix pour créer ton clone vocal et ton message optionnel du jour 1, et t'écoute pendant les appels pour que tu puisses lui parler."
+          }
+        }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription": {
+      "comment": "Info.plist",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick transcribes what you say during calls so it can note your goals and answer you."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick transcrit ce que tu dis pendant les appels pour noter tes objectifs et te répondre."
+          }
+        }
+      }
+    },
+    "NSAlarmKitUsageDescription": {
+      "comment": "Info.plist",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick schedules your morning wake-up call and evening debrief so your own voice can call you at the times you chose."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick programme ton appel du réveil et ton bilan du soir pour que ta propre voix t'appelle aux heures que tu as choisies."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

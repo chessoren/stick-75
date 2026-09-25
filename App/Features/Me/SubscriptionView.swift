@@ -3,6 +3,8 @@ import SwiftUI
 struct SubscriptionView: View {
   @Environment(StickStore.self) private var store
   @State private var showingPaywall = false
+  @State private var restoring = false
+  @State private var message: String?
 
   var body: some View {
     ZStack {
@@ -19,13 +21,44 @@ struct SubscriptionView: View {
         }
         .stickCard()
 
-        if store.state.entitlement != .life {
+        if store.state.entitlement != .pass75 {
           Button {
             showingPaywall = true
           } label: {
             Text(store.isEntitled ? "See plans" : "Unlock Stick")
           }
           .buttonStyle(PrimaryPillButtonStyle())
+        }
+
+        Button {
+          restoring = true
+          Task {
+            if let entitlement = await PurchaseService.shared.restore() {
+              store.grant(entitlement)
+              message = String(localized: "Purchases restored.")
+            } else {
+              message = PurchaseService.shared.lastError ?? String(localized: "Nothing to restore on this Apple Account.")
+            }
+            restoring = false
+          }
+        } label: {
+          Text("Restore purchases")
+        }
+        .buttonStyle(SecondaryPillButtonStyle())
+        .disabled(restoring)
+
+        if let message {
+          Text(message)
+            .font(StickFont.footnote)
+            .foregroundStyle(Color.inkSecondary)
+        }
+
+        if store.state.entitlement == .weekly, let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+          Link(destination: url) {
+            Text("Manage subscription")
+              .font(StickFont.headline)
+              .foregroundStyle(Color.brandOrange)
+          }
         }
 
         Text("Manage or cancel in Settings › Apple Account › Subscriptions.")
@@ -46,18 +79,14 @@ struct SubscriptionView: View {
     switch store.state.entitlement {
     case .pass75: "75-Day Pass"
     case .weekly: "Weekly"
-    case .life: "Stick Life"
-    case .trialDays: "Free days from a friend"
     case .none: "No active plan"
     }
   }
 
   private var planDetail: LocalizedStringKey {
     switch store.state.entitlement {
-    case .pass75: "The whole program is yours. Stick Life is offered at day 60 for what comes after."
-    case .weekly: "Renews weekly. Switch to the 75-Day Pass to save about €30 over the program."
-    case .life: "Maintenance mode, new seasons and leagues, forever."
-    case .trialDays: "\(store.freeDaysLeft) days left. Pick a plan to keep going."
+    case .pass75: "The whole program is yours. One payment, nothing renews."
+    case .weekly: "Renews every week until you cancel. The 75-Day Pass covers the whole program in one payment."
     case .none: "Stick calls only paying members. Pick a plan."
     }
   }

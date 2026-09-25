@@ -1,8 +1,8 @@
 import Foundation
 
 /// Third-party keys are read from `Secrets.local.plist`, a git-ignored file in `App/Resources/`.
-/// Keep them out of source control. Before the App Store, move the calls behind a Supabase Edge Function:
-/// anything shipped in the binary can be extracted.
+/// Keep them out of source control. Anything shipped in the binary can be extracted: at scale, move the
+/// Fish Audio and OpenRouter calls behind a server that holds the keys.
 enum Secrets {
   private static let values: [String: String] = {
     guard let url = Bundle.main.url(forResource: "Secrets.local", withExtension: "plist"),
@@ -24,8 +24,6 @@ enum Secrets {
   static var openRouterModel: String { value("OPENROUTER_MODEL", default: "nex-agi/nex-n2.5-mini:free") }
   static var openRouterFallbackModel: String { value("OPENROUTER_FALLBACK_MODEL", default: "nex-agi/nex-n2.5-pro:free") }
   static var revenueCatKey: String { value("REVENUECAT_KEY") }
-  static var supabaseURL: String { value("SUPABASE_URL") }
-  static var supabaseAnonKey: String { value("SUPABASE_ANON_KEY") }
 
   static var hasVoiceKeys: Bool { !fishAudioKey.isEmpty }
   static var hasLLMKeys: Bool { !openRouterKey.isEmpty }

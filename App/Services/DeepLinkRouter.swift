@@ -1,37 +1,26 @@
 import Foundation
 
-/// stick://call/wake · stick://call/debrief · stick://intercept · stick://r/CODE · https://stick.app/r/CODE
+/// stick://call/wake · stick://call/debrief · stick://intercept · stick://tab/today
 enum DeepLink: Equatable {
   case call(CallKind)
   case intercept
-  case referral(String)
   case tab(String)
 
   init?(url: URL) {
+    guard url.scheme == "stick" else { return nil }
     let host = url.host()?.lowercased() ?? ""
     let parts = url.pathComponents.filter { $0 != "/" }
-    if url.scheme == "stick" {
-      switch host {
-      case "call":
-        guard let raw = parts.first, let kind = CallKind(rawValue: raw) else { return nil }
-        self = .call(kind)
-      case "intercept":
-        self = .intercept
-      case "r":
-        guard let code = parts.first else { return nil }
-        self = .referral(code)
-      case "tab":
-        guard let name = parts.first else { return nil }
-        self = .tab(name)
-      default:
-        return nil
-      }
-      return
+    switch host {
+    case "call":
+      guard let raw = parts.first, let kind = CallKind(rawValue: raw) else { return nil }
+      self = .call(kind)
+    case "intercept":
+      self = .intercept
+    case "tab":
+      guard let name = parts.first else { return nil }
+      self = .tab(name)
+    default:
+      return nil
     }
-    if host.contains("stick.app"), parts.first == "r", parts.count >= 2 {
-      self = .referral(parts[1])
-      return
-    }
-    return nil
   }
 }

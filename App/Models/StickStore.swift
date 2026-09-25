@@ -16,8 +16,6 @@ struct StickState: Codable {
   var actRestarts = 0
   var badges: [Badge] = []
   var entitlement: Entitlement = .none
-  var freeDaysUntil: Date?
-  var leaderboard: [LeaderboardEntry] = []
   var lastCelebratedDay = 0
   var lastCelebratedAct = -1
   var focusModeOn = true
@@ -28,6 +26,35 @@ struct StickState: Codable {
   var trialsDone: [Trial] = []
   var trialsWeek = 0
   var totalInterceptions = 0
+
+  init() {}
+
+  /// Every field is optional on decode so an app update that adds a field never wipes the 75 days.
+  init(from decoder: Decoder) throws {
+    let c = try decoder.container(keyedBy: CodingKeys.self)
+    let d = StickState()
+    profile = (try? c.decodeIfPresent(UserProfile.self, forKey: .profile)) ?? d.profile
+    onboardingComplete = try c.decodeIfPresent(Bool.self, forKey: .onboardingComplete) ?? d.onboardingComplete
+    onboardingStep = try c.decodeIfPresent(Int.self, forKey: .onboardingStep) ?? d.onboardingStep
+    startDate = try c.decodeIfPresent(Date.self, forKey: .startDate)
+    days = (try? c.decodeIfPresent([DayRecord].self, forKey: .days)) ?? d.days
+    goals = (try? c.decodeIfPresent([Goal].self, forKey: .goals)) ?? d.goals
+    calls = (try? c.decodeIfPresent([CallRecord].self, forKey: .calls)) ?? d.calls
+    jokersUsed = try c.decodeIfPresent(Int.self, forKey: .jokersUsed) ?? d.jokersUsed
+    actRestarts = try c.decodeIfPresent(Int.self, forKey: .actRestarts) ?? d.actRestarts
+    badges = ((try? c.decodeIfPresent([String].self, forKey: .badges)) ?? []).compactMap(Badge.init(rawValue:))
+    entitlement = (try? c.decodeIfPresent(Entitlement.self, forKey: .entitlement)) ?? d.entitlement
+    lastCelebratedDay = try c.decodeIfPresent(Int.self, forKey: .lastCelebratedDay) ?? d.lastCelebratedDay
+    lastCelebratedAct = try c.decodeIfPresent(Int.self, forKey: .lastCelebratedAct) ?? d.lastCelebratedAct
+    focusModeOn = try c.decodeIfPresent(Bool.self, forKey: .focusModeOn) ?? d.focusModeOn
+    interceptionsToday = try c.decodeIfPresent(Int.self, forKey: .interceptionsToday) ?? d.interceptionsToday
+    interceptionsDay = try c.decodeIfPresent(Int.self, forKey: .interceptionsDay) ?? d.interceptionsDay
+    lastSeenAct = try c.decodeIfPresent(Int.self, forKey: .lastSeenAct) ?? d.lastSeenAct
+    postPlanNotes = try c.decodeIfPresent([String].self, forKey: .postPlanNotes) ?? d.postPlanNotes
+    trialsDone = ((try? c.decodeIfPresent([String].self, forKey: .trialsDone)) ?? []).compactMap(Trial.init(rawValue:))
+    trialsWeek = try c.decodeIfPresent(Int.self, forKey: .trialsWeek) ?? d.trialsWeek
+    totalInterceptions = try c.decodeIfPresent(Int.self, forKey: .totalInterceptions) ?? d.totalInterceptions
+  }
 }
 
 @Observable
@@ -194,6 +221,7 @@ final class StickStore {
     save()
   }
 
+  /// Batch update from the debrief call; the caller saves (via `addCall`).
   func setGoalDone(_ id: UUID, _ done: Bool) {
     guard let index = state.goals.firstIndex(where: { $0.id == id }) else { return }
     state.goals[index].isDone = done
@@ -249,8 +277,12 @@ final class StickStore {
       checkCelebrations()
     }
     if let kind = AppGroup.defaults.string(forKey: "stick.pendingCall"), let call = CallKind(rawValue: kind) {
+      // An "Answer" tapped hours ago must not ring the next time the app opens.
+      let at = AppGroup.defaults.double(forKey: "stick.pendingCall.at")
       AppGroup.defaults.removeObject(forKey: "stick.pendingCall")
-      pendingCallKind = call
+      if at == 0 || Date.now.timeIntervalSince1970 - at < 15 * 60 {
+        pendingCallKind = call
+      }
     }
   }
 
@@ -425,83 +457,12 @@ final class StickStore {
     if daysHeld >= 38, !state.badges.contains(.halfway) { state.badges.append(.halfway) }
   }
 
-  // MARK: - Entitlement & referral
+  // MARK: - Entitlement
 
-  var isEntitled: Bool {
-    if state.entitlement.isActive, state.entitlement != .trialDays { return true }
-    if let until = state.freeDaysUntil, until > .now { return true }
-    return false
-  }
-
-  var freeDaysLeft: Int {
-    guard let until = state.freeDaysUntil, until > .now else { return 0 }
-    return max(0, Calendar.current.dateComponents([.day], from: .now, to: until).day ?? 0)
-  }
+  var isEntitled: Bool { state.entitlement.isActive }
 
   func grant(_ entitlement: Entitlement) {
     update { $0.entitlement = entitlement }
-  }
-
-  /// Friends who install with your link get 5 free days.
-  func applyReferral(code: String) {
-    let trimmed = code.uppercased().trimmingCharacters(in: .whitespaces)
-    guard trimmed.count == 6, trimmed != profile.referralCode, state.profile.referredBy == nil else { return }
-    update {
-      $0.profile.referredBy = trimmed
-      $0.freeDaysUntil = Calendar.current.date(byAdding: .day, value: 5, to: .now)
-      if $0.entitlement == .none { $0.entitlement = .trialDays }
-    }
-    Task { await SupabaseService.shared.registerReferral(code: trimmed) }
-  }
-
-  /// Pushes the score to Supabase and pulls the live league when the backend is configured.
-  func syncRemote() async {
-    let service = SupabaseService.shared
-    guard await service.isConfigured else { return }
-    await service.pushScore(
-      name: profile.firstName,
-      hours: hoursRecovered,
-      daysHeld: daysHeld,
-      dayNumber: dayNumber,
-      referralCode: profile.referralCode
-    )
-    let league = await service.fetchLeague()
-    if !league.isEmpty {
-      update { $0.leaderboard = league }
-    }
-  }
-
-  var referralURL: URL {
-    URL(string: "https://stick.app/r/\(profile.referralCode)")!
-  }
-
-  // MARK: - Leaderboard
-
-  var leaderboard: [LeaderboardEntry] {
-    var entries = state.leaderboard.filter { !$0.isMe }
-    entries.append(LeaderboardEntry(
-      name: profile.firstName.isEmpty ? String(localized: "You") : profile.firstName,
-      initials: String(profile.firstName.prefix(1)).uppercased().isEmpty ? "S" : String(profile.firstName.prefix(1)).uppercased(),
-      hoursRecovered: hoursRecovered,
-      daysHeld: daysHeld,
-      isMe: true,
-      hue: 0.06
-    ))
-    return entries.sorted { $0.hoursRecovered > $1.hoursRecovered }
-  }
-
-  var myRank: Int {
-    (leaderboard.firstIndex(where: \.isMe) ?? 0) + 1
-  }
-
-  /// True once other real players are in the league (Supabase connected and populated).
-  var leagueIsLive: Bool {
-    state.leaderboard.contains { !$0.isMe }
-  }
-
-  /// Stick Life is pitched from day 60 to Pass holders.
-  var shouldPitchLife: Bool {
-    state.entitlement == .pass75 && dayNumber >= 60
   }
 
   // MARK: - Widgets
@@ -532,18 +493,38 @@ final class StickStore {
     return wake < debrief ? (.wake, wake) : (.debrief, debrief)
   }
 
-  // MARK: - Debug
+  // MARK: - Deletion
 
-  func resetEverything() {
+  /// Deletes the voice clone at Fish Audio, the local sample and every clip rendered with it.
+  /// Throws when the provider can't be reached; the local copy is kept so the user can retry.
+  func deleteVoiceClone() async throws {
+    if let voiceID = profile.voiceModelID {
+      try await FishAudioService().deleteVoice(id: voiceID)
+    }
+    if let sample = profile.voiceSampleFileName {
+      try? FileManager.default.removeItem(at: VoiceRecorder.url(for: sample))
+    }
+    VoiceClipCache.clear()
+    update {
+      $0.profile.voiceModelID = nil
+      $0.profile.voiceSampleFileName = nil
+    }
+  }
+
+  /// App Review 5.1.1(v): wipes everything Stick keeps on the phone and forgets the Apple sign-in.
+  /// Call `deleteVoiceClone()` first so the remote voice goes too.
+  func deleteAccount() async {
     CallScheduler.cancelAll()
     ScreenTimeService.shared.applyShield(enabled: false)
+    LiveActivityManager.shared.end()
     try? FileManager.default.removeItem(at: VoiceRecorder.voiceDirectory)
-    try? FileManager.default.removeItem(at: VoiceClipCache.directory)
-    Task {
-      await SupabaseService.shared.deleteAccount()
-      await PurchaseService.shared.logOut()
-      await AuthService.shared.refresh()
-    }
+    VoiceClipCache.clear()
+    AppGroup.defaults.removeObject(forKey: AppGroup.snapshotKey)
+    AppGroup.defaults.removeObject(forKey: "stick.pendingCall")
+    await AuthService.shared.signOut()
+    pendingCallKind = nil
+    pendingReveal = nil
+    celebration = nil
     state = StickState()
     save()
   }

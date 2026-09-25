@@ -20,7 +20,7 @@ struct HookScreen: View {
             .font(StickFont.title)
             .foregroundStyle(.white.opacity(0.9))
         }
-        Text("a year on TikTok. That's 25 full days. Gone.")
+        Text("a year on TikTok for an average user. That's 25 full days. Gone.")
           .font(StickFont.title2)
           .foregroundStyle(.white)
           .fixedSize(horizontal: false, vertical: true)
@@ -130,7 +130,7 @@ struct QuizAppsScreen: View {
 
   var body: some View {
     @Bindable var model = model
-    OnboardingPage("Which apps steal your time?", subtitle: "Pick everything that applies. Stick blocks and intercepts these.") {
+    OnboardingPage("Which apps steal your time?", subtitle: "Pick everything that applies. Stick calls you the moment you open one.") {
       ChoiceList(options: TimeSink.allCases.map { ($0, LocalizedStringKey($0.title), $0.symbol) }, selection: $model.draft.timeSinks)
     } footer: {
       Button { model.next() } label: { Text("Continue") }

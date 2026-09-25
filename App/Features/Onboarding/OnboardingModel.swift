@@ -20,9 +20,14 @@ enum OnboardingStep: Int, CaseIterable {
     default: true
     }
   }
+
+  /// Screen Time needs the Family Controls distribution entitlement; until Apple grants it, the step is skipped.
+  var isEnabled: Bool {
+    self != .screenTime || ScreenTimeService.isAvailable
+  }
 }
 
-/// Drives the 22-screen onboarding and writes answers into the store as it goes.
+/// Drives the onboarding and writes answers into the store as it goes.
 @Observable
 @MainActor
 final class OnboardingModel {
@@ -45,6 +50,7 @@ final class OnboardingModel {
     draft = store.profile
     step = OnboardingStep(rawValue: store.state.onboardingStep) ?? .hook
     if step == .voiceProcessing { step = .voiceRecord }
+    if !step.isEnabled { step = Self.neighbour(of: step, forward: true) ?? .done }
   }
 
   var progress: Double {
@@ -58,16 +64,24 @@ final class OnboardingModel {
   var daysPerYear: Int { hoursPerYear / 24 }
   var hoursIn75Days: Int { Int(draft.hoursPerDay * 75) }
 
+  private static func neighbour(of step: OnboardingStep, forward: Bool) -> OnboardingStep? {
+    var candidate = OnboardingStep(rawValue: step.rawValue + (forward ? 1 : -1))
+    while let current = candidate, !current.isEnabled {
+      candidate = OnboardingStep(rawValue: current.rawValue + (forward ? 1 : -1))
+    }
+    return candidate
+  }
+
   func next() {
     persist()
-    guard let nextStep = OnboardingStep(rawValue: step.rawValue + 1) else { return }
+    guard let nextStep = Self.neighbour(of: step, forward: true) else { return }
     direction = .trailing
     withAnimation(.smooth(duration: 0.45)) { step = nextStep }
     store.update { $0.onboardingStep = nextStep.rawValue }
   }
 
   func back() {
-    guard step.rawValue > 0, let prev = OnboardingStep(rawValue: step.rawValue - 1) else { return }
+    guard step.rawValue > 0, let prev = Self.neighbour(of: step, forward: false) else { return }
     direction = .leading
     let target: OnboardingStep = prev == .voiceProcessing ? .voiceRecord : prev
     withAnimation(.smooth(duration: 0.45)) { step = target }
@@ -81,12 +95,10 @@ final class OnboardingModel {
     store.update { $0.onboardingStep = target.rawValue }
   }
 
-  /// Writes the draft into the store without clobbering flags set elsewhere (deep links, referrals).
+  /// Writes the draft into the store without clobbering flags set elsewhere (deep links).
   func persist() {
     var merged = draft
     merged.shortcutAutomationSet = merged.shortcutAutomationSet || store.profile.shortcutAutomationSet
-    merged.referredBy = store.profile.referredBy ?? merged.referredBy
-    merged.referralCode = store.profile.referralCode
     draft = merged
     store.update { $0.profile = merged }
   }
@@ -106,16 +118,23 @@ final class OnboardingModel {
     isCloning = true
     cloneError = nil
     let fish = FishAudioService()
+    let previousID = store.profile.voiceModelID
     do {
       let id = try await fish.cloneVoice(
         sampleURL: url,
         title: "Stick · \(draft.firstName.isEmpty ? "User" : draft.firstName)",
         transcript: recordingScript
       )
+      draft = store.profile
       draft.voiceModelID = id
       draft.voiceSampleFileName = url.lastPathComponent
       persist()
-      await VoiceClipCache.ensureRingtone(voiceID: id, language: language)
+      // Re-recorded: the old clone and every clip rendered with it go.
+      if let previousID, previousID != id {
+        try? await fish.deleteVoice(id: previousID)
+      }
+      VoiceClipCache.clear()
+      await VoiceClipCache.ensureRingtone(voiceID: id, language: language, act: store.hasStarted ? store.currentAct : .silence)
       isCloning = false
       if advance { next() }
     } catch {
@@ -124,10 +143,11 @@ final class OnboardingModel {
     }
   }
 
+  /// Continue with the system voice: no recording, nothing sent to the voice provider.
   func skipClone() {
     draft.voiceModelID = nil
     persist()
-    next()
+    go(to: .aha)
   }
 
   // MARK: - Finish

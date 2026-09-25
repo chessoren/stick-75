@@ -18,6 +18,11 @@ final class VoiceRecorder: NSObject, AVAudioRecorderDelegate {
     return base
   }
 
+  /// Recording only needs the microphone (speech recognition is asked separately, before the first call).
+  static func requestMicrophone() async -> Bool {
+    await AVAudioApplication.requestRecordPermission()
+  }
+
   static func url(for fileName: String) -> URL {
     voiceDirectory.appending(path: fileName)
   }

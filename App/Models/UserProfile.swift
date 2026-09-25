@@ -95,16 +95,38 @@ struct UserProfile: Codable, Hashable {
   var debriefTime: ClockTime = .defaultDebrief
   var voiceModelID: String?
   var voiceConsentGiven = false
+  /// Explicit permission to send call text to the language model (App Review 5.1.2(i)). Off: scripted calls.
+  var aiConsentGiven = false
   var voiceSampleFileName: String?
   var vaultRecordingFileName: String?
   var contractSignedAt: Date?
-  var referralCode = UserProfile.makeReferralCode()
-  var referredBy: String?
   var blockedAppsSelected = false
   var shortcutAutomationSet = false
 
-  static func makeReferralCode() -> String {
-    let letters = Array("ABCDEFGHJKLMNPQRSTUVWXYZ23456789")
-    return String((0..<6).map { _ in letters.randomElement()! })
+  init() {}
+
+  /// Every field is optional on decode so an app update that adds a field never wipes the user's profile.
+  init(from decoder: Decoder) throws {
+    let c = try decoder.container(keyedBy: CodingKeys.self)
+    let d = UserProfile()
+    firstName = try c.decodeIfPresent(String.self, forKey: .firstName) ?? d.firstName
+    identityStatement = try c.decodeIfPresent(String.self, forKey: .identityStatement) ?? d.identityStatement
+    language = (try? c.decodeIfPresent(AppLanguage.self, forKey: .language)) ?? d.language
+    timeSinks = (try? c.decodeIfPresent([TimeSink].self, forKey: .timeSinks)) ?? d.timeSinks
+    hoursPerDay = try c.decodeIfPresent(Double.self, forKey: .hoursPerDay) ?? d.hoursPerDay
+    crackMoments = try c.decodeIfPresent([String].self, forKey: .crackMoments) ?? d.crackMoments
+    feelings = try c.decodeIfPresent([String].self, forKey: .feelings) ?? d.feelings
+    dreams = try c.decodeIfPresent([String].self, forKey: .dreams) ?? d.dreams
+    triedBefore = try c.decodeIfPresent([String].self, forKey: .triedBefore) ?? d.triedBefore
+    wakeTime = try c.decodeIfPresent(ClockTime.self, forKey: .wakeTime) ?? d.wakeTime
+    debriefTime = try c.decodeIfPresent(ClockTime.self, forKey: .debriefTime) ?? d.debriefTime
+    voiceModelID = try c.decodeIfPresent(String.self, forKey: .voiceModelID)
+    voiceConsentGiven = try c.decodeIfPresent(Bool.self, forKey: .voiceConsentGiven) ?? d.voiceConsentGiven
+    aiConsentGiven = try c.decodeIfPresent(Bool.self, forKey: .aiConsentGiven) ?? d.aiConsentGiven
+    voiceSampleFileName = try c.decodeIfPresent(String.self, forKey: .voiceSampleFileName)
+    vaultRecordingFileName = try c.decodeIfPresent(String.self, forKey: .vaultRecordingFileName)
+    contractSignedAt = try c.decodeIfPresent(Date.self, forKey: .contractSignedAt)
+    blockedAppsSelected = try c.decodeIfPresent(Bool.self, forKey: .blockedAppsSelected) ?? d.blockedAppsSelected
+    shortcutAutomationSet = try c.decodeIfPresent(Bool.self, forKey: .shortcutAutomationSet) ?? d.shortcutAutomationSet
   }
 }

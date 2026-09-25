@@ -27,7 +27,6 @@ struct MainTabView: View {
     switch tab {
     case .today: HomeView()
     case .calls: CallsView()
-    case .league: LeagueView()
     case .me: MeView()
     }
   }

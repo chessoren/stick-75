@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Share a link that gives friends 5 free days.
-struct ReferralView: View {
+/// Invite a friend: a plain share of the App Store page. No reward, no code (App Review 3.1.1).
+struct InviteView: View {
   @Environment(StickStore.self) private var store
   @Environment(\.dismiss) private var dismiss
 
@@ -11,18 +11,18 @@ struct ReferralView: View {
         StickBackground()
         VStack(spacing: 24) {
           Spacer()
-          Image(systemName: "gift.fill")
-            .font(.system(size: 64, weight: .semibold))
+          Image(systemName: "person.2.fill")
+            .font(.system(size: 60, weight: .semibold))
             .foregroundStyle(.white)
             .padding(28)
             .background(Color.white.opacity(0.2), in: Circle())
             .glassEffect(.regular, in: .circle)
           VStack(spacing: 10) {
-            Text("5 free days for a friend.")
+            Text("Don't do it alone.")
               .font(StickFont.largeTitle)
               .stickTitleTracking()
               .multilineTextAlignment(.center)
-            Text("They install Stick with your link and start with five days on you. The people who quit together, stay quit.")
+            Text("Send Stick to a friend who scrolls too much. The people who quit together, stay quit.")
               .font(StickFont.body)
               .multilineTextAlignment(.center)
               .opacity(0.9)
@@ -30,20 +30,18 @@ struct ReferralView: View {
           .foregroundStyle(.white)
           .padding(.horizontal, 12)
 
-          Text(store.profile.referralCode)
-            .font(StickFont.font(28, .semibold))
-            .tracking(6)
-            .foregroundStyle(Color.ink)
-            .padding(.horizontal, 24)
-            .padding(.vertical, 14)
-            .background(Color.white.opacity(0.85), in: Capsule())
-            .glassEffect(.regular, in: .capsule)
-            .accessibilityLabel(Text("Your referral code"))
-
           Spacer()
 
-          ShareLink(item: store.referralURL, message: Text(shareMessage)) {
-            Label("Share my link", systemImage: "square.and.arrow.up")
+          Group {
+            if let url = AppLinks.appStoreURL {
+              ShareLink(item: url, message: Text(shareMessage)) {
+                Label("Invite a friend", systemImage: "square.and.arrow.up")
+              }
+            } else {
+              ShareLink(item: shareMessage) {
+                Label("Invite a friend", systemImage: "square.and.arrow.up")
+              }
+            }
           }
           .buttonStyle(PrimaryPillButtonStyle())
           .padding(.bottom, 16)
@@ -60,7 +58,7 @@ struct ReferralView: View {
 
   private var shareMessage: String {
     store.profile.language == .french
-      ? "Je fais 75 jours sans TikTok avec Stick. Mon téléphone m'appelle avec MA voix. Tu as 5 jours gratuits avec mon lien : "
-      : "I'm doing 75 days without TikTok with Stick. My phone calls me with MY voice. You get 5 free days with my link: "
+      ? "Je fais 75 jours sans TikTok avec Stick. Mon téléphone m'appelle avec MA voix. Essaie :"
+      : "I'm doing 75 days without TikTok with Stick. My phone calls me with MY voice. Try it:"
   }
 }

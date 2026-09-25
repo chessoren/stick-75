@@ -14,6 +14,8 @@ enum StickPersona {
     var jokersLeft: Int
     var timeSinks: [TimeSink]
     var language: AppLanguage
+    /// The user allowed Stick to send the call text to the language model.
+    var aiEnabled: Bool
 
     var apps: String { timeSinks.isEmpty ? "TikTok" : timeSinks.map(\.title).joined(separator: ", ") }
     var firstName: String { name.isEmpty ? (language == .french ? "soldat" : "soldier") : name }
@@ -214,24 +216,16 @@ enum StickPersona {
     }
   }
 
-  enum DegradedReason { case brainOffline, cannotHear }
-
-  /// One line, then Stick hangs up: the call cannot run as a conversation right now.
-  static func degradedLine(_ reason: DegradedReason, kind: CallKind, _ c: Context) -> String {
+  /// One line, then Stick hangs up: without the microphone the call cannot run as a conversation.
+  static func cannotHearLine(kind: CallKind, _ c: Context) -> String {
     let fr = c.language == .french
     let name = c.name.isEmpty ? "" : c.name + ", "
-    switch (reason, kind) {
-    case (.brainOffline, .wake):
-      return fr ? "\(name)mon cerveau ne répond pas ce matin. Pas d'excuse pour toi : tu écris tes un à trois objectifs avec le bouton plus sur l'écran Aujourd'hui, maintenant. Je rappelle ce soir." : "\(name)my brain isn't answering this morning. No excuse for you: write your one to three goals with the plus button on the Today screen, now. I call tonight."
-    case (.cannotHear, .wake):
+    switch kind {
+    case .wake:
       return fr ? "\(name)je ne peux pas t'entendre, le micro est coupé. Écris tes objectifs avec le bouton plus sur l'écran Aujourd'hui, et active le micro dans Réglages pour ce soir." : "\(name)I can't hear you, the microphone is off. Write your goals with the plus button on the Today screen, and turn the mic on in Settings for tonight."
-    case (.brainOffline, .debrief):
-      return fr ? "\(name)mon cerveau est hors ligne ce soir. Coche tes objectifs faits sur l'écran Aujourd'hui, à la main. Demain je te réveille." : "\(name)my brain is offline tonight. Tick the goals you did on the Today screen, by hand. Tomorrow I wake you."
-    case (.cannotHear, .debrief):
+    case .debrief:
       return fr ? "\(name)je ne t'entends pas. Coche tes objectifs faits à la main et active le micro dans Réglages." : "\(name)I can't hear you. Tick your done goals by hand and turn the mic on in Settings."
-    case (.brainOffline, _):
-      return fr ? "\(name)mon cerveau ne répond pas. Tu connais l'ordre : ferme l'app, retourne à ton objectif. Je rappelle." : "\(name)my brain isn't answering. You know the order: close the app, back to your goal. I'll call again."
-    case (.cannotHear, _):
+    default:
       return fr ? "\(name)je ne t'entends pas. Ferme l'app, retourne à ton objectif, et active le micro dans Réglages." : "\(name)I can't hear you. Close the app, back to your goal, and turn the mic on in Settings."
     }
   }
