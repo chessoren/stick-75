@@ -12,8 +12,14 @@ final class CallCoordinator {
   var selectedTab: MainTab = .today
 
   func start(_ kind: CallKind, store: StickStore) {
+    engine.ring(kind: kind, context: Self.context(store: store), voiceID: store.profile.voiceModelID)
+    isPresented = true
+  }
+
+  /// What Stick knows when it calls, read from the current program state.
+  static func context(store: StickStore) -> StickPersona.Context {
     let profile = store.profile
-    let context = StickPersona.Context(
+    return StickPersona.Context(
       name: profile.firstName,
       identity: profile.identityStatement,
       day: max(1, store.dayNumber),
@@ -24,10 +30,9 @@ final class CallCoordinator {
       jokersLeft: store.jokersLeft,
       timeSinks: profile.timeSinks,
       language: profile.language,
-      aiEnabled: profile.aiConsentGiven
+      aiEnabled: profile.aiConsentGiven,
+      hasClonedVoice: profile.voiceModelID != nil
     )
-    engine.ring(kind: kind, context: context, voiceID: profile.voiceModelID)
-    isPresented = true
   }
 
   /// Called when the call screen is dismissed.

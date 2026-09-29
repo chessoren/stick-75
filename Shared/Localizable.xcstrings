@@ -5351,6 +5351,16 @@
           }
         }
       }
+    },
+    "Pick up. Listen to what you're about to promise yourself.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Décroche. Écoute ce que tu vas te promettre."
+          }
+        }
+      }
     }
   }
 }

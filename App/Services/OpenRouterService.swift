@@ -16,8 +16,9 @@ struct OpenRouterService {
 
   /// Free models only: the relay refuses anything else.
   private static let model = "liquid/lfm-2.5-2.6b:free"
-  /// This model always reasons before answering; the reasoning is hidden but still spends tokens.
-  private static let reasoningBudget = 700
+  /// This model can't turn reasoning off ("mandatory"), so it runs at the minimum effort and stays hidden. It
+  /// still spends tokens (about 20 to 230 measured), hence this headroom on top of the reply's own budget.
+  private static let reasoningBudget = 300
 
   enum RouterError: LocalizedError {
     case disabled
@@ -60,7 +61,7 @@ struct OpenRouterService {
       "messages": messages.map { ["role": $0.role.rawValue, "content": $0.content] },
       "max_tokens": maxTokens + Self.reasoningBudget,
       "temperature": temperature,
-      "reasoning": ["effort": "low", "exclude": true]
+      "reasoning": ["effort": "minimal", "exclude": true]
     ]
     request.httpBody = try JSONSerialization.data(withJSONObject: payload)
     let (data, response) = try await session.data(for: request)
@@ -117,11 +118,11 @@ struct OpenRouterService {
     if let reply = try? await complete(messages, maxTokens: 80, temperature: 0),
        let json = Self.json(in: reply) {
       let goal = (json["goal"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines.union(.punctuationCharacters))
-      let done = (json["done"] as? Bool) ?? saysDone
       if let goal, !goal.isEmpty, goal.lowercased() != "null", goal.count <= 80 {
-        return ParsedGoal(goal: Self.capitalized(goal), done: done)
+        // Small models often flag "done" on a plain goal: a goal only ends the list with an explicit stop phrase.
+        return ParsedGoal(goal: Self.capitalized(goal), done: saysDone)
       }
-      return ParsedGoal(goal: nil, done: done)
+      return ParsedGoal(goal: nil, done: (json["done"] as? Bool) ?? saysDone)
     }
     // Offline: keep the raw sentence, trimmed, unless it's a stop phrase.
     if saysDone { return ParsedGoal(goal: nil, done: true) }

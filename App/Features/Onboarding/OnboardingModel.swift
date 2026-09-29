@@ -36,6 +36,8 @@ final class OnboardingModel {
   var draft: UserProfile
   var cloneError: String?
   var isCloning = false
+  /// The ringtone rendering in the new voice, started as soon as the clone exists.
+  @ObservationIgnored private var voiceWarmUp: Task<Void, Never>?
   var recordedSampleURL: URL?
   var ahaDone = false
   var contractPath: [CGPoint] = []
@@ -129,17 +131,33 @@ final class OnboardingModel {
       draft.voiceModelID = id
       draft.voiceSampleFileName = url.lastPathComponent
       persist()
-      // Re-recorded: the old clone and every clip rendered with it go.
-      if let previousID, previousID != id {
-        try? await fish.deleteVoice(id: previousID)
-      }
+      // Every clip rendered with the old voice goes. Then the first call's words (known now) and the ringtone
+      // render in the background while the next screen announces the call, so nothing waits once it rings.
       VoiceClipCache.clear()
-      await VoiceClipCache.ensureRingtone(voiceID: id, language: language, act: store.hasStarted ? store.currentAct : .silence)
+      VoiceClipCache.prefetchLine(StickPersona.scripted(.aha, CallCoordinator.context(store: store)), voiceID: id)
+      let language = language
+      let act = store.hasStarted ? store.currentAct : .silence
+      voiceWarmUp = Task { await VoiceClipCache.ensureRingtone(voiceID: id, language: language, act: act) }
+      // Re-recorded: the old clone goes too.
+      if let previousID, previousID != id {
+        Task { try? await fish.deleteVoice(id: previousID) }
+      }
       isCloning = false
       if advance { next() }
     } catch {
       cloneError = error.localizedDescription
       isCloning = false
+    }
+  }
+
+  /// Waits for the ringtone in the new voice, at most `limit`: past that, the call rings with the default sound.
+  func waitForVoiceWarmUp(limit: Duration) async {
+    guard let voiceWarmUp else { return }
+    await withTaskGroup(of: Void.self) { group in
+      group.addTask { await voiceWarmUp.value }
+      group.addTask { try? await Task.sleep(for: limit) }
+      await group.next()
+      group.cancelAll()
     }
   }
 

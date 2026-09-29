@@ -16,6 +16,8 @@ enum StickPersona {
     var language: AppLanguage
     /// The user allowed Stick to send the call text to the language model.
     var aiEnabled: Bool
+    /// Calls speak in the user's cloned voice (otherwise the system voice).
+    var hasClonedVoice: Bool
 
     var apps: String {
       let named = timeSinks.compactMap(\.appName)
@@ -217,6 +219,10 @@ enum StickPersona {
     case .recoveryClose:
       return fr ? "Bien. Il te reste \(c.jokersLeft) joker\(c.jokersLeft > 1 ? "s" : ""). Ne me fais pas rappeler." : "Good. \(c.jokersLeft) joker\(c.jokersLeft > 1 ? "s" : "") left. Don't make me call again."
     case .aha:
+      if !c.hasClonedVoice {
+        return fr ? "C'est Stick. \(c.identityLine). Pendant 75 jours je t'appelle : le matin, le soir, et à la seconde où tu ouvres \(c.apps). Enregistre ta voix quand tu veux, et c'est toi qui t'appelleras. Prêt ?"
+                  : "It's Stick. \(c.identityLine). For 75 days I call you: morning, evening, and the second you open \(c.apps). Record your voice whenever you want, and it'll be you calling. Ready?"
+      }
       return fr ? "C'est toi. Ta propre voix. \(c.identityLine). Pendant 75 jours je t'appelle : le matin, le soir, et à la seconde où tu ouvres \(c.apps). Prêt ?"
                 : "It's you. Your own voice. \(c.identityLine). For 75 days I call you: morning, evening, and the second you open \(c.apps). Ready?"
     }

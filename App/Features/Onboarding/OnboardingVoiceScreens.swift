@@ -407,7 +407,9 @@ struct AhaScreen: View {
           .multilineTextAlignment(.center)
         Text(rang
              ? "From now on, that's who calls. Every morning, every night, and the second you open TikTok."
-             : "It's your voice. Pick up. Listen to what you're about to promise yourself.")
+             : (store.profile.voiceModelID == nil
+                ? "Pick up. Listen to what you're about to promise yourself."
+                : "It's your voice. Pick up. Listen to what you're about to promise yourself."))
           .font(StickFont.body)
           .multilineTextAlignment(.center)
           .opacity(0.9)
@@ -420,10 +422,7 @@ struct AhaScreen: View {
           Button { model.next() } label: { Text("I'm in") }
             .buttonStyle(PrimaryPillButtonStyle())
         } else {
-          Button {
-            model.persist()
-            calls.start(.aha, store: store)
-          } label: {
+          Button(action: ring) {
             Label("Ring me", systemImage: "phone.fill")
           }
           .buttonStyle(PrimaryPillButtonStyle())
@@ -438,5 +437,20 @@ struct AhaScreen: View {
     .onAppear {
       if store.state.calls.contains(where: { $0.kind == .aha }) { rang = true }
     }
+    // The phone rings on its own: a short beat to read the screen, and the ringtone in the new voice is ready.
+    .task {
+      guard !rang else { return }
+      async let beat: Void? = try? Task.sleep(for: .seconds(2.5))
+      await model.waitForVoiceWarmUp(limit: .seconds(8))
+      _ = await beat
+      guard !Task.isCancelled else { return }
+      ring()
+    }
+  }
+
+  private func ring() {
+    guard !rang, !calls.isPresented else { return }
+    model.persist()
+    calls.start(.aha, store: store)
   }
 }

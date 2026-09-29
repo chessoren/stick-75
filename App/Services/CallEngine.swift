@@ -372,7 +372,13 @@ final class CallEngine {
     guard !text.isEmpty, let context else { return }
     phase = .speaking
     let budget: Duration = .seconds(min(45, 4 + Double(text.count) / 10))
-    if let voiceID, let data = try? await fish.synthesize(text, referenceID: voiceID) {
+    var clip: Data?
+    if let voiceID {
+      // Lines rendered ahead (the first call) play at once; the rest render now.
+      clip = await VoiceClipCache.line(text, voiceID: voiceID)
+      if clip == nil { clip = try? await fish.synthesize(text, referenceID: voiceID) }
+    }
+    if let data = clip {
       usedCloneVoice = true
       await withTimeout(budget) { await self.player.play(data) }
       player.stop()

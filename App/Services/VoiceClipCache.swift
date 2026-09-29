@@ -1,6 +1,7 @@
+import CryptoKit
 import Foundation
 
-/// Pre-generated clips in the user's voice (ringtone, vault playback).
+/// Pre-generated clips in the user's voice (ringtone, vault playback, lines known ahead of a call).
 enum VoiceClipCache {
   static var directory: URL {
     let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0].appending(path: "VoiceClips")
@@ -56,6 +57,36 @@ enum VoiceClipCache {
     if let data = try? await FishAudioService().synthesize(line, referenceID: voiceID) {
       store(data, as: name)
     }
+  }
+
+  // MARK: - Lines known ahead
+
+  /// Renders still under way, so a call that starts early waits for them instead of paying for a second render.
+  @MainActor private static var rendering: [String: Task<Data?, Never>] = [:]
+
+  private static func lineName(_ text: String, voiceID: String) -> String {
+    let digest = SHA256.hash(data: Data("\(voiceID)|\(text)".utf8))
+    return "line-" + digest.prefix(12).map { String(format: "%02x", $0) }.joined()
+  }
+
+  /// Starts rendering a line whose exact wording is already known (the first call), so the call can play it
+  /// the instant it's answered.
+  @MainActor static func prefetchLine(_ text: String, voiceID: String) {
+    let name = lineName(text, voiceID: voiceID)
+    guard !exists(name), rendering[name] == nil else { return }
+    rendering[name] = Task {
+      let data = try? await FishAudioService().synthesize(text, referenceID: voiceID)
+      if let data { store(data, as: name) }
+      rendering[name] = nil
+      return data
+    }
+  }
+
+  /// The line rendered ahead: from disk, or by waiting for a render already under way. nil when neither.
+  @MainActor static func line(_ text: String, voiceID: String) async -> Data? {
+    let name = lineName(text, voiceID: voiceID)
+    if let cached = data(name) { return cached }
+    return await rendering[name]?.value
   }
 
   static func revealName(_ act: Act) -> String { "reveal-\(act.rawValue)" }
