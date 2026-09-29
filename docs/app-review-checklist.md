@@ -2,10 +2,6 @@
 
 Le code est prêt pour la review. Cette liste couvre ce qui se fait hors du code : App Store Connect, RevenueCat, le site et les clés.
 
-## 0. Sécurité : à faire en premier
-- [ ] **Régénérer les clés Fish Audio et OpenRouter.** Elles ont été commitées dans `App/Resources/Secrets.local.plist` (commit `f8f6e6d`) et sont dans l'historique Git, y compris sur GitHub. Créez de nouvelles clés, supprimez les anciennes chez les deux fournisseurs, puis collez les nouvelles dans `Secrets.local.plist` (fichier ignoré par Git).
-- [ ] Sur OpenRouter, fixez une limite de dépense sur la clé.
-
 ## 1. Valeurs à remplir dans le code
 | Fichier | Clé | Valeur |
 |---|---|---|
