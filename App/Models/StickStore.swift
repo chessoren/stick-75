@@ -63,7 +63,8 @@ final class StickStore {
   static let jokersTotal = 3
 
   private(set) var state: StickState
-  var pendingCallKind: CallKind?
+  /// A call asked for from outside the app (alarm "Answer", notification, widget). Read it with `takePendingCall()`.
+  private var pendingCall: (kind: CallKind, at: Date)?
   var celebration: Celebration?
   var pendingReveal: Act?
 
@@ -89,6 +90,8 @@ final class StickStore {
     if state.profile.language != .device {
       state.profile.language = .device
     }
+    // Goals ticked on the widget while the app was closed come in before anything rewrites the widget snapshot.
+    absorbWidgetGoals()
     reconcile()
     syncWidgets()
   }
@@ -258,32 +261,43 @@ final class StickStore {
     save()
   }
 
-  /// Pulls goal toggles made from the widget back into the app.
+  /// Pulls goal toggles and call requests made from the widget, alarm or notification back into the app.
   func absorbWidgetChanges() {
-    let snapshot = SharedSnapshot.load()
+    if absorbWidgetGoals() {
+      save()
+      checkCelebrations()
+    }
+    if let kind = AppGroup.defaults.string(forKey: "stick.pendingCall"), let call = CallKind(rawValue: kind) {
+      let at = AppGroup.defaults.double(forKey: "stick.pendingCall.at")
+      AppGroup.defaults.removeObject(forKey: "stick.pendingCall")
+      pendingCall = (call, at == 0 ? .now : Date(timeIntervalSince1970: at))
+    }
+  }
+
+  /// Copies the widget's goal ticks into the state without saving. Returns true when something changed.
+  @discardableResult
+  private func absorbWidgetGoals() -> Bool {
     var changed = false
-    for shared in snapshot.goals {
+    for shared in SharedSnapshot.load().goals {
       if let index = state.goals.firstIndex(where: { $0.id == shared.id }), state.goals[index].isDone != shared.isDone {
         state.goals[index].isDone = shared.isDone
         changed = true
       }
     }
-    if changed {
-      var record = today
-      record.goalsCompleted = todayGoals.filter(\.isDone).count
-      record.goalsTotal = todayGoals.count
-      upsert(record)
-      save()
-      checkCelebrations()
-    }
-    if let kind = AppGroup.defaults.string(forKey: "stick.pendingCall"), let call = CallKind(rawValue: kind) {
-      // An "Answer" tapped hours ago must not ring the next time the app opens.
-      let at = AppGroup.defaults.double(forKey: "stick.pendingCall.at")
-      AppGroup.defaults.removeObject(forKey: "stick.pendingCall")
-      if at == 0 || Date.now.timeIntervalSince1970 - at < 15 * 60 {
-        pendingCallKind = call
-      }
-    }
+    guard changed else { return false }
+    var record = today
+    record.goalsCompleted = todayGoals.filter(\.isDone).count
+    record.goalsTotal = todayGoals.count
+    upsert(record)
+    return true
+  }
+
+  /// The call to start now, if one was asked for less than 15 minutes ago. An "Answer" tapped hours ago, or
+  /// while another call was already on screen, must not ring the next time the app opens.
+  func takePendingCall() -> CallKind? {
+    defer { pendingCall = nil }
+    guard let pendingCall, Date.now.timeIntervalSince(pendingCall.at) < 15 * 60 else { return nil }
+    return pendingCall.kind
   }
 
   func completeDebrief() {
@@ -461,8 +475,19 @@ final class StickStore {
 
   var isEntitled: Bool { state.entitlement.isActive }
 
+  /// Applies what RevenueCat says. Losing access (weekly plan expired, refund) silences the alarms; getting it
+  /// back mid-program puts them back.
   func grant(_ entitlement: Entitlement) {
+    guard entitlement != state.entitlement else { return }
+    let wasEntitled = isEntitled
     update { $0.entitlement = entitlement }
+    if wasEntitled, !entitlement.isActive {
+      CallScheduler.cancelAll()
+    } else if !wasEntitled, entitlement.isActive, hasStarted {
+      let profile = self.profile
+      let act = currentAct
+      Task { await CallScheduler.scheduleDailyCalls(profile: profile, act: act) }
+    }
   }
 
   // MARK: - Widgets
@@ -522,7 +547,7 @@ final class StickStore {
     AppGroup.defaults.removeObject(forKey: AppGroup.snapshotKey)
     AppGroup.defaults.removeObject(forKey: "stick.pendingCall")
     await AuthService.shared.signOut()
-    pendingCallKind = nil
+    pendingCall = nil
     pendingReveal = nil
     celebration = nil
     state = StickState()

@@ -69,7 +69,7 @@ enum LegalTexts {
   • Fish Audio (voice cloning and speech synthesis), only after your explicit consent: your voice sample, to build a private synthetic copy of your own voice, and the sentences Stick speaks. Your voice model is private and never published.
   • OpenRouter (AI language model), only if you turn on smart replies: the text of what you say during calls, your first name, goals and identity sentence, so Stick can understand and answer you. No audio is sent. You can turn it off in Me › My voice; calls then follow a fixed script.
   • Apple Speech Recognition: transcribes what you say during calls. Apple may process audio on its servers under Apple's privacy policy.
-  • Apple and RevenueCat: handle purchases. Stick never sees your payment details. If you sign in with Apple, RevenueCat receives the anonymous Apple identifier so your purchases follow you.
+  • Apple and RevenueCat: handle purchases. Stick never sees your payment details. If you sign in with Apple, RevenueCat receives the anonymous Apple identifier so your purchases follow you. RevenueCat also receives your progress in the program (day and act) and whether calls use your cloned voice, so Stick can show you the right offer. Never your name, goals or quiz answers.
 
   Sign in with Apple
   Optional. Stick asks Apple for no name and no email. Only an anonymous identifier is kept, in your iPhone's keychain.
@@ -100,7 +100,7 @@ enum LegalTexts {
   • Fish Audio (clonage et synthèse vocale), uniquement après ton consentement explicite : ton échantillon de voix, pour créer une copie synthétique privée de ta propre voix, et les phrases que Stick prononce. Ton modèle vocal est privé et jamais publié.
   • OpenRouter (modèle de langage IA), uniquement si tu actives les réponses intelligentes : le texte de ce que tu dis pendant les appels, ton prénom, tes objectifs et ta phrase d'identité, pour que Stick te comprenne et te réponde. Aucun audio n'est envoyé. Tu peux le désactiver dans Moi › Ma voix ; les appels suivent alors un script fixe.
   • Reconnaissance vocale Apple : transcrit ce que tu dis pendant les appels. Apple peut traiter l'audio sur ses serveurs selon sa propre politique de confidentialité.
-  • Apple et RevenueCat : gèrent les achats. Stick ne voit jamais tes données de paiement. Si tu te connectes avec Apple, RevenueCat reçoit l'identifiant Apple anonyme pour que tes achats te suivent.
+  • Apple et RevenueCat : gèrent les achats. Stick ne voit jamais tes données de paiement. Si tu te connectes avec Apple, RevenueCat reçoit l'identifiant Apple anonyme pour que tes achats te suivent. RevenueCat reçoit aussi ta progression dans le programme (jour et acte) et si les appels utilisent ta voix clonée, pour te proposer la bonne offre. Jamais ton prénom, tes objectifs ni tes réponses au quiz.
 
   Se connecter avec Apple
   Optionnel. Stick ne demande à Apple ni ton nom ni ton email. Seul un identifiant anonyme est conservé, dans le trousseau de ton iPhone.

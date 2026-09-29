@@ -18,10 +18,11 @@ struct StickApp: App {
   }
 }
 
-/// Routes notification taps (backup ringer) into a call.
+/// Configures purchases at launch and routes notification taps (backup ringer) into a call.
 final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
     UNUserNotificationCenter.current().delegate = self
+    PurchaseService.shared.configure()
     return true
   }
 

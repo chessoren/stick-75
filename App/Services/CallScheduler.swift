@@ -37,9 +37,14 @@ enum CallScheduler {
     (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false
   }
 
+  /// AlarmKit when allowed, otherwise time-sensitive notifications. Never both: that would ring twice.
   static func scheduleDailyCalls(profile: UserProfile, act: Act = .silence) async {
-    await scheduleAlarms(profile: profile, act: act)
-    await scheduleNotifications(profile: profile, act: act)
+    if AlarmManager.shared.authorizationState == .authorized {
+      UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["stick.wake", "stick.debrief"])
+      await scheduleAlarms(profile: profile, act: act)
+    } else {
+      await scheduleNotifications(profile: profile, act: act)
+    }
   }
 
   private static func scheduleAlarms(profile: UserProfile, act: Act) async {

@@ -58,27 +58,42 @@ struct RootView: View {
     .task {
       await AuthService.shared.refresh()
       store.absorbWidgetChanges()
-      if let kind = store.pendingCallKind, store.state.onboardingComplete, store.isEntitled, !calls.isPresented {
-        store.pendingCallKind = nil
-        calls.start(kind, store: store)
-      }
-      // The store is the source of truth: an expired weekly plan locks, a restored pass unlocks.
-      if let entitlement = await PurchaseService.shared.currentEntitlement(), entitlement != store.state.entitlement {
+      // RevenueCat is the source of truth: an expired weekly plan locks before a pending call can ring.
+      if let entitlement = await PurchaseService.shared.currentEntitlement() {
         store.grant(entitlement)
       }
+      startPendingCall()
+      updatePurchaseAttributes()
       if let voice = store.profile.voiceModelID, store.hasStarted {
         await VoiceClipCache.ensureRingtone(voiceID: voice, language: store.profile.language, act: store.currentAct)
       }
     }
-    .onChange(of: scenePhase) { _, phase in
-      guard phase == .active else { return }
-      store.reconcile()
-      store.absorbWidgetChanges()
-      ScreenTimeService.shared.applyShield(enabled: store.hasStarted && store.currentAct.allowedWindowMinutes == 0)
-      if let kind = store.pendingCallKind, store.state.onboardingComplete, store.isEntitled, !calls.isPresented {
-        store.pendingCallKind = nil
-        calls.start(kind, store: store)
+    .task {
+      for await entitlement in PurchaseService.shared.entitlementUpdates() {
+        store.grant(entitlement)
       }
     }
+    .onChange(of: scenePhase) { _, phase in
+      guard phase == .active else { return }
+      store.absorbWidgetChanges()
+      store.reconcile()
+      ScreenTimeService.shared.applyShield(enabled: store.hasStarted && store.currentAct.allowedWindowMinutes == 0)
+      startPendingCall()
+      updatePurchaseAttributes()
+    }
+  }
+
+  private func startPendingCall() {
+    guard let kind = store.takePendingCall(), store.state.onboardingComplete, store.isEntitled, !calls.isPresented else { return }
+    calls.start(kind, store: store)
+  }
+
+  private func updatePurchaseAttributes() {
+    guard store.hasStarted else { return }
+    PurchaseService.shared.updateAttributes(
+      dayNumber: store.dayNumber,
+      act: store.currentAct,
+      usesClonedVoice: store.profile.voiceModelID != nil
+    )
   }
 }

@@ -160,7 +160,7 @@ struct PaywallStep: View {
   @Environment(OnboardingModel.self) private var model
 
   var body: some View {
-    PaywallView(onUnlocked: { model.next() }, onDismiss: nil, ticketMode: true)
+    PaywallView(onUnlocked: { model.next() }, onDismiss: nil, ticketMode: true, placement: .onboarding)
   }
 }
 

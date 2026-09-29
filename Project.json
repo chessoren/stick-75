@@ -25,6 +25,10 @@
         {
           "package": "RevenueCat",
           "product": "RevenueCat"
+        },
+        {
+          "package": "RevenueCat",
+          "product": "RevenueCatUI"
         }
       ],
       "entitlements": {

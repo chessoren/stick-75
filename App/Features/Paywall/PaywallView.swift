@@ -7,6 +7,7 @@ struct PaywallView: View {
   var onDismiss: (() -> Void)?
   /// Onboarding shows only the 75 days; Weekly sits behind a small link.
   var ticketMode = false
+  var placement: PaywallPlacement = .lockedOut
 
   @State private var selected: SubscriptionPlan = .pass75
   private var purchases: PurchaseService { .shared }
@@ -53,16 +54,16 @@ struct PaywallView: View {
             .appear(index: 0)
 
             if ticketMode {
-              TicketCard(price: purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice, perDay: purchases.passPricePerDay, hoursPerDay: store.profile.hoursPerDay)
+              TicketCard(price: price(.pass75), perDay: purchases.passPricePerDay ?? "…", hoursPerDay: store.profile.hoursPerDay)
                 .appear(index: 1)
               timeline
                 .appear(index: 2)
               if showOtherPlans {
-                PlanCard(plan: .weekly, price: purchases.prices[.weekly] ?? SubscriptionPlan.weekly.fallbackPrice, isSelected: selected == .weekly) {
+                PlanCard(plan: .weekly, price: price(.weekly), isSelected: selected == .weekly) {
                   withAnimation(.snappy(duration: 0.3)) { selected = .weekly }
                 }
                 .transition(.move(edge: .bottom).combined(with: .opacity))
-                PlanCard(plan: .pass75, price: purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice, isSelected: selected == .pass75) {
+                PlanCard(plan: .pass75, price: price(.pass75), isSelected: selected == .pass75) {
                   withAnimation(.snappy(duration: 0.3)) { selected = .pass75 }
                 }
                 .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -84,7 +85,7 @@ struct PaywallView: View {
 
               VStack(spacing: 10) {
                 ForEach(Array(SubscriptionPlan.allCases.enumerated()), id: \.element.id) { index, plan in
-                  PlanCard(plan: plan, price: purchases.prices[plan] ?? plan.fallbackPrice, isSelected: selected == plan) {
+                  PlanCard(plan: plan, price: price(plan), isSelected: selected == plan) {
                     withAnimation(.snappy(duration: 0.3)) { selected = plan }
                   }
                   .appear(index: index + 2)
@@ -118,10 +119,11 @@ struct PaywallView: View {
             }
           }
           .buttonStyle(PrimaryPillButtonStyle())
-          .disabled(purchases.isBusy)
+          .disabled(purchases.isBusy || purchases.prices[selected] == nil)
 
           HStack(spacing: 18) {
             Button("Restore") { restore() }
+              .disabled(purchases.isBusy)
             Button("Terms of use") { legal = .terms }
             Button("Privacy policy") { legal = .privacy }
           }
@@ -137,14 +139,14 @@ struct PaywallView: View {
         .padding(.bottom, 12)
       }
     }
-    .task { await purchases.refreshPrices() }
+    .task { await purchases.refreshPrices(for: placement) }
     .sheet(item: $legal) { document in
       LegalView(document: document)
     }
   }
 
   private var disclosure: LocalizedStringKey {
-    let price = purchases.prices[selected] ?? selected.fallbackPrice
+    let price = price(selected)
     switch selected {
     case .pass75: return "One-time payment of \(price). Not a subscription, nothing renews."
     case .weekly: return "Auto-renewing subscription, \(price). Charged to your Apple Account at confirmation, then every week until cancelled. Cancel in Settings › Apple Account › Subscriptions at least 24 h before renewal."
@@ -177,25 +179,31 @@ struct PaywallView: View {
 
   private var ctaTitle: LocalizedStringKey {
     switch selected {
-    case .pass75: ticketMode ? "Take my ticket · \(purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice)" : "Start my 75 days · \(purchases.prices[.pass75] ?? SubscriptionPlan.pass75.fallbackPrice)"
-    case .weekly: "Subscribe · \(purchases.prices[.weekly] ?? SubscriptionPlan.weekly.fallbackPrice)"
+    case .pass75: ticketMode ? "Take my ticket · \(price(.pass75))" : "Start my 75 days · \(price(.pass75))"
+    case .weekly: "Subscribe · \(price(.weekly))"
     }
+  }
+
+  /// "…" until the store answers: the button stays disabled, so nobody pays a price they didn't see.
+  private func price(_ plan: SubscriptionPlan) -> String {
+    purchases.prices[plan] ?? "…"
   }
 
   private func buy() {
     error = nil
     Task {
-      if let entitlement = await purchases.purchase(selected) {
+      if let entitlement = await purchases.purchase(selected, placement: placement) {
         store.grant(entitlement)
-        StickHaptics.shared.rankUp()
+        StickHaptics.shared.unlock()
         onUnlocked()
       } else {
-        error = purchases.lastError ?? String(localized: "Purchase didn't go through. Try again.")
+        error = purchases.lastError
       }
     }
   }
 
   private func restore() {
+    error = nil
     Task {
       if let entitlement = await purchases.restore() {
         store.grant(entitlement)

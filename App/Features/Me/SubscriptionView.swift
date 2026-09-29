@@ -1,9 +1,10 @@
+import RevenueCatUI
 import SwiftUI
 
 struct SubscriptionView: View {
   @Environment(StickStore.self) private var store
   @State private var showingPaywall = false
-  @State private var restoring = false
+  @State private var showingCustomerCenter = false
   @State private var message: String?
 
   var body: some View {
@@ -31,21 +32,20 @@ struct SubscriptionView: View {
         }
 
         Button {
-          restoring = true
+          message = nil
           Task {
-            if let entitlement = await PurchaseService.shared.restore() {
+            if let entitlement = await purchases.restore() {
               store.grant(entitlement)
               message = String(localized: "Purchases restored.")
             } else {
-              message = PurchaseService.shared.lastError ?? String(localized: "Nothing to restore on this Apple Account.")
+              message = purchases.lastError ?? String(localized: "Nothing to restore on this Apple Account.")
             }
-            restoring = false
           }
         } label: {
           Text("Restore purchases")
         }
         .buttonStyle(SecondaryPillButtonStyle())
-        .disabled(restoring)
+        .disabled(purchases.isBusy)
 
         if let message {
           Text(message)
@@ -53,7 +53,16 @@ struct SubscriptionView: View {
             .foregroundStyle(Color.inkSecondary)
         }
 
-        if store.state.entitlement == .weekly, let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+        if purchases.isConfigured {
+          // RevenueCat Customer Center: plan details, cancel with a feedback survey, refund requests, support.
+          Button {
+            showingCustomerCenter = true
+          } label: {
+            Text(store.state.entitlement == .weekly ? "Manage subscription" : "Purchase help")
+              .font(StickFont.headline)
+              .foregroundStyle(Color.brandOrange)
+          }
+        } else if store.state.entitlement == .weekly, let url = URL(string: "https://apps.apple.com/account/subscriptions") {
           Link(destination: url) {
             Text("Manage subscription")
               .font(StickFont.headline)
@@ -71,9 +80,12 @@ struct SubscriptionView: View {
     .navigationTitle("Subscription")
     .navigationBarTitleDisplayMode(.inline)
     .fullScreenCover(isPresented: $showingPaywall) {
-      PaywallView(onUnlocked: { showingPaywall = false }, onDismiss: { showingPaywall = false })
+      PaywallView(onUnlocked: { showingPaywall = false }, onDismiss: { showingPaywall = false }, placement: .settings)
     }
+    .presentCustomerCenter(isPresented: $showingCustomerCenter, onDismiss: { showingCustomerCenter = false })
   }
+
+  private var purchases: PurchaseService { .shared }
 
   private var planTitle: LocalizedStringKey {
     switch store.state.entitlement {

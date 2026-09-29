@@ -12,7 +12,7 @@ Stick has no server and no account database. Your program lives on your iPhone.
 - Fish Audio (voice cloning and speech synthesis), only after your explicit consent: your voice sample, to build a private synthetic copy of your own voice, and the sentences Stick speaks. Your voice model is private and never published.
 - OpenRouter (AI language model), only if you turn on smart replies: the text of what you say during calls, your first name, goals and identity sentence, so Stick can understand and answer you. No audio is sent. You can turn it off in Me › My voice; calls then follow a fixed script.
 - Apple Speech Recognition: transcribes what you say during calls. Apple may process audio on its servers under Apple's privacy policy.
-- Apple and RevenueCat: handle purchases. Stick never sees your payment details. If you sign in with Apple, RevenueCat receives the anonymous Apple identifier so your purchases follow you.
+- Apple and RevenueCat: handle purchases. Stick never sees your payment details. If you sign in with Apple, RevenueCat receives the anonymous Apple identifier so your purchases follow you. RevenueCat also receives your progress in the program (day and act) and whether calls use your cloned voice, so Stick can show you the right offer. Never your name, goals or quiz answers.
 
 ## Sign in with Apple
 Optional. Stick asks Apple for no name and no email. Only an anonymous identifier is kept, in your iPhone's keychain.
