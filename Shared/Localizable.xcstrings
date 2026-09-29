@@ -22,16 +22,6 @@
         }
       }
     },
-    "League": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ligue"
-          }
-        }
-      }
-    },
     "Me": {
       "localizations": {
         "fr": {
@@ -188,16 +178,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Réessayer"
-          }
-        }
-      }
-    },
-    "Reset": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réinitialiser"
           }
         }
       }
@@ -942,16 +922,6 @@
         }
       }
     },
-    "League, rank %lld": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ligue, rang %lld"
-          }
-        }
-      }
-    },
     "%lld days held": {
       "localizations": {
         "fr": {
@@ -1018,16 +988,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Remplacer, pas seulement bloquer. Une nouvelle habitude choisie chaque matin."
-          }
-        }
-      }
-    },
-    "A 15-minute daily window opens. Stick tests if you can hold it.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Une fenêtre de 15 min par jour s'ouvre. Stick teste si tu la tiens."
           }
         }
       }
@@ -1198,36 +1158,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stick Life"
-          }
-        }
-      }
-    },
-    "One payment. The whole program. About €1 a day.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un seul paiement. Tout le programme. Environ 1 € par jour."
-          }
-        }
-      }
-    },
-    "Cancel anytime. 75 days this way costs €110.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Résiliable à tout moment. 75 jours comme ça coûtent 110 €."
-          }
-        }
-      }
-    },
-    "After the 75 days: maintenance mode, new seasons, leagues.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Après les 75 jours : mode maintenance, nouvelles saisons, ligues."
           }
         }
       }
@@ -1422,16 +1352,6 @@
         }
       }
     },
-    "Add the action \"Open URL\" and paste: stick://intercept": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajoute l'action « Ouvrir l'URL » et colle : stick://intercept"
-          }
-        }
-      }
-    },
     "Done. From now on, opening TikTok makes your phone ring with your voice.": {
       "localizations": {
         "fr": {
@@ -1522,42 +1442,12 @@
         }
       }
     },
-    "Ranked on hours recovered, not perfection.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Classés sur les heures récupérées, pas la perfection."
-          }
-        }
-      }
-    },
     "Invite a friend": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Inviter un ami"
-          }
-        }
-      }
-    },
-    "Your rank this week": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ton rang cette semaine"
-          }
-        }
-      }
-    },
-    "%lld h recovered · %lld days held": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld h récupérées · %lld jours tenus"
           }
         }
       }
@@ -1612,26 +1502,6 @@
         }
       }
     },
-    "Give 5 free days": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Offrir 5 jours gratuits"
-          }
-        }
-      }
-    },
-    "Your friends start with 5 days of Stick on you. Share your link.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tes amis démarrent avec 5 jours de Stick offerts par toi. Partage ton lien."
-          }
-        }
-      }
-    },
     "The Vault": {
       "localizations": {
         "fr": {
@@ -1672,16 +1542,6 @@
         }
       }
     },
-    "Deletes your progress, goals, calls and voice on this phone.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprime ta progression, tes objectifs, tes appels et ta voix sur ce téléphone."
-          }
-        }
-      }
-    },
     "days held": {
       "localizations": {
         "fr": {
@@ -1712,46 +1572,6 @@
         }
       }
     },
-    "%lld free days left": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld jours gratuits restants"
-          }
-        }
-      }
-    },
-    "5 free days for a friend.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5 jours gratuits pour un ami."
-          }
-        }
-      }
-    },
-    "Your referral code": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ton code de parrainage"
-          }
-        }
-      }
-    },
-    "Share my link": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Partager mon lien"
-          }
-        }
-      }
-    },
     "No clone yet": {
       "localizations": {
         "fr": {
@@ -1768,16 +1588,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Voix clonée"
-          }
-        }
-      }
-    },
-    "Stick only ever uses your own voice, cloned from your consent recording. It is a synthetic voice. You can delete it any time.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stick n'utilise que ta propre voix, clonée à partir de ton enregistrement consenti. C'est une voix synthétique. Tu peux la supprimer à tout moment."
           }
         }
       }
@@ -1808,56 +1618,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucun plan actif"
-          }
-        }
-      }
-    },
-    "Free days from a friend": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jours offerts par un ami"
-          }
-        }
-      }
-    },
-    "The whole program is yours. Stick Life is offered at day 60 for what comes after.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tout le programme est à toi. Stick Life te sera proposé au jour 60 pour la suite."
-          }
-        }
-      }
-    },
-    "Renews weekly. Switch to the 75-Day Pass to save about €30 over the program.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Renouvelé chaque semaine. Passe au Pass 75 jours pour économiser environ 30 € sur le programme."
-          }
-        }
-      }
-    },
-    "Maintenance mode, new seasons and leagues, forever.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mode maintenance, nouvelles saisons et ligues, pour toujours."
-          }
-        }
-      }
-    },
-    "%lld days left. Pick a plan to keep going.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld jours restants. Choisis un plan pour continuer."
           }
         }
       }
@@ -2178,16 +1938,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quelles apps te volent ton temps ?"
-          }
-        }
-      }
-    },
-    "Pick everything that applies. Stick blocks and intercepts these.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Coche tout ce qui s'applique. Stick bloque et intercepte celles-là."
           }
         }
       }
@@ -2742,52 +2492,12 @@
         }
       }
     },
-    "You read a 60-second script. That's the only recording we use.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tu lis un script de 60 secondes. C'est le seul enregistrement qu'on utilise."
-          }
-        }
-      }
-    },
-    "The sample is sent to Fish Audio, our voice-cloning provider, to build a private synthetic voice. It is never shared or made public.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'échantillon est envoyé à Fish Audio, notre fournisseur de clonage vocal, pour créer une voix synthétique privée. Elle n'est jamais partagée ni rendue publique."
-          }
-        }
-      }
-    },
-    "Only your own voice. Never someone else's. Stick refuses any other recording.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uniquement ta propre voix. Jamais celle d'un autre. Stick refuse tout autre enregistrement."
-          }
-        }
-      }
-    },
     "Delete the clone any time from Me › My voice.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Supprime le clone à tout moment depuis Moi › Ma voix."
-          }
-        }
-      }
-    },
-    "I consent to cloning my own voice and to sending my recording to Fish Audio for that purpose.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Je consens au clonage de ma propre voix et à l'envoi de mon enregistrement à Fish Audio dans ce but."
           }
         }
       }
@@ -3192,16 +2902,6 @@
         }
       }
     },
-    "Backup ringer and the intercept alert when a blocked app opens.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sonnerie de secours et alerte d'interception quand une app bloquée s'ouvre."
-          }
-        }
-      }
-    },
     "When do I call?": {
       "localizations": {
         "fr": {
@@ -3302,16 +3002,6 @@
         }
       }
     },
-    "Your first wake-up call rings at %@. Until then: one goal for today, right now.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ton premier appel du réveil sonne à %@. D'ici là : un objectif pour aujourd'hui, tout de suite."
-          }
-        }
-      }
-    },
     "Your voice is ready. Now commit.": {
       "localizations": {
         "fr": {
@@ -3372,26 +3062,6 @@
         }
       }
     },
-    "Day 15": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jour 15"
-          }
-        }
-      }
-    },
-    "Act I done. The hardest part is behind you.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Acte I terminé. Le plus dur est derrière toi."
-          }
-        }
-      }
-    },
     "Day 75": {
       "localizations": {
         "fr": {
@@ -3412,26 +3082,6 @@
         }
       }
     },
-    "“I've deleted TikTok four times. Hearing my own voice tell me to close it is the only thing that has ever worked.”": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "« J'ai supprimé TikTok quatre fois. Entendre ma propre voix me dire de fermer est la seule chose qui ait jamais marché. »"
-          }
-        }
-      }
-    },
-    "Léa, day 41": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Léa, jour 41"
-          }
-        }
-      }
-    },
     "Best value": {
       "localizations": {
         "fr": {
@@ -3448,56 +3098,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lancer mes 75 jours · %@"
-          }
-        }
-      }
-    },
-    "Start weekly · %@": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Commencer en hebdo · %@"
-          }
-        }
-      }
-    },
-    "Join Stick Life · %@": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rejoindre Stick Life · %@"
-          }
-        }
-      }
-    },
-    "One-time payment. No renewal.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paiement unique. Sans renouvellement."
-          }
-        }
-      }
-    },
-    "Auto-renews. Cancel any time in Settings.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Renouvelé automatiquement. Résiliable à tout moment dans Réglages."
-          }
-        }
-      }
-    },
-    "Purchase didn't go through. Try again.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'achat n'est pas passé. Réessaie."
           }
         }
       }
@@ -3538,16 +3138,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jour %lld/75"
-          }
-        }
-      }
-    },
-    "No goals yet. Take the wake-up call.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pas d'objectif. Prends l'appel du réveil."
           }
         }
       }
@@ -3902,26 +3492,6 @@
         }
       }
     },
-    "%@, billed weekly to your Apple Account until cancelled. Cancel any time in Settings at least 24 h before renewal.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@, facturé chaque semaine sur ton compte Apple jusqu'à annulation. Annule à tout moment dans Réglages, au moins 24 h avant le renouvellement."
-          }
-        }
-      }
-    },
-    "%@, billed yearly to your Apple Account until cancelled. Cancel any time in Settings at least 24 h before renewal.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@, facturé chaque année sur ton compte Apple jusqu'à annulation. Annule à tout moment dans Réglages, au moins 24 h avant le renouvellement."
-          }
-        }
-      }
-    },
     "The store isn't available right now. Try again in a moment.": {
       "localizations": {
         "fr": {
@@ -4052,42 +3622,12 @@
         }
       }
     },
-    "Deletes your account, league score, progress, goals, calls and voice clone. This cannot be undone.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprime ton compte, ton score de ligue, ta progression, tes objectifs, tes appels et ton clone vocal. Irréversible."
-          }
-        }
-      }
-    },
-    "Your league is filling up.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ta ligue se remplit."
-          }
-        }
-      }
-    },
     "After day 75": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Après le jour 75"
-          }
-        }
-      }
-    },
-    "Stick Life keeps the calls, opens new seasons and the leagues. Have a look before the end.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stick Life garde les appels, ouvre de nouvelles saisons et les ligues. Jette un œil avant la fin."
           }
         }
       }
@@ -4392,16 +3932,6 @@
         }
       }
     },
-    "Before / after card": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carte avant / après"
-          }
-        }
-      }
-    },
     "15-minute window": {
       "localizations": {
         "fr": {
@@ -4428,16 +3958,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Plan après 75"
-          }
-        }
-      }
-    },
-    "Voice diploma": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diplôme vocal"
           }
         }
       }
@@ -4512,32 +4032,12 @@
         }
       }
     },
-    "Thirty people, ranked weekly on hours recovered.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trente personnes, classées chaque semaine sur les heures récupérées."
-          }
-        }
-      }
-    },
     "Stick records a sentence in your voice at each act.": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Stick enregistre une phrase avec ta voix à chaque acte."
-          }
-        }
-      }
-    },
-    "Your Screen Time, day 0 versus now, ready to share.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ton Temps d'écran, jour 0 contre aujourd'hui, prêt à partager."
           }
         }
       }
@@ -4568,16 +4068,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stick te fait écrire ce qui reste après le jour 75."
-          }
-        }
-      }
-    },
-    "Stick reads your 75 days back to you.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stick te relit tes 75 jours."
           }
         }
       }
@@ -4762,16 +4252,6 @@
         }
       }
     },
-    "Act I starts tomorrow at %@. Stick only calls members. No free trial: a trial is a way out, and you're done with those.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'acte I commence demain à %@. Stick n'appelle que les membres. Pas d'essai gratuit : un essai, c'est une porte de sortie, et tu en as fini avec ça."
-          }
-        }
-      }
-    },
     "I'd rather try one week first": {
       "localizations": {
         "fr": {
@@ -4848,16 +4328,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jour 31 · Acte III"
-          }
-        }
-      }
-    },
-    "The league and your voice badges open. Stick stops ordering, starts asking.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La ligue et tes badges vocaux s'ouvrent. Stick arrête d'ordonner, commence à questionner."
           }
         }
       }
@@ -4992,16 +4462,6 @@
         }
       }
     },
-    "Act III. Thirty people ranked every week on hours recovered, not perfection. Until then, you only compete with yesterday.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Acte III. Trente personnes classées chaque semaine sur les heures récupérées, pas la perfection. D'ici là, tu ne te bats que contre hier."
-          }
-        }
-      }
-    },
     "In your voice. Tap to play.": {
       "localizations": {
         "fr": {
@@ -5132,46 +4592,6 @@
         }
       }
     },
-    "Sign in with Apple keeps your 75 days, your league rank and your purchases if you change phones. Apple hides your email if you want.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se connecter avec Apple garde tes 75 jours, ton rang de ligue et tes achats si tu changes de téléphone. Apple masque ton email si tu veux."
-          }
-        }
-      }
-    },
-    "Needed for the league and to give friends their 5 free days.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nécessaire pour la ligue et pour offrir 5 jours gratuits à tes amis."
-          }
-        }
-      }
-    },
-    "Your progress and purchases follow you to a new iPhone.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ta progression et tes achats te suivent sur un nouvel iPhone."
-          }
-        }
-      }
-    },
-    "Stick stores your first name, score and days held. Nothing else.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stick stocke ton prénom, ton score et tes jours tenus. Rien d'autre."
-          }
-        }
-      }
-    },
     "Signed in · Continue": {
       "localizations": {
         "fr": {
@@ -5202,26 +4622,6 @@
         }
       }
     },
-    "Apple didn't return a valid token.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple n'a pas renvoyé de jeton valide."
-          }
-        }
-      }
-    },
-    "Accounts aren't available yet.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les comptes ne sont pas encore disponibles."
-          }
-        }
-      }
-    },
     "Account": {
       "localizations": {
         "fr": {
@@ -5242,52 +4642,12 @@
         }
       }
     },
-    "Not signed in · league and referral off": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Non connecté · ligue et parrainage désactivés"
-          }
-        }
-      }
-    },
     "No account yet": {
       "localizations": {
         "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "Pas encore de compte"
-          }
-        }
-      }
-    },
-    "Your progress, league rank and purchases follow you to a new iPhone.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ta progression, ton rang de ligue et tes achats te suivent sur un nouvel iPhone."
-          }
-        }
-      }
-    },
-    "Sign in to join the league, give friends 5 free days, and keep your 75 days if you change phones.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Connecte-toi pour rejoindre la ligue, offrir 5 jours gratuits à tes amis, et garder tes 75 jours si tu changes de téléphone."
-          }
-        }
-      }
-    },
-    "Accounts are not connected yet on this build.": {
-      "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les comptes ne sont pas encore connectés sur cette version."
           }
         }
       }
@@ -5888,6 +5248,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Supprimer"
+          }
+        }
+      }
+    },
+    "Waiting for approval. Stick unlocks as soon as the purchase is approved.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En attente d'approbation. Stick se débloque dès que l'achat est approuvé."
+          }
+        }
+      }
+    },
+    "No connection. Check your network and try again.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas de connexion. Vérifie ton réseau et réessaie."
+          }
+        }
+      }
+    },
+    "Purchase help": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aide sur mon achat"
           }
         }
       }

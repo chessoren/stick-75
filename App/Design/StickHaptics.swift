@@ -110,8 +110,8 @@ final class StickHaptics {
     play(events)
   }
 
-  /// Two quick ticks then a pop. Climbing the leaderboard.
-  func rankUp() {
+  /// Two quick ticks then a pop. Unlocking something: the ticket, a new stage.
+  func unlock() {
     let events = [
       CHHapticEvent(eventType: .hapticTransient, parameters: [
         CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.4),

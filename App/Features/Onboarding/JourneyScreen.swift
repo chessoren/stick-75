@@ -38,7 +38,7 @@ struct JourneyScreen: View {
       for i in 1...Act.allCases.count {
         try? await Task.sleep(for: .milliseconds(i == 1 ? 350 : 420))
         withAnimation(.bouncy(duration: 0.6)) { revealed = i }
-        StickHaptics.shared.rankUp()
+        StickHaptics.shared.unlock()
       }
     }
     .sensoryFeedback(.impact(weight: .medium, intensity: 0.7), trigger: revealed)
