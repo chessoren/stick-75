@@ -11,14 +11,21 @@ import RevenueCat
 /// - Entitlement changes stream in from `customerInfoStream` (renewal, expiry, refund, Ask to Buy approval,
 ///   a restore on another device), so the app locks and unlocks without a relaunch.
 ///
-/// Without a key, Debug builds complete purchases instantly (mock) so the hard paywall can be crossed in the
-/// simulator; Release builds show "store unavailable".
+/// Debug builds use the RevenueCat Test Store, so purchases work in the simulator with no Apple account;
+/// Release builds (TestFlight, App Store) use the App Store app.
 @Observable
 @MainActor
 final class PurchaseService {
   static let shared = PurchaseService()
 
   static let entitlementID = "member"
+
+  /// Public SDK keys, safe to ship in the app. A Test Store key must never reach a release build.
+  #if DEBUG
+  private static let apiKey = "test_euCPFOBGsZiwgaRTfNwMutMdUUM"
+  #else
+  private static let apiKey = "appl_LKXokBhpFBKwMSTxAHqyKRQTxMK"
+  #endif
 
   /// Display prices, nil until the store answers. Subscriptions always carry their billing period (App Review 3.1.2).
   private(set) var prices: [SubscriptionPlan: String] = [:]
@@ -28,32 +35,24 @@ final class PurchaseService {
   private(set) var lastError: String?
   private var packages: [SubscriptionPlan: Package] = [:]
 
-  var isConfigured: Bool { !Secrets.revenueCatKey.isEmpty }
-
-  private init() {
-    if !isConfigured {
-      for plan in SubscriptionPlan.allCases { prices[plan] = plan.fallbackPrice }
-      passPricePerDay = Self.perDay(SubscriptionPlan.pass75.fallbackAmount, currencyCode: "EUR", locale: .current)
-    }
-  }
+  private init() {}
 
   /// Called from `application(_:didFinishLaunchingWithOptions:)` so transactions left unfinished by the last
   /// session are processed before any UI asks for them.
   func configure() {
-    guard isConfigured, !Purchases.isConfigured else { return }
+    guard !Purchases.isConfigured else { return }
     #if DEBUG
     Purchases.logLevel = .debug
     #else
     Purchases.logLevel = .warn
     #endif
     // Signed in with Apple: purchases are tied to the Apple identity from the first launch.
-    Purchases.configure(withAPIKey: Secrets.revenueCatKey, appUserID: AuthService.shared.userID)
+    Purchases.configure(withAPIKey: Self.apiKey, appUserID: AuthService.shared.userID)
   }
 
   // MARK: - Offerings
 
   func refreshPrices(for placement: PaywallPlacement) async {
-    guard isConfigured else { return }
     do {
       let offerings = try await Purchases.shared.offerings()
       let offering = offerings.currentOffering(forPlacement: placement.rawValue) ?? offerings.current
@@ -86,15 +85,6 @@ final class PurchaseService {
     isBusy = true
     defer { isBusy = false }
     lastError = nil
-    guard isConfigured else {
-      #if DEBUG
-      try? await Task.sleep(for: .milliseconds(900))
-      return plan.entitlement
-      #else
-      lastError = String(localized: "The store isn't available right now. Try again in a moment.")
-      return nil
-      #endif
-    }
     if packages[plan] == nil { await refreshPrices(for: placement) }
     guard let package = packages[plan] else {
       lastError = String(localized: "The store isn't available right now. Try again in a moment.")
@@ -116,10 +106,6 @@ final class PurchaseService {
     isBusy = true
     defer { isBusy = false }
     lastError = nil
-    guard isConfigured else {
-      lastError = String(localized: "The store isn't available right now. Try again in a moment.")
-      return nil
-    }
     do {
       let entitlement = Self.entitlement(from: try await Purchases.shared.restorePurchases())
       return entitlement.isActive ? entitlement : nil
@@ -134,18 +120,16 @@ final class PurchaseService {
   /// Ties purchases to the Apple identity so entitlements follow the user across devices. The merged customer
   /// reaches the app through `entitlementUpdates()`.
   func identify(userID: String) async {
-    guard isConfigured else { return }
     _ = try? await Purchases.shared.logIn(userID)
   }
 
   func logOut() async {
-    guard isConfigured, !Purchases.shared.isAnonymous else { return }
+    guard !Purchases.shared.isAnonymous else { return }
     _ = try? await Purchases.shared.logOut()
   }
 
   /// Fresh check on launch. nil when the store can't be reached (keep the local state).
   func currentEntitlement() async -> Entitlement? {
-    guard isConfigured else { return nil }
     guard let info = try? await Purchases.shared.customerInfo() else { return nil }
     return Self.entitlement(from: info)
   }
@@ -153,10 +137,6 @@ final class PurchaseService {
   /// Every change to the customer: purchase, renewal, expiry, refund, Ask to Buy approval, restore elsewhere.
   func entitlementUpdates() -> AsyncStream<Entitlement> {
     AsyncStream { continuation in
-      guard isConfigured else {
-        continuation.finish()
-        return
-      }
       let task = Task {
         for await info in Purchases.shared.customerInfoStream {
           continuation.yield(Self.entitlement(from: info))
@@ -170,7 +150,6 @@ final class PurchaseService {
   /// Program progress only (never names, goals or quiz answers), so dashboard targeting and Charts can tell
   /// a day-3 user from a day-60 one.
   func updateAttributes(dayNumber: Int, act: Act, usesClonedVoice: Bool) {
-    guard isConfigured else { return }
     Purchases.shared.attribution.setAttributes([
       "program_day": String(dayNumber),
       "program_act": String(act.rawValue),

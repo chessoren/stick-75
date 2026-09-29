@@ -58,7 +58,7 @@ enum LegalTexts {
   Stick Privacy Policy
   Last updated: September 2026
 
-  Stick has no server and no account database. Your program lives on your iPhone.
+  Stick has no account database. Your program lives on your iPhone. Stick's only server is a relay that forwards voice and AI requests to the providers below with Stick's keys; it stores nothing.
 
   What stays on your iPhone
   • Your first name, identity sentence, quiz answers, call times, daily goals and progress.
@@ -89,7 +89,7 @@ enum LegalTexts {
   Politique de confidentialité de Stick
   Dernière mise à jour : septembre 2026
 
-  Stick n'a ni serveur ni base de comptes. Ton programme vit sur ton iPhone.
+  Stick n'a pas de base de comptes. Ton programme vit sur ton iPhone. Le seul serveur de Stick est un relais qui transmet les requêtes de voix et d'IA aux fournisseurs ci-dessous avec les clés de Stick ; il ne conserve rien.
 
   Ce qui reste sur ton iPhone
   • Ton prénom, ta phrase d'identité, tes réponses au questionnaire, tes horaires d'appel, tes objectifs et ta progression.

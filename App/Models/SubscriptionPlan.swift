@@ -26,21 +26,6 @@ enum SubscriptionPlan: String, CaseIterable, Identifiable, Codable {
     }
   }
 
-  /// Shown until the App Store prices load (store unreachable or not configured yet).
-  var fallbackPrice: String {
-    switch self {
-    case .pass75: "€79.99"
-    case .weekly: String(localized: "€9.99 / week")
-    }
-  }
-
-  var fallbackAmount: Decimal {
-    switch self {
-    case .pass75: Decimal(string: "79.99")!
-    case .weekly: Decimal(string: "9.99")!
-    }
-  }
-
   var isHero: Bool { self == .pass75 }
 }
 

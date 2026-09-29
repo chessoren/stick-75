@@ -1,7 +1,7 @@
 # Stick Privacy Policy
 Last updated: September 2026
 
-Stick has no server and no account database. Your program lives on your iPhone.
+Stick has no account database. Your program lives on your iPhone. Stick's only server is a relay that forwards voice and AI requests to the providers below with Stick's keys; it stores nothing.
 
 ## What stays on your iPhone
 - Your first name, identity sentence, quiz answers, call times, daily goals and progress.

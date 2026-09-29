@@ -1,17 +1,14 @@
 # Stick · Checklist App Review
 
-Le code est prêt pour la review. Cette liste couvre ce qui se fait hors du code : App Store Connect, RevenueCat, le site et les clés.
+Le code est prêt pour la review. Cette liste couvre ce qui se fait hors du code : App Store Connect, RevenueCat et le site. Aucune clé privée n'est dans l'app : Fish Audio et OpenRouter passent par le relais Supabase (`supabase/functions/relay`), et les clés publiques RevenueCat sont dans `PurchaseService.swift`.
 
 ## 1. Valeurs à remplir dans le code
 | Fichier | Clé | Valeur |
 |---|---|---|
-| `App/Resources/Secrets.local.plist` | `REVENUECAT_KEY` | Clé SDK publique Apple de RevenueCat (`appl_…`) |
 | `App/Services/AppLinks.swift` | `contactEmail` | E-mail de contact (affiché dans la politique de confidentialité, les conditions et le site) |
 | `App/Services/AppLinks.swift` | `website` | URL du site une fois déployé (voir §5) |
 | `App/Services/AppLinks.swift` | `appStoreID` | Apple ID numérique de l'app (App Store Connect › Informations sur l'app), pour le lien d'invitation |
 | `docs/site/*.html` | `CONTACT_EMAIL` | Même e-mail que `contactEmail` (rechercher/remplacer) |
-
-Sans `REVENUECAT_KEY`, un build Release affiche « boutique indisponible » : rejet garanti.
 
 ## 2. Apple Developer (Certificates, Identifiers & Profiles)
 - [ ] Dans Bitrig, reliez l'app à votre fiche App Store Connect pour figer le bundle ID. L'App Group en dépend : `group.<bundle id>` doit rester identique dans `Project.json` et `Shared/AppGroup.swift`.
@@ -32,15 +29,14 @@ Sans `REVENUECAT_KEY`, un build Release affiche « boutique indisponible » : re
 - Pour chaque produit : nom et description en EN + FR, une capture d'écran pour la review (le paywall suffit), statut « Prêt à soumettre ».
 - Les produits sont revus **avec** le premier build : dans la page de la version, section « Achats intégrés et abonnements », cochez les deux.
 
-### RevenueCat (pour connecter RevenueCat)
-1. Créez un projet sur app.revenuecat.com, puis une app **App Store** avec le bundle ID exact de Stick.
+### RevenueCat (projet « Stick », déjà configuré)
+Déjà en place : app Test Store (builds Debug) et app App Store « Stick (App Store) » (builds Release), produits `stick_pass_75` et `stick_weekly` sur les deux, entitlement `member`, offering courante `stick_75` (`$rc_lifetime`, `$rc_weekly`), clés publiques dans le code.
+
+Reste à faire quand le compte Apple est relié à Bitrig :
+1. Quand le bundle ID définitif est attribué, mettez-le dans l'app App Store de RevenueCat (App settings › Bundle ID).
 2. **Clé In-App Purchase** : App Store Connect › Utilisateurs et accès › Intégrations › In-App Purchase › générer une clé (.p8). Importez-la dans RevenueCat (App settings › In-app purchase key configuration) avec son Key ID et l'Issuer ID. C'est la méthode recommandée pour StoreKit 2.
 3. (Optionnel, recommandé) App Store Connect › App › Informations sur l'app › **URL de notification serveur App Store** : collez l'URL fournie par RevenueCat, en production et en sandbox.
-4. RevenueCat › **Products** : importez `stick_pass_75` et `stick_weekly`.
-5. RevenueCat › **Entitlements** : `pass75` (rattaché à `stick_pass_75`) et `weekly` (rattaché à `stick_weekly`). Le code lit aussi directement les identifiants produit, donc un oubli ici ne bloque pas un client qui a payé.
-6. RevenueCat › **Offerings** : une offering `default`, marquée **Current**, avec deux packages : Lifetime → `stick_pass_75`, Weekly → `stick_weekly`.
-7. RevenueCat › API keys : copiez la **clé SDK publique Apple** (`appl_…`) dans `REVENUECAT_KEY`.
-8. Test : créez un compte Sandbox (App Store Connect › Utilisateurs et accès › Sandbox), lancez sur un vrai iPhone depuis Bitrig, achetez le Pass puis testez « Restaurer ».
+4. Test : créez un compte Sandbox (App Store Connect › Utilisateurs et accès › Sandbox), lancez sur un vrai iPhone depuis Bitrig, achetez le Pass puis testez « Restaurer ».
 
 ## 5. Site : URL de confidentialité et de support (obligatoires)
 `docs/site/` contient un site statique : support (`index.html`, `fr.html`), confidentialité (`privacy.html`, `confidentialite.html`), conditions (`terms.html`, `conditions.html`).
@@ -58,6 +54,7 @@ Données collectées, **non utilisées pour le suivi** :
 | Contenu utilisateur › Autre contenu (texte des appels, objectifs → OpenRouter / Fish Audio) | Non | Fonctionnalité de l'app |
 | Identifiants › Identifiant utilisateur (identifiant Apple anonyme → RevenueCat) | Oui | Fonctionnalité de l'app |
 | Achats › Historique d'achats (RevenueCat) | Oui | Fonctionnalité de l'app |
+| Données d'utilisation › Interaction avec le produit (jour, acte, mode de voix → attributs RevenueCat) | Oui | Fonctionnalité de l'app, Analyse |
 
 Aucune adresse e-mail n'est collectée : Sign in with Apple ne demande ni nom ni e-mail.
 
@@ -116,7 +113,7 @@ How to test: complete onboarding (a 25-second recording is enough), tap "Ring me
 Joignez une vidéo d'environ 1 minute : consentement → enregistrement → premier appel → paywall → Aujourd'hui → un appel complet.
 
 ## 10. Avant d'appuyer sur « Soumettre »
-- [ ] Build Release avec `REVENUECAT_KEY` rempli, et un achat sandbox réussi sur un vrai iPhone.
+- [ ] Build Release (clé `appl_…`) et un achat sandbox réussi sur un vrai iPhone.
 - [ ] URL de confidentialité et de support en ligne ; `AppLinks` rempli.
 - [ ] Captures d'écran iPhone 6,9" (et 6,5" si demandé) : accroche, appel entrant, Aujourd'hui, paywall, widget. Rien qui montre la ligue ou un parrainage.
 - [ ] Conformité export : déjà déclarée dans Info.plist (pas de chiffrement non exempté).

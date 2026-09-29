@@ -6,29 +6,33 @@ struct ChatMessage: Codable, Hashable {
   var content: String
 }
 
-/// OpenRouter chat completions with the free models chosen by the user.
+/// OpenRouter chat completions on a free model, through Stick's relay so the OpenRouter key never ships in the app.
 /// Disabled unless the user explicitly allowed sending call text to the AI provider: every helper then
 /// falls back to its local, scripted behaviour.
 struct OpenRouterService {
   var enabled = true
 
-  var isAvailable: Bool { enabled && Secrets.hasLLMKeys }
+  var isAvailable: Bool { enabled }
+
+  /// Free models only: the relay refuses anything else.
+  private static let model = "liquid/lfm-2.5-2.6b:free"
+  /// This model always reasons before answering; the reasoning is hidden but still spends tokens.
+  private static let reasoningBudget = 700
 
   enum RouterError: LocalizedError {
-    case missingKey
+    case disabled
     case badResponse(Int, String)
     case empty
 
     var errorDescription: String? {
       switch self {
-      case .missingKey: "OpenRouter key is missing from Secrets.local.plist."
+      case .disabled: "Smart replies are turned off."
       case .badResponse(let code, let body): "OpenRouter error \(code): \(body.prefix(200))"
       case .empty: "OpenRouter returned an empty reply."
       }
     }
   }
 
-  private let endpoint = URL(string: "https://openrouter.ai/api/v1/chat/completions")!
   private let session: URLSession = {
     let config = URLSessionConfiguration.default
     config.timeoutIntervalForRequest = 40
@@ -36,27 +40,26 @@ struct OpenRouterService {
   }()
 
   func complete(_ messages: [ChatMessage], maxTokens: Int = 300, temperature: Double = 0.85) async throws -> String {
-    guard isAvailable else { throw RouterError.missingKey }
+    guard isAvailable else { throw RouterError.disabled }
     do {
-      return try await complete(messages, model: Secrets.openRouterModel, maxTokens: maxTokens, temperature: temperature)
+      return try await complete(messages, model: Self.model, maxTokens: maxTokens, temperature: temperature)
     } catch {
-      return try await complete(messages, model: Secrets.openRouterFallbackModel, maxTokens: maxTokens, temperature: temperature)
+      // Free models are rate-limited now and then: one retry.
+      return try await complete(messages, model: Self.model, maxTokens: maxTokens, temperature: temperature)
     }
   }
 
   private func complete(_ messages: [ChatMessage], model: String, maxTokens: Int, temperature: Double) async throws -> String {
-    var request = URLRequest(url: endpoint)
-    request.httpMethod = "POST"
-    request.setValue("Bearer \(Secrets.openRouterKey)", forHTTPHeaderField: "Authorization")
+    var request = Relay.request(.openRouter, path: "api/v1/chat/completions", method: "POST")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue(AppLinks.website, forHTTPHeaderField: "HTTP-Referer")
     request.setValue("Stick", forHTTPHeaderField: "X-Title")
     let payload: [String: Any] = [
       "model": model,
       "messages": messages.map { ["role": $0.role.rawValue, "content": $0.content] },
-      "max_tokens": maxTokens,
+      "max_tokens": maxTokens + Self.reasoningBudget,
       "temperature": temperature,
-      "reasoning": ["enabled": false]
+      "reasoning": ["effort": "low", "exclude": true]
     ]
     request.httpBody = try JSONSerialization.data(withJSONObject: payload)
     let (data, response) = try await session.data(for: request)

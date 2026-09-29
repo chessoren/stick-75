@@ -1,22 +1,23 @@
 import Foundation
 
-/// Fish Audio: instant voice cloning (`POST /model`) and text-to-speech (`POST /v1/tts`).
+/// Fish Audio: instant voice cloning (`POST /model`) and text-to-speech (`POST /v1/tts`), through Stick's relay
+/// so the Fish Audio key never ships in the app.
 struct FishAudioService {
   enum FishError: LocalizedError {
-    case missingKey
     case badResponse(Int, String)
     case noModelID
 
     var errorDescription: String? {
       switch self {
-      case .missingKey: "Fish Audio key is missing from Secrets.local.plist."
       case .badResponse(let code, let body): "Fish Audio error \(code): \(body.prefix(200))"
       case .noModelID: "Fish Audio did not return a voice ID."
       }
     }
   }
 
-  private let base = URL(string: "https://api.fish.audio")!
+  /// Fish Audio speech model used for every line.
+  private static let model = "s2.1-pro-free"
+
   private let session: URLSession = {
     let config = URLSessionConfiguration.default
     config.timeoutIntervalForRequest = 90
@@ -25,11 +26,8 @@ struct FishAudioService {
 
   /// Uploads a voice sample and returns the reference id of the trained clone.
   func cloneVoice(sampleURL: URL, title: String, transcript: String?) async throws -> String {
-    guard Secrets.hasVoiceKeys else { throw FishError.missingKey }
     let boundary = "stick-\(UUID().uuidString)"
-    var request = URLRequest(url: base.appending(path: "model"))
-    request.httpMethod = "POST"
-    request.setValue("Bearer \(Secrets.fishAudioKey)", forHTTPHeaderField: "Authorization")
+    var request = Relay.request(.fish, path: "model", method: "POST")
     request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
     var body = Data()
@@ -66,10 +64,7 @@ struct FishAudioService {
 
   /// Deletes the voice model at Fish Audio (`DELETE /model/{id}`). A model that no longer exists counts as deleted.
   func deleteVoice(id: String) async throws {
-    guard Secrets.hasVoiceKeys else { throw FishError.missingKey }
-    var request = URLRequest(url: base.appending(path: "model").appending(path: id))
-    request.httpMethod = "DELETE"
-    request.setValue("Bearer \(Secrets.fishAudioKey)", forHTTPHeaderField: "Authorization")
+    let request = Relay.request(.fish, path: "model/\(id)", method: "DELETE")
     let (data, response) = try await session.data(for: request)
     let code = (response as? HTTPURLResponse)?.statusCode ?? 0
     guard (200..<300).contains(code) || code == 404 else {
@@ -79,12 +74,9 @@ struct FishAudioService {
 
   /// Synthesizes `text` with the cloned voice. Returns MP3 bytes.
   func synthesize(_ text: String, referenceID: String) async throws -> Data {
-    guard Secrets.hasVoiceKeys else { throw FishError.missingKey }
-    var request = URLRequest(url: base.appending(path: "v1/tts"))
-    request.httpMethod = "POST"
-    request.setValue("Bearer \(Secrets.fishAudioKey)", forHTTPHeaderField: "Authorization")
+    var request = Relay.request(.fish, path: "v1/tts", method: "POST")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.setValue(Secrets.fishAudioModel, forHTTPHeaderField: "model")
+    request.setValue(Self.model, forHTTPHeaderField: "model")
     let payload: [String: Any] = [
       "text": text,
       "reference_id": referenceID,

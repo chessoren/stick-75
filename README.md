@@ -60,37 +60,38 @@ Requirements: macOS with **Xcode 26 or later** (iOS 26 SDK) and [XcodeGen](https
 ```sh
 git clone https://github.com/chessoren/stick-75.git
 cd stick-75
-./scripts/setup.sh          # installs XcodeGen with Homebrew if needed, creates the secrets file, generates Stick.xcodeproj
+./scripts/setup.sh          # installs XcodeGen with Homebrew if needed and generates Stick.xcodeproj
 open Stick.xcodeproj        # run the "Stick" scheme on an iPhone simulator
 ```
 
-**With no keys at all, the app runs end to end in a Debug build:**
+**No keys or configuration needed:** everything works right after cloning.
 
-- Purchases complete instantly as a mock.
-- Calls use the system voice.
-- The coach follows its built-in script.
+- **Purchases.** A Debug build uses the RevenueCat **Test Store**. The paywall shows real offering prices, and "Test valid purchase" unlocks the app in the simulator, with no Apple Developer account. Release builds (TestFlight, App Store) use the App Store app.
+- **Voice cloning and AI replies** go through Stick's relay (see below). No private key ships in the app or the repo.
 
-### Keys (optional)
+### Server relay
 
-Keys go in `App/Resources/Secrets.local.plist`. This file is git-ignored; the template is `docs/Secrets.example.plist`.
+[`supabase/functions/relay`](supabase/functions/relay/index.ts) is a Supabase Edge Function. It holds the Fish Audio and OpenRouter keys, and the app reaches it with the project's public anon key ([`App/Services/Relay.swift`](App/Services/Relay.swift)). It only forwards:
 
-| Key | What it enables |
+- voice clone creation and deletion;
+- text-to-speech;
+- chat completions on free models.
+
+It caps request sizes and stores nothing. To host your own, deploy the function, set `FISH_AUDIO_KEY` and `OPENROUTER_KEY` as Edge Function secrets, and point `Relay.baseURL` at your project.
+
+### RevenueCat configuration
+
+These are already set up in the Stick project.
+
+| Item | Value |
 |---|---|
-| `REVENUECAT_KEY` | Real purchases. Use a **RevenueCat Test Store** key (`test_…`) to buy in the simulator without an Apple Developer account, or an App Store key (`appl_…`) for sandbox purchases on device. |
-| `FISH_AUDIO_KEY` | Voice cloning and speech in your own voice ([Fish Audio](https://fish.audio)). |
-| `OPENROUTER_KEY` | AI-rewritten call lines and smarter answer parsing ([OpenRouter](https://openrouter.ai), free models by default). |
+| Apps | Test Store (Debug) and App Store (Release) |
+| Products | `stick_pass_75`: non-consumable, $79.99 / €79.99 · `stick_weekly`: weekly subscription, $9.99 / €9.99 |
+| Entitlement | `member`, attached to all products |
+| Current offering | `stick_75`, with packages `$rc_lifetime` → `stick_pass_75` and `$rc_weekly` → `stick_weekly` |
+| Placements (optional) | `onboarding`, `locked_out`, `settings`. Without them, the current offering is used. |
 
-### RevenueCat dashboard setup
-
-1. Create a project and an app (Test Store and/or App Store).
-2. Create the products `stick_pass_75` (non-consumable) and `stick_weekly` (weekly auto-renewing subscription).
-3. Create the entitlement `member` and attach both products to it.
-4. Create an offering, mark it as current, and add two packages: Lifetime → `stick_pass_75`, Weekly → `stick_weekly`.
-5. Optional:
-   - Add placements `onboarding`, `locked_out` and `settings` with their own offerings or experiments.
-   - Configure the Customer Center.
-
-To run on a real iPhone, set your team and a bundle identifier of your own in `Project.json`, and use the same App Group in `Shared/AppGroup.swift`. Then regenerate with `xcodegen`.
+The public SDK keys are in `PurchaseService.swift`: `test_…` in Debug, `appl_…` in Release.
 
 ### Device-only features
 
@@ -99,7 +100,7 @@ To run on a real iPhone, set your team and a bundle identifier of your own in `P
 - The Shortcuts app-open automation used for interception
 - Sign in with Apple, which needs a signing team
 
-Everything else, including the full onboarding, calls, paywall and widgets, works in the simulator.
+Everything else works in the simulator, including the full onboarding, calls, paywall, purchases and widgets. To run on a real iPhone, set your team and a bundle identifier of your own in `Project.json`, use the same App Group in `Shared/AppGroup.swift`, then regenerate with `xcodegen`.
 
 ## Architecture
 
@@ -122,10 +123,10 @@ legal/, docs/site/      privacy policy and terms (EN/FR)
   - No LLM, or the model is too slow: the call follows its script and answers are parsed with keywords.
   - Store unreachable: the last known access is kept.
 - **Privacy:**
-  - There is no Stick server; the program lives on the phone.
+  - The program lives on the phone.
   - Voice cloning and AI replies each need their own explicit consent.
   - Account deletion wipes local data and deletes the voice clone at the provider.
-  - This prototype calls Fish Audio and OpenRouter directly from the app. A production release should move those keys behind a small proxy.
+  - Stick has no account database. Its only server is the relay, which holds the Fish Audio and OpenRouter keys and stores nothing.
 - **Localization:** English and French via String Catalogs.
 
 ## License

@@ -53,21 +53,13 @@ struct SubscriptionView: View {
             .foregroundStyle(Color.inkSecondary)
         }
 
-        if purchases.isConfigured {
-          // RevenueCat Customer Center: plan details, cancel with a feedback survey, refund requests, support.
-          Button {
-            showingCustomerCenter = true
-          } label: {
-            Text(store.state.entitlement == .weekly ? "Manage subscription" : "Purchase help")
-              .font(StickFont.headline)
-              .foregroundStyle(Color.brandOrange)
-          }
-        } else if store.state.entitlement == .weekly, let url = URL(string: "https://apps.apple.com/account/subscriptions") {
-          Link(destination: url) {
-            Text("Manage subscription")
-              .font(StickFont.headline)
-              .foregroundStyle(Color.brandOrange)
-          }
+        // RevenueCat Customer Center: plan details, cancel with a feedback survey, refund requests, support.
+        Button {
+          showingCustomerCenter = true
+        } label: {
+          Text(store.state.entitlement == .weekly ? "Manage subscription" : "Purchase help")
+            .font(StickFont.headline)
+            .foregroundStyle(Color.brandOrange)
         }
 
         Text("Manage or cancel in Settings › Apple Account › Subscriptions.")

@@ -1,5 +1,6 @@
 #!/bin/sh
-# Generates Stick.xcodeproj from Project.json and creates the local secrets file.
+# Generates Stick.xcodeproj from Project.json. No keys needed: purchases use the RevenueCat Test Store in Debug,
+# and voice and AI calls go through Stick's server relay.
 set -e
 cd "$(dirname "$0")/.."
 
@@ -11,11 +12,6 @@ if ! command -v xcodegen >/dev/null 2>&1; then
     echo "XcodeGen is required: https://github.com/yonaskolb/XcodeGen#installing" >&2
     exit 1
   fi
-fi
-
-if [ ! -f App/Resources/Secrets.local.plist ]; then
-  cp docs/Secrets.example.plist App/Resources/Secrets.local.plist
-  echo "Created App/Resources/Secrets.local.plist (all keys empty: the app runs in offline demo mode)."
 fi
 
 xcodegen generate --spec Project.json
