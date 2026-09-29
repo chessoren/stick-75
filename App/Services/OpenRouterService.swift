@@ -35,7 +35,8 @@ struct OpenRouterService {
 
   private let session: URLSession = {
     let config = URLSessionConfiguration.default
-    config.timeoutIntervalForRequest = 40
+    // Someone is waiting on the line: a slow reply falls back to the script.
+    config.timeoutIntervalForRequest = 10
     return URLSession(configuration: config)
   }()
 
@@ -43,8 +44,8 @@ struct OpenRouterService {
     guard isAvailable else { throw RouterError.disabled }
     do {
       return try await complete(messages, model: Self.model, maxTokens: maxTokens, temperature: temperature)
-    } catch {
-      // Free models are rate-limited now and then: one retry.
+    } catch RouterError.badResponse(let code, _) where code == 429 || code >= 500 {
+      // Free models are rate-limited now and then: one retry. Timeouts and other errors go straight to the script.
       return try await complete(messages, model: Self.model, maxTokens: maxTokens, temperature: temperature)
     }
   }
@@ -70,10 +71,12 @@ struct OpenRouterService {
     let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
     let choices = json?["choices"] as? [[String: Any]]
     let message = choices?.first?["message"] as? [String: Any]
-    guard let content = message?["content"] as? String, !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-      throw RouterError.empty
-    }
-    return content.trimmingCharacters(in: .whitespacesAndNewlines)
+    // Reasoning is excluded from the reply, but a provider that ignores that would put it inline.
+    let raw = (message?["content"] as? String ?? "")
+      .replacingOccurrences(of: "<think>[\\s\\S]*?</think>", with: "", options: .regularExpression)
+    let content = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !content.isEmpty else { throw RouterError.empty }
+    return content
   }
 
   /// Quick reachability check before a call (tiny completion, short timeout).

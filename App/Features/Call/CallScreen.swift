@@ -11,7 +11,7 @@ struct CallScreen: View {
     ZStack {
       StickBackground()
       if engine.phase == .ringing {
-        IncomingCallView(kind: engine.kind, name: store.profile.firstName) {
+        IncomingCallView(kind: engine.kind, name: store.profile.firstName, usesClonedVoice: store.profile.voiceModelID != nil) {
           engine.answer()
         } decline: {
           engine.decline()
@@ -40,6 +40,7 @@ struct CallScreen: View {
 struct IncomingCallView: View {
   var kind: CallKind
   var name: String
+  var usesClonedVoice: Bool
   var answer: () -> Void
   var decline: () -> Void
 
@@ -77,9 +78,15 @@ struct IncomingCallView: View {
         Text(kind.title)
           .font(StickFont.bodyMedium)
           .opacity(0.85)
-        Text("Your own voice · Stick")
-          .font(StickFont.footnote)
-          .opacity(0.7)
+        Group {
+          if usesClonedVoice {
+            Text("Your own voice · Stick")
+          } else {
+            Text(verbatim: "Stick")
+          }
+        }
+        .font(StickFont.footnote)
+        .opacity(0.7)
       }
       .foregroundStyle(.white)
 

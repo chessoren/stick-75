@@ -14,6 +14,7 @@ struct PaywallView: View {
   @State private var error: String?
   @State private var legal: LegalDocument?
   @State private var showOtherPlans = false
+  @State private var didUnlock = false
 
   var body: some View {
     ZStack {
@@ -96,6 +97,20 @@ struct PaywallView: View {
             proof
               .appear(index: 5)
 
+            if purchases.pricesFailed, purchases.prices[selected] == nil {
+              Button {
+                Task { await purchases.refreshPrices(for: placement) }
+              } label: {
+                Label("Couldn't load prices. Try again", systemImage: "arrow.clockwise")
+                  .font(StickFont.footnoteMedium)
+                  .foregroundStyle(.white)
+                  .padding(12)
+                  .frame(maxWidth: .infinity)
+                  .background(Color.white.opacity(0.2), in: RoundedRectangle(cornerRadius: 14))
+              }
+              .buttonStyle(PressableButtonStyle())
+            }
+
             if let error {
               Text(error)
                 .font(StickFont.footnote)
@@ -140,6 +155,10 @@ struct PaywallView: View {
       }
     }
     .task { await purchases.refreshPrices(for: placement) }
+    // Access can arrive without a tap: Ask to Buy approved later, or a restore on another device.
+    .onChange(of: store.isEntitled) { _, entitled in
+      if entitled { unlock() }
+    }
     .sheet(item: $legal) { document in
       LegalView(document: document)
     }
@@ -184,6 +203,14 @@ struct PaywallView: View {
     }
   }
 
+  /// Runs once, however access arrived (purchase, restore, or a stream update).
+  private func unlock() {
+    guard !didUnlock else { return }
+    didUnlock = true
+    StickHaptics.shared.unlock()
+    onUnlocked()
+  }
+
   /// "…" until the store answers: the button stays disabled, so nobody pays a price they didn't see.
   private func price(_ plan: SubscriptionPlan) -> String {
     purchases.prices[plan] ?? "…"
@@ -194,8 +221,7 @@ struct PaywallView: View {
     Task {
       if let entitlement = await purchases.purchase(selected, placement: placement) {
         store.grant(entitlement)
-        StickHaptics.shared.unlock()
-        onUnlocked()
+        unlock()
       } else {
         error = purchases.lastError
       }
@@ -207,7 +233,7 @@ struct PaywallView: View {
     Task {
       if let entitlement = await purchases.restore() {
         store.grant(entitlement)
-        onUnlocked()
+        unlock()
       } else {
         error = purchases.lastError ?? String(localized: "Nothing to restore on this Apple Account.")
       }

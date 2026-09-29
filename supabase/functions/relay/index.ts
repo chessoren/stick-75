@@ -35,7 +35,8 @@ Deno.serve(async (req) => {
   const url = new URL(req.url);
   const path = url.pathname.replace(/^\/relay/, "");
   const route = routes.find((r) => r.method === req.method && r.pattern.test(path));
-  if (!route) return json(404, { error: "not_found" });
+  // 400, not 404: a missing route must never look like a provider answer.
+  if (!route) return json(400, { error: "unsupported_route" });
 
   const key = Deno.env.get(route.secret);
   if (!key) return json(503, { error: "relay_not_configured" });
@@ -61,6 +62,8 @@ Deno.serve(async (req) => {
 
   const upstreamPath = path.replace(/^\/(fish|openrouter)/, "");
   const upstream = await fetch(route.upstream + upstreamPath, { method: req.method, headers, body });
+  // Deleting a voice that no longer exists is a success: it's gone either way.
+  if (req.method === "DELETE" && upstream.status === 404) return new Response(null, { status: 204 });
   return new Response(upstream.body, {
     status: upstream.status,
     headers: { "Content-Type": upstream.headers.get("Content-Type") ?? "application/octet-stream" },

@@ -73,7 +73,15 @@ struct ContractScreen: View {
           }
           .appear(index: 2)
           .accessibilityLabel(Text("Signature area"))
+          .accessibilityValue(hasSignature ? Text("Signed") : Text("Not signed"))
           .accessibilityHint(Text("Draw your signature with one finger"))
+          // VoiceOver users can't draw: they sign with an action instead.
+          .accessibilityAction(named: Text("Sign")) {
+            strokes = [(0...20).map { i in
+              let x = 30 + Double(i) * 12
+              return CGPoint(x: x, y: 110 + sin(Double(i) / 2) * 24)
+            }]
+          }
         }
         .padding(.horizontal, StickMetrics.screenMargin)
         .padding(.bottom, 20)

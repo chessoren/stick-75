@@ -342,9 +342,12 @@ final class CallEngine {
       let directive = StickPersona.directive(step, c)
       var messages = history
       messages.append(ChatMessage(role: .user, content: directive))
-      if let generated = try? await router.complete(messages, maxTokens: 120, temperature: 0.7) {
-        let cleaned = StickPersona.clean(generated)
+      do {
+        let cleaned = StickPersona.clean(try await router.complete(messages, maxTokens: 120, temperature: 0.7))
         if cleaned.count >= 4, cleaned.count <= 320 { line = cleaned }
+      } catch {
+        // One failure (timeout, rate limit) and the rest of the call follows the script: no more waiting.
+        router.enabled = false
       }
     }
     if Task.isCancelled { return }

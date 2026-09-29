@@ -8,7 +8,10 @@ struct AutomationScreen: View {
   @State private var copied = false
 
   private var detected: Bool { store.profile.shortcutAutomationSet }
-  private var firstApp: String { model.draft.timeSinks.first?.title ?? "TikTok" }
+  private var firstApp: String {
+    if let app = model.draft.timeSinks.lazy.compactMap(\.appName).first { return app }
+    return model.draft.timeSinks.isEmpty ? "TikTok" : String(localized: "a blocked app")
+  }
 
   var body: some View {
     OnboardingPage("Make it ring when \(firstApp) opens.", subtitle: "One minute in the Shortcuts app. Without this step, nothing happens when you open \(firstApp). Do it now, not later.") {

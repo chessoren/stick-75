@@ -49,10 +49,14 @@ final class AuthService {
     }
   }
 
-  func signOut() async {
+  /// Forgets the Apple sign-in. Purchases stay with the RevenueCat customer on this phone, so signing out never
+  /// locks a paying user out; only deleting the account (`resetPurchases`) starts a fresh anonymous customer.
+  func signOut(resetPurchases: Bool = false) async {
     Keychain.delete(Self.keychainAccount)
     userID = nil
-    await PurchaseService.shared.logOut()
+    if resetPurchases {
+      await PurchaseService.shared.logOut()
+    }
   }
 
   private static let keychainAccount = "stick.appleUserID"

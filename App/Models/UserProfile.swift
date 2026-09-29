@@ -37,6 +37,9 @@ enum TimeSink: String, Codable, CaseIterable, Identifiable {
     }
   }
 
+  /// Name to use in a sentence ("when TikTok opens"). nil for "Other", which isn't an app.
+  var appName: String? { self == .other ? nil : title }
+
   var symbol: String {
     switch self {
     case .tiktok: "music.note"

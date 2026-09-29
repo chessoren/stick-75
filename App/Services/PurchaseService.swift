@@ -32,6 +32,8 @@ final class PurchaseService {
   /// Localized price of the 75-day pass divided by 75.
   private(set) var passPricePerDay: String?
   private(set) var isBusy = false
+  /// The last offerings request failed or returned none of Stick's products: the paywall offers a retry.
+  private(set) var pricesFailed = false
   private(set) var lastError: String?
   private var packages: [SubscriptionPlan: Package] = [:]
 
@@ -53,28 +55,36 @@ final class PurchaseService {
   // MARK: - Offerings
 
   func refreshPrices(for placement: PaywallPlacement) async {
+    pricesFailed = false
     do {
       let offerings = try await Purchases.shared.offerings()
       let offering = offerings.currentOffering(forPlacement: placement.rawValue) ?? offerings.current
-      packages = [:]
+      // Built fresh, so a plan missing from this placement's offering can't keep a stale price.
+      var newPackages: [SubscriptionPlan: Package] = [:]
+      var newPrices: [SubscriptionPlan: String] = [:]
+      var newPerDay: String?
       for package in offering?.availablePackages ?? [] {
         guard let plan = SubscriptionPlan(productID: package.storeProduct.productIdentifier) else { continue }
-        packages[plan] = package
+        newPackages[plan] = package
         let product = package.storeProduct
         switch plan {
         case .pass75:
-          prices[plan] = product.localizedPriceString
-          passPricePerDay = Self.perDay(
+          newPrices[plan] = product.localizedPriceString
+          newPerDay = Self.perDay(
             product.price,
             currencyCode: product.currencyCode ?? "USD",
             locale: product.priceFormatter?.locale ?? .current
           )
         case .weekly:
-          prices[plan] = String(localized: "\(product.localizedPriceString) / week")
+          newPrices[plan] = String(localized: "\(product.localizedPriceString) / week")
         }
       }
+      packages = newPackages
+      prices = newPrices
+      passPricePerDay = newPerDay
+      pricesFailed = newPackages.isEmpty
     } catch {
-      lastError = error.localizedDescription
+      pricesFailed = true
     }
   }
 
@@ -128,9 +138,10 @@ final class PurchaseService {
     _ = try? await Purchases.shared.logOut()
   }
 
-  /// Fresh check on launch. nil when the store can't be reached (keep the local state).
+  /// Check on launch from RevenueCat's cache: instant, so an alarm's "Answer" isn't held up by the network.
+  /// The stream brings the fresh state right after. nil when nothing is cached yet (keep the local state).
   func currentEntitlement() async -> Entitlement? {
-    guard let info = try? await Purchases.shared.customerInfo() else { return nil }
+    guard let info = try? await Purchases.shared.customerInfo(fetchPolicy: .fromCacheOnly) else { return nil }
     return Self.entitlement(from: info)
   }
 

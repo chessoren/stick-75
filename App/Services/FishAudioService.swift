@@ -7,10 +7,11 @@ struct FishAudioService {
     case badResponse(Int, String)
     case noModelID
 
+    /// Shown to the user. The status code and body stay in the error for debugging.
     var errorDescription: String? {
       switch self {
-      case .badResponse(let code, let body): "Fish Audio error \(code): \(body.prefix(200))"
-      case .noModelID: "Fish Audio did not return a voice ID."
+      case .badResponse: String(localized: "Stick couldn't reach its voice service. Check your connection and try again.")
+      case .noModelID: String(localized: "Stick couldn't build your voice. Try again, somewhere quiet.")
       }
     }
   }
@@ -62,12 +63,13 @@ struct FishAudioService {
     return id
   }
 
-  /// Deletes the voice model at Fish Audio (`DELETE /model/{id}`). A model that no longer exists counts as deleted.
+  /// Deletes the voice model at Fish Audio (`DELETE /model/{id}`). The relay answers 204 for a model that no
+  /// longer exists, so any other status, including 404, means the clone may still be there.
   func deleteVoice(id: String) async throws {
     let request = Relay.request(.fish, path: "model/\(id)", method: "DELETE")
     let (data, response) = try await session.data(for: request)
     let code = (response as? HTTPURLResponse)?.statusCode ?? 0
-    guard (200..<300).contains(code) || code == 404 else {
+    guard (200..<300).contains(code) else {
       throw FishError.badResponse(code, String(data: data, encoding: .utf8) ?? "")
     }
   }
@@ -75,6 +77,8 @@ struct FishAudioService {
   /// Synthesizes `text` with the cloned voice. Returns MP3 bytes.
   func synthesize(_ text: String, referenceID: String) async throws -> Data {
     var request = Relay.request(.fish, path: "v1/tts", method: "POST")
+    // A call can't wait long for a line: past this, the system voice takes over.
+    request.timeoutInterval = 15
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue(Self.model, forHTTPHeaderField: "model")
     let payload: [String: Any] = [

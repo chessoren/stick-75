@@ -546,7 +546,7 @@ final class StickStore {
     VoiceClipCache.clear()
     AppGroup.defaults.removeObject(forKey: AppGroup.snapshotKey)
     AppGroup.defaults.removeObject(forKey: "stick.pendingCall")
-    await AuthService.shared.signOut()
+    await AuthService.shared.signOut(resetPurchases: true)
     pendingCall = nil
     pendingReveal = nil
     celebration = nil

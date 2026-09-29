@@ -17,10 +17,16 @@ enum StickPersona {
     /// The user allowed Stick to send the call text to the language model.
     var aiEnabled: Bool
 
-    var apps: String { timeSinks.isEmpty ? "TikTok" : timeSinks.map(\.title).joined(separator: ", ") }
+    var apps: String {
+      let named = timeSinks.compactMap(\.appName)
+      if !named.isEmpty { return named.joined(separator: ", ") }
+      if timeSinks.isEmpty { return "TikTok" }
+      return language == .french ? "tes applis" : "your apps"
+    }
     var firstName: String { name.isEmpty ? (language == .french ? "soldat" : "soldier") : name }
     var identityLine: String {
-      identity.isEmpty ? (language == .french ? "quelqu'un qui finit ce qu'il commence" : "someone who finishes what they start") : identity
+      let identity = StickPersona.withoutFinalPunctuation(identity)
+      return identity.isEmpty ? (language == .french ? "quelqu'un qui finit ce qu'il commence" : "someone who finishes what they start") : identity
     }
   }
 
@@ -256,7 +262,15 @@ enum StickPersona {
   }
 
   /// Text read aloud while recording the voice sample (about 60 s).
+  /// "Someone who finishes." → "Someone who finishes", so the scripts can add their own period.
+  static func withoutFinalPunctuation(_ text: String) -> String {
+    var text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+    while let last = text.last, ".!…;,".contains(last) { text.removeLast() }
+    return text
+  }
+
   static func recordingScript(name: String, identity: String, language: AppLanguage) -> String {
+    let identity = withoutFinalPunctuation(identity)
     let who = name.isEmpty ? "" : " \(name)"
     if language == .french {
       return """

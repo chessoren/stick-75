@@ -5281,6 +5281,76 @@
           }
         }
       }
+    },
+    "Stick couldn't reach its voice service. Check your connection and try again.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick n'arrive pas à joindre son service de voix. Vérifie ta connexion et réessaie."
+          }
+        }
+      }
+    },
+    "Stick couldn't build your voice. Try again, somewhere quiet.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stick n'a pas pu créer ta voix. Réessaie dans un endroit calme."
+          }
+        }
+      }
+    },
+    "Couldn't load prices. Try again": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger les prix. Réessayer"
+          }
+        }
+      }
+    },
+    "a blocked app": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "une app bloquée"
+          }
+        }
+      }
+    },
+    "Signed": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signé"
+          }
+        }
+      }
+    },
+    "Not signed": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas encore signé"
+          }
+        }
+      }
+    },
+    "Sign": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signer"
+          }
+        }
+      }
     }
   }
 }

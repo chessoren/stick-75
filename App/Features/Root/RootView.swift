@@ -77,7 +77,7 @@ struct RootView: View {
       guard phase == .active else { return }
       store.absorbWidgetChanges()
       store.reconcile()
-      ScreenTimeService.shared.applyShield(enabled: store.hasStarted && store.currentAct.allowedWindowMinutes == 0)
+      ScreenTimeService.shared.applyShield(enabled: store.isEntitled && store.hasStarted && store.currentAct.allowedWindowMinutes == 0)
       startPendingCall()
       updatePurchaseAttributes()
     }
